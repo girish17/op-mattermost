@@ -1,0 +1,29 @@
+{
+  "name": "op-mattermost",
+  "version": "1.0.0",
+  "description": "OpenProject and Mattermost connector",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/girish17/op-mattermost.git"
+  },
+  "keywords": [
+    "OpenProject",
+    "MatterMost",
+    "Connector"
+  ],
+  "author": "Girish M",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/girish17/op-mattermost/issues"
+  },
+  "homepage": "https://github.com/girish17/op-mattermost#readme"
+}
