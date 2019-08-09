@@ -1,2 +1,2 @@
 # op-mattermost
-OpenProject and Mattermost connector
+OpenProject and Mattermost integration to log time for a work package
