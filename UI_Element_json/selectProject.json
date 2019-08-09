@@ -1,0 +1,22 @@
+{
+    "attachments": [
+        {
+            "pretext": "Let's find out the project to log time for...",
+            "text": "Select the project from drop-down",
+            "color": "3AA3E3",
+            "actions": [
+              {
+                "name": "Select an option...",
+                "integration": {
+                  "url": "http://127.0.0.1:7357/action_options",
+                  "context": {
+                    "action": "project_selection"
+                  }
+                },
+                "type": "select",
+                "data_source": "users"
+              }
+            ]
+          }
+    ]
+}
