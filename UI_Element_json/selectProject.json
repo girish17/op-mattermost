@@ -14,9 +14,10 @@
                   }
                 },
                 "type": "select",
-                "data_source": "users"
+                "data_source": "",
+                "options": []
               }
             ]
-          }
+        }
     ]
 }
