@@ -36,6 +36,10 @@ app.post('/', (req, res) => {
   }
 });
 
+app.post('/projSel', (req, res) => {
+   res.send("**Work under progress...**").status(202);
+});
+
 function showSuccessMsg(req, res) {
   let successMsg = {
     "channel": req.body.channel_id,
@@ -122,40 +126,23 @@ function showSelProject(req, res, channel_id) {
       });
     });
     console.log("optArray for projects", optArray);
-    project_sel.attachments[0].options = optArray;
+    project_sel.attachments[0].actions[0].options.push(optArray);
+    // res.type("application/json").send(JSON.stringify(project_sel)).status(200);
+    axios.post('http://localhost:8065/api/v4/actions/dialogs/open',
+      {
+        "trigger_id": req.body.trigger_id,
+        "url": "http://localhost:8065",
+        "dialog": {
+          "callback_id": "project_selection",
+          "title": "Select project",
+          "elements": [project_sel],
+          "submit_label": "Confirm project",
+          "notify_on_cancel": false,
+          "state": "submitted"
+        }
+      }
+    ).then((result) => {
 
-    //showProjMsg();
+    })
   });
-}
-
-function showProjMsg(project_sel) {
-  axios.post('https://localhost:8065/posts',
-    {
-      "channel_id": channel_id,
-      "message": "Select a project",
-      "props": project_sel
-    }
-  ).then((result) => {
-    console.log('select project message posted: %o', result);
-    if (result.data.status === "OK") {
-      console.log("setting global var msg_ts for use in show success/fail msg");
-      res.send().status(201);
-      return;
-    }
-    else {
-      console.log('select project post failed!');
-      res.send().status(400);
-      return;
-    }
-  }).catch((err) => {
-    console.log('message post failed: %o', err);
-    res.type("application/json").send(JSON.stringify({
-      "response_type": "ephemeral",
-      "replace_original": false,
-      "text": "Sorry, that didn't work. Please try again."
-    })).status(500);
-  }), (reason) => {
-    console.log("Request failed for /getProjectsForUser: %o", reason);
-    showFailMsg(req, res);
-  }
 }
