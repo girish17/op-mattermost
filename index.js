@@ -7,9 +7,9 @@ const axios = require('axios');
 const qs = require('querystring');
 
 let hoursLog = 0;
-var msg_ts = '';
+/* var msg_ts = '';
 var project_sel = require('./UI_Element_json/selectProject.json');
-
+ */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 dotenv.config();
@@ -37,7 +37,7 @@ app.post('/', (req, res) => {
 });
 
 app.post('/projSel', (req, res) => {
-   res.send("**Work under progress...**").status(202);
+  res.send("**Work under progress...**").status(202);
 });
 
 function showSuccessMsg(req, res) {
@@ -107,6 +107,7 @@ function showFailMsg(req, res) {
 }
 
 function showSelProject(req, res, channel_id) {
+  console.log("Request from mattermost: ", req);
   console.log("Response from mattermost: ", res);
   axios({
     url: '/projects',
@@ -118,31 +119,40 @@ function showSelProject(req, res, channel_id) {
     }
   }).then((response) => {
     console.log("Projects obtained from OP: %o", response);
-    let optArray = [];
+    var optArray = [];
     response.data._embedded.elements.forEach(element => {
       optArray.push({
         "text": element.name,
-        "value": element.id
+        "value": "opt" + element.id
       });
     });
-    console.log("optArray for projects", optArray);
-    project_sel.attachments[0].actions[0].options.push(optArray);
-    // res.type("application/json").send(JSON.stringify(project_sel)).status(200);
-    axios.post('http://localhost:8065/api/v4/actions/dialogs/open',
-      {
-        "trigger_id": req.body.trigger_id,
-        "url": "http://localhost:8065",
-        "dialog": {
-          "callback_id": "project_selection",
-          "title": "Select project",
-          "elements": [project_sel],
-          "submit_label": "Confirm project",
-          "notify_on_cancel": false,
-          "state": "submitted"
-        }
-      }
-    ).then((result) => {
 
+    var optJSON = JSON.stringify({
+      "trigger_id": req.body.trigger_id,
+      "url": "http://d2b8dc5c.ngrok.io",
+      "dialog": {
+        "callback_id": "project_selection",
+        "title": "Select project",
+        "elements": [{
+          "display_name": "Project Selector",
+          "name": "options",
+          "type": "select",
+          "options": optArray,
+          "submit_label": "Confirm project"
+        }]
+      }
+    });
+
+    console.log("optArray for projects", optJSON);
+    axios.post('http://localhost:8065/api/v4/actions/dialogs/open', optJSON).then(response => {
+      res.send('**Project selected**').status(200);
+      return;
+    }).catch(error => {
+      console.log("Error while creating dialog", error);
+      res.send("**Dialog creation failed**").status(500);
     })
+  }).catch(error => {
+    console.log("Error in getting projects from OP", error);
+    res.send("**Open Project server down!");
   });
 }
