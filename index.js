@@ -6,10 +6,12 @@ const dotenv = require('dotenv');
 const axios = require('axios');
 const qs = require('querystring');
 
+const opURL = 'http://localhost:8080/api/v3';
+const mmURL = 'http://localhost:8065/';
+const intURL = 'http://50191e15.ngrok.io';
+
 let hoursLog = 0;
-/* var msg_ts = '';
-var project_sel = require('./UI_Element_json/selectProject.json');
- */
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 dotenv.config();
@@ -32,11 +34,12 @@ app.post('/', (req, res) => {
     res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/logtime [hours]`").status(400);
   }
   else {
-    showSelProject(req, res, channel_id);
+    showSelProject(req, res);
   }
 });
 
 app.post('/projSel', (req, res) => {
+  console.log("Project dialog submit request: ", req);
   res.send("**Work under progress...**").status(202);
 });
 
@@ -51,7 +54,7 @@ function showSuccessMsg(req, res) {
       }]
     }
   };
-  axios.post('https://localhost:8065/posts',
+  axios.post(mmURL+'posts',
     qs.stringify(successMsg)).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.status === "OK") {
@@ -84,7 +87,7 @@ function showFailMsg(req, res) {
       }]
     }
   };
-  axios.post('https://localhost:8065/posts',
+  axios.post(mmURL+'posts',
     qs.stringify(failMsg)).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.status === "OK") {
@@ -106,13 +109,13 @@ function showFailMsg(req, res) {
     });
 }
 
-function showSelProject(req, res, channel_id) {
+function showSelProject(req, res) {
   console.log("Request from mattermost: ", req);
   console.log("Response from mattermost: ", res);
   axios({
     url: '/projects',
     method: 'get',
-    baseURL: 'http://localhost:8080/api/v3',
+    baseURL: opURL,
     auth: {
       username: 'apikey',
       password: process.env.OP_ACCESS_TOKEN
@@ -129,7 +132,7 @@ function showSelProject(req, res, channel_id) {
 
     var optJSON = JSON.stringify({
       "trigger_id": req.body.trigger_id,
-      "url": "http://d2b8dc5c.ngrok.io",
+      "url": intURL+'projSel',
       "dialog": {
         "callback_id": "project_selection",
         "title": "Select project",
@@ -144,8 +147,9 @@ function showSelProject(req, res, channel_id) {
     });
 
     console.log("optArray for projects", optJSON);
-    axios.post('http://localhost:8065/api/v4/actions/dialogs/open', optJSON).then(response => {
-      res.send('**Project selected**').status(200);
+    axios.post(mmURL+'api/v4/actions/dialogs/open', optJSON).then(response => {
+      console.log("Response from dialog: ", response);
+      loadTimeLogDlg(req, res);
       return;
     }).catch(error => {
       console.log("Error while creating dialog", error);
@@ -155,4 +159,9 @@ function showSelProject(req, res, channel_id) {
     console.log("Error in getting projects from OP", error);
     res.send("**Open Project server down!");
   });
+}
+
+function loadTimeLogDlg(req, res)
+{
+   res.send().status(200);
 }
