@@ -8,7 +8,7 @@ const qs = require('querystring');
 
 const opURL = 'http://localhost:8080/api/v3';
 const mmURL = 'http://localhost:8065/';
-const intURL = 'http://50191e15.ngrok.io';
+const intURL = 'http://0335a39c.ngrok.io';
 
 let hoursLog = 0;
 
@@ -40,7 +40,7 @@ app.post('/', (req, res) => {
 
 app.post('/projSel', (req, res) => {
   console.log("Project dialog submit request: ", req);
-  res.send("**Work under progress...**").status(202);
+  loadTimeLogDlg(req, res);
 });
 
 function showSuccessMsg(req, res) {
@@ -54,7 +54,7 @@ function showSuccessMsg(req, res) {
       }]
     }
   };
-  axios.post(mmURL+'posts',
+  axios.post(mmURL + 'posts',
     qs.stringify(successMsg)).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.status === "OK") {
@@ -87,7 +87,7 @@ function showFailMsg(req, res) {
       }]
     }
   };
-  axios.post(mmURL+'posts',
+  axios.post(mmURL + 'posts',
     qs.stringify(failMsg)).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.status === "OK") {
@@ -132,7 +132,7 @@ function showSelProject(req, res) {
 
     var optJSON = JSON.stringify({
       "trigger_id": req.body.trigger_id,
-      "url": intURL+'projSel',
+      "url": intURL + '/projSel',
       "dialog": {
         "callback_id": "project_selection",
         "title": "Select project",
@@ -147,9 +147,9 @@ function showSelProject(req, res) {
     });
 
     console.log("optArray for projects", optJSON);
-    axios.post(mmURL+'api/v4/actions/dialogs/open', optJSON).then(response => {
+    axios.post(mmURL + 'api/v4/actions/dialogs/open', optJSON).then(response => {
       console.log("Response from dialog: ", response);
-      loadTimeLogDlg(req, res);
+      res.send().status(200);
       return;
     }).catch(error => {
       console.log("Error while creating dialog", error);
@@ -161,7 +161,35 @@ function showSelProject(req, res) {
   });
 }
 
-function loadTimeLogDlg(req, res)
-{
-   res.send().status(200);
+function loadTimeLogDlg(req, res) {
+  if (req.body.callback_id === "project_selection") {
+    let optArray = [];
+    axios({
+      url: '/work_packages',
+      method: 'get',
+      baseURL: opURL,
+      params: {
+        id: req.body.submission.options.slice(-1)
+      },
+      auth: {
+        username: 'apikey',
+        password: process.env.OP_ACCESS_TOKEN
+      }
+    }).then((response) => {
+      console.log("WP obtained from OP: %o", response);
+/*       response.data._embedded.elements.forEach(element => {
+        if (element.subject.toLowerCase().match(value.toLowerCase())) {
+          optArray.push({
+            "label": element.subject,
+            "value": element.id
+          });
+        }
+      }); */
+      res.send({ "options": response.data.elements }).status(200);
+      return;
+    }, (reason) => {
+      console.log("Request failed for /work_packages: %o", reason);
+      showFailMsg(req, res);
+    });
+  }
 }
