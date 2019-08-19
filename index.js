@@ -8,7 +8,7 @@ const qs = require('querystring');
 
 const opURL = 'http://localhost:8080/api/v3';
 const mmURL = 'http://localhost:8065/';
-const intURL = 'http://0335a39c.ngrok.io';
+const intURL = 'http://b96c8265.ngrok.io';
 
 let hoursLog = 0;
 
@@ -140,19 +140,19 @@ function showSelProject(req, res) {
           "display_name": "Project Selector",
           "name": "options",
           "type": "select",
-          "options": optArray,
-          "submit_label": "Confirm project"
-        }]
+          "options": optArray
+        }],
+        "submit_label": "Confirm project"
       }
     });
 
     console.log("optArray for projects", optJSON);
     axios.post(mmURL + 'api/v4/actions/dialogs/open', optJSON).then(response => {
-      console.log("Response from dialog: ", response);
+      console.log("Response from projects dialog: ", response);
       res.send().status(200);
       return;
     }).catch(error => {
-      console.log("Error while creating dialog", error);
+      console.log("Error while creating projects dialog", error);
       res.send("**Dialog creation failed**").status(500);
     })
   }).catch(error => {
@@ -177,15 +177,66 @@ function loadTimeLogDlg(req, res) {
       }
     }).then((response) => {
       console.log("WP obtained from OP: %o", response);
-/*       response.data._embedded.elements.forEach(element => {
-        if (element.subject.toLowerCase().match(value.toLowerCase())) {
+      response.data._embedded.elements.forEach(element => {
           optArray.push({
-            "label": element.subject,
-            "value": element.id
+            "text": element.subject,
+            "value": "opt"+element.id
           });
+      });
+/* 
+      var dlgJSON = JSON.stringify({
+        "trigger_id": req.body.trigger_id,
+        "url": intURL + '/logTime',
+        "dialog": {
+          "callback_id": "logTimeDlg",
+          "title": "Log time for work package",
+          "elements": [{
+            "display_name": "Work package selector",
+            "name": "options",
+            "type": "select",
+            "options": optArray
+          }],
+          "submit_label": "Log Time"
         }
       }); */
-      res.send({ "options": response.data.elements }).status(200);
+
+      var wpMsgMenu = {
+        "attachments": [
+          {
+            "pretext": "Work Package Selector",
+            "text": "Select a work package",
+            "actions": [
+              {
+                "name": "Select an option...",
+                "integration": {
+                  "url": intURL+'/logTime',
+                  "context": {
+                    "action": "showTimeLogDlg"
+                  }
+                },
+                "type": "select",
+                "options": optArray
+              }
+            ]
+          }
+        ]
+      }
+
+      console.log("optArray for wp", wpMsgMenu);
+      axios.post(mmURL + '/posts', {
+        "channel_id": req.body.channel_id,
+        "message": "Select a work package",
+        "props": wpMsgMenu
+      }).then(response => {
+        console.log("Response from log time dialog: ", response);
+        res.send().status(200);
+        return;
+      }).catch(error => {
+        console.log("Error while creating log time dialog", error);
+        res.send("**Dialog creation failed**").status(500);
+      })
+
+      res.send().status(200);
       return;
     }, (reason) => {
       console.log("Request failed for /work_packages: %o", reason);
