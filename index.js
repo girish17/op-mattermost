@@ -4,11 +4,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const dotenv = require('dotenv');
 const axios = require('axios');
-const qs = require('querystring');
 
-const opURL = 'http://localhost:8080/api/v3';
-const mmURL = 'http://localhost:8065/';
-const intURL = 'http://b96c8265.ngrok.io';
+const opURL = 'http://localhost:8080/api/v3/';
+const mmURL = 'http://localhost:8065/api/v4/';
+const intURL = 'http://93900f63.ngrok.io/';
 
 let hoursLog = 0;
 
@@ -40,7 +39,33 @@ app.post('/', (req, res) => {
 
 app.post('/projSel', (req, res) => {
   console.log("Project dialog submit request: ", req);
-  loadTimeLogDlg(req, res);
+  let txtMsg = {
+     "channel_id": req.body.channel_id,
+     "message": "Test message #testing",
+     "props": {
+        "attachments": [
+          { 
+            "pretext": "This is the attachment pretext.",
+             "text": "This is the attachment text." 
+          }]
+      }
+  };
+  axios({
+    url: 'posts',
+    method: 'post',
+    baseURL: mmURL,
+    headers: {
+      'Authorization': 'Bearer ' + process.env.MATTERMOST_ACCESS_TOKEN
+    },
+    data: txtMsg
+  }).then((result) => {
+    console.log("response from submit: ", result);
+    res.send().status(200);
+  }).catch((err) => {
+    console.log("error during creating interactive message ", err);
+  });
+  res.send().status(201);
+  //loadTimeLogDlg(req, res);
 });
 
 function showSuccessMsg(req, res) {
@@ -55,7 +80,7 @@ function showSuccessMsg(req, res) {
     }
   };
   axios.post(mmURL + 'posts',
-    qs.stringify(successMsg)).then((result) => {
+    successMsg).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.status === "OK") {
         res.send().status(200);
@@ -88,7 +113,7 @@ function showFailMsg(req, res) {
     }
   };
   axios.post(mmURL + 'posts',
-    qs.stringify(failMsg)).then((result) => {
+    failMsg).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.status === "OK") {
         res.send().status(200);
@@ -113,7 +138,7 @@ function showSelProject(req, res) {
   console.log("Request from mattermost: ", req);
   console.log("Response from mattermost: ", res);
   axios({
-    url: '/projects',
+    url: 'projects',
     method: 'get',
     baseURL: opURL,
     auth: {
@@ -132,7 +157,7 @@ function showSelProject(req, res) {
 
     var optJSON = JSON.stringify({
       "trigger_id": req.body.trigger_id,
-      "url": intURL + '/projSel',
+      "url": intURL + 'projSel',
       "dialog": {
         "callback_id": "project_selection",
         "title": "Select project",
@@ -147,10 +172,9 @@ function showSelProject(req, res) {
     });
 
     console.log("optArray for projects", optJSON);
-    axios.post(mmURL + 'api/v4/actions/dialogs/open', optJSON).then(response => {
+    axios.post(mmURL + 'actions/dialogs/open', optJSON).then(response => {
       console.log("Response from projects dialog: ", response);
-      res.send().status(200);
-      return;
+      res.send().status(201);
     }).catch(error => {
       console.log("Error while creating projects dialog", error);
       res.send("**Dialog creation failed**").status(500);
@@ -165,7 +189,7 @@ function loadTimeLogDlg(req, res) {
   if (req.body.callback_id === "project_selection") {
     let optArray = [];
     axios({
-      url: '/work_packages',
+      url: 'work_packages',
       method: 'get',
       baseURL: opURL,
       params: {
@@ -178,27 +202,27 @@ function loadTimeLogDlg(req, res) {
     }).then((response) => {
       console.log("WP obtained from OP: %o", response);
       response.data._embedded.elements.forEach(element => {
-          optArray.push({
-            "text": element.subject,
-            "value": "opt"+element.id
-          });
+        optArray.push({
+          "text": element.subject,
+          "value": "opt" + element.id
+        });
       });
-/* 
-      var dlgJSON = JSON.stringify({
-        "trigger_id": req.body.trigger_id,
-        "url": intURL + '/logTime',
-        "dialog": {
-          "callback_id": "logTimeDlg",
-          "title": "Log time for work package",
-          "elements": [{
-            "display_name": "Work package selector",
-            "name": "options",
-            "type": "select",
-            "options": optArray
-          }],
-          "submit_label": "Log Time"
-        }
-      }); */
+      /* 
+            var dlgJSON = JSON.stringify({
+              "trigger_id": req.body.trigger_id,
+              "url": intURL + 'logTime',
+              "dialog": {
+                "callback_id": "logTimeDlg",
+                "title": "Log time for work package",
+                "elements": [{
+                  "display_name": "Work package selector",
+                  "name": "options",
+                  "type": "select",
+                  "options": optArray
+                }],
+                "submit_label": "Log Time"
+              }
+            }); */
 
       var wpMsgMenu = {
         "attachments": [
@@ -209,7 +233,7 @@ function loadTimeLogDlg(req, res) {
               {
                 "name": "Select an option...",
                 "integration": {
-                  "url": intURL+'/logTime',
+                  "url": intURL + 'logTime',
                   "context": {
                     "action": "showTimeLogDlg"
                   }
@@ -223,21 +247,19 @@ function loadTimeLogDlg(req, res) {
       }
 
       console.log("optArray for wp", wpMsgMenu);
-      axios.post(mmURL + '/posts', {
+      axios.post(mmURL + 'posts', {
         "channel_id": req.body.channel_id,
-        "message": "Select a work package",
-        "props": wpMsgMenu
-      }).then(response => {
+        "message": "Select a work package"
+      }/* ,
+        "props": wpMsgMenu */
+      ).then(response => {
         console.log("Response from log time dialog: ", response);
-        res.send().status(200);
+        res.send().status(201);
         return;
       }).catch(error => {
         console.log("Error while creating log time dialog", error);
         res.send("**Dialog creation failed**").status(500);
       })
-
-      res.send().status(200);
-      return;
     }, (reason) => {
       console.log("Request failed for /work_packages: %o", reason);
       showFailMsg(req, res);
