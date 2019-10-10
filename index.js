@@ -7,7 +7,7 @@ const axios = require('axios');
 
 const opURL = 'http://localhost:8080/api/v3/';
 const mmURL = 'http://localhost:8065/api/v4/';
-const intURL = 'http://93900f63.ngrok.io/';
+const intURL = 'http://c8c6816b.ngrok.io/';
 
 let hoursLog = 0;
 
