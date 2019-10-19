@@ -1,11 +1,12 @@
 module.exports = (axios) => {
 
-const opURL = 'http://localhost:8080/api/v3/';
-const mmURL = 'http://localhost:8065/api/v4/';
-const intURL = 'http://c8c6816b.ngrok.io/';
-
 const dotenv = require('dotenv');
 dotenv.config();
+
+const opURL = process.env.OP_URL;
+const mmURL = process.env.MM_URL;
+const intURL = process.env.INT_URL;
+
 
 function showSelProject(req, res) {
     console.log("Request from mattermost: ", req);
