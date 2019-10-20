@@ -1,20 +1,20 @@
-module.exports = (axios) => {
+class UIactions {
 
-const dotenv = require('dotenv');
-dotenv.config();
+  constructor(opURL, mmURL, intURL) {
+    const Message = require('./message');
+    this.message = new Message();
+    this.opURL = opURL;
+    this.mmURL = mmURL;
+    this.intURL = intURL;
+  }
 
-const opURL = process.env.OP_URL;
-const mmURL = process.env.MM_URL;
-const intURL = process.env.INT_URL;
-
-
-function showSelProject(req, res) {
+  showSelProject(req, res, axios) {
     console.log("Request from mattermost: ", req);
     console.log("Response from mattermost: ", res);
     axios({
       url: 'projects',
       method: 'get',
-      baseURL: opURL,
+      baseURL: this.opURL,
       auth: {
         username: 'apikey',
         password: process.env.OP_ACCESS_TOKEN
@@ -28,10 +28,10 @@ function showSelProject(req, res) {
           "value": "opt" + element.id
         });
       });
-  
+
       var optJSON = JSON.stringify({
         "trigger_id": req.body.trigger_id,
-        "url": intURL + 'projSel',
+        "url": this.intURL + 'projSel',
         "dialog": {
           "callback_id": "project_selection",
           "title": "Select project",
@@ -44,9 +44,9 @@ function showSelProject(req, res) {
           "submit_label": "Confirm project"
         }
       });
-  
+
       console.log("optArray for projects", optJSON);
-      axios.post(mmURL + 'actions/dialogs/open', optJSON).then(response => {
+      axios.post(this.mmURL + 'actions/dialogs/open', optJSON).then(response => {
         console.log("Response from projects dialog: ", response);
         res.send().status(201);
       }).catch(error => {
@@ -58,14 +58,14 @@ function showSelProject(req, res) {
       res.send("**Open Project server down!");
     });
   }
-  
-  function loadTimeLogDlg(req, res) {
+
+  loadTimeLogDlg(req, res, axios) {
     if (req.body.callback_id === "project_selection") {
       let optArray = [];
       axios({
         url: 'work_packages',
         method: 'get',
-        baseURL: opURL,
+        baseURL: this.opURL,
         params: {
           id: req.body.submission.options.slice(-1)
         },
@@ -84,7 +84,7 @@ function showSelProject(req, res) {
         /* 
               var dlgJSON = JSON.stringify({
                 "trigger_id": req.body.trigger_id,
-                "url": intURL + 'logTime',
+                "url": this.intURL + 'logTime',
                 "dialog": {
                   "callback_id": "logTimeDlg",
                   "title": "Log time for work package",
@@ -97,7 +97,7 @@ function showSelProject(req, res) {
                   "submit_label": "Log Time"
                 }
               }); */
-  
+
         var wpMsgMenu = {
           "attachments": [
             {
@@ -107,7 +107,7 @@ function showSelProject(req, res) {
                 {
                   "name": "Select an option...",
                   "integration": {
-                    "url": intURL + 'logTime',
+                    "url": this.intURL + 'logTime',
                     "context": {
                       "action": "showTimeLogDlg"
                     }
@@ -119,9 +119,9 @@ function showSelProject(req, res) {
             }
           ]
         }
-  
+
         console.log("optArray for wp", wpMsgMenu);
-        axios.post(mmURL + 'posts', {
+        axios.post(this.mmURL + 'posts', {
           "channel_id": req.body.channel_id,
           "message": "Select a work package"
         }/* ,
@@ -136,11 +136,11 @@ function showSelProject(req, res) {
         })
       }, (reason) => {
         console.log("Request failed for /work_packages: %o", reason);
-        require("./message.js")(axios);
-        showFailMsg(req, res);
+        this.message.showFailMsg(req, res, axios);
       });
     }
   }
 
 };
 
+module.exports = UIactions;
