@@ -185,7 +185,8 @@ class UIactions {
     if (req.body.submission) {
       const { spent_on, comments, billable_hours, activity, work_package } = req.body.submission;
       console.log("Submission data: ");
-      console.log("spent_on: ", spent_on, " comments: ", comments, " billable_hours: ", billable_hours, " activity: ", activity, " work_package: ", work_package);
+      console.log("spent_on: ", spent_on, " comments: ", comments);
+      console.log(" billable_hours: ", billable_hours, " activity: ", activity, " work_package: ", work_package);
       if (this.util.checkDate(this.moment, spent_on) && this.util.checkHours(hoursLog, parseFloat(billable_hours))) {
         /*log time data to open project*/
         axios({
@@ -205,7 +206,9 @@ class UIactions {
               }
             },
             "hours": this.moment.duration(hoursLog, 'h').toISOString(),
-            "comment": comments,
+            "comment": {
+              "raw": comments
+            },
             "spentOn": spent_on,
             "customField2": billable_hours
           },
