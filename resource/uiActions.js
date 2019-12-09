@@ -1,11 +1,9 @@
 class UIactions {
 
   constructor(opURL, mmURL, intURL) {
-    const Message = require('./message');
     const Util = require('./util');
     this.moment = require('moment');
     this.util = new Util();
-    this.message = new Message();
     this.opURL = opURL;
     this.mmURL = mmURL;
     this.intURL = intURL;
@@ -34,39 +32,18 @@ class UIactions {
         });
       });
 
-      var optJSON = {
-        "response_type": "in_channel",
-        "message": "Select a project",
-        "props": {
-          "attachments": [
-            {
-              "actions": [
-                {
-                  "name": "Select a project...",
-                  "integration": {
-                    "url": this.intURL + "projSel",
-                    "context": {
-                      "action": "showTimeLogDlg"
-                    }
-                  },
-                  "type": "select",
-                  "options": optArray
-                }]
-            }
-          ]
-        }
-      };
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray);
+      console.log("optArray for projects", wpOptJSON);
 
-      console.log("optArray for projects", optJSON);
       if (req.body.token === process.env.MATTERMOST_SLASH_TOKEN) {
-        res.set('Content-Type', 'application/json').send(JSON.stringify(optJSON)).status(200);
+        res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
       }
       else {
         res.send("Invalid request").status(400);
       }
     }).catch(error => {
       console.log("Error in getting projects from OP", error);
-      res.send("Open Project server down!!");
+      res.send("Open Project server down!!").status(500);
     });
   }
 
@@ -91,73 +68,7 @@ class UIactions {
           });
         });
 
-        var logTimeDlgJSON = JSON.stringify({
-          "trigger_id": req.body.trigger_id,
-          "url": this.intURL + 'logTime',
-          "dialog": {
-            "callback_id": "log_time_dlg",
-            "title": "Log time for work package",
-            "elements": [{
-              "display_name": "Work package",
-              "name": "work_package",
-              "type": "select",
-              "options": optArray
-            },
-            {
-              "display_name": "Date",
-              "name": "spent_on",
-              "type": "text",
-              "placeholder": "YYYY-MM-DD"
-            },
-            {
-              "display_name": "Comment",
-              "name": "comments",
-              "type": "textarea",
-              "help_text": "Please mention comments if any",
-              "optional": true
-            },
-            {
-              "display_name": "Select Activity",
-              "name": "activity",
-              "type": "select",
-              "options": [
-                {
-                  "text": "Development",
-                  "value": "opt3"
-                },
-                {
-                  "text": "Management",
-                  "value": "opt1"
-                },
-                {
-                  "text": "Specification",
-                  "value": "opt2"
-                },
-                {
-                  "text": "Testing",
-                  "value": "opt4"
-                },
-                {
-                  "text": "Support",
-                  "value": "opt5"
-                },
-                {
-                  "text": "Other",
-                  "value": "opt6"
-                },
-              ]
-            },
-            {
-              "display_name": "Billable hours",
-              "name": "billable_hours",
-              "type": "text",
-              "placeholder": "hours like 0.5, 1, 3 ..."
-            }
-            ],
-            "submit_label": "Log time",
-            "notify_on_cancel": true
-          }
-        });
+        let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, optArray));
 
         console.log("logTimeDlgJSON: " + logTimeDlgJSON);
 
@@ -176,7 +87,7 @@ class UIactions {
         })
       }, (reason) => {
         console.log("Request failed for /work_packages: %o", reason);
-        //this.message.showFailMsg(req, res, axios);
+        return false;
       });
     }
   }
@@ -219,12 +130,10 @@ class UIactions {
         }).then((response) => {
           console.log("Time entry save response: %o", response);
           res.send("Time logged successfully :)").status(200);
-          //this.message.showSuccessMsg(req, res);
           return true;
         }).catch((error) => {
           console.log("OP time entries create error: %o", error);
           res.send("Time logging failed :(").status(400);
-          //this.message.showFailMsg(req, res);
           return false;
         });
       }
