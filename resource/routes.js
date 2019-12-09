@@ -17,7 +17,7 @@ module.exports = (app, axios) => {
   });
 
   app.post('/', (req, res) => {
-    const { text, channel_id, user_id, command, trigger_id, token} = req.body;
+    const { text, command, token} = req.body;
     if(token === process.env.MATTERMOST_SLASH_TOKEN)
     {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
@@ -45,6 +45,6 @@ module.exports = (app, axios) => {
 
   app.post('/logTime', (req, res) => {
     console.log("Work package submit request: ", req);
-    res.send("To be done...").send(200);
+    uiActions.handleSubmission(req, res, axios, hoursLog);
   });
 }
