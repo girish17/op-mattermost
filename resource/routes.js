@@ -47,4 +47,9 @@ module.exports = (app, axios) => {
     console.log("Work package submit request: ", req);
     uiActions.handleSubmission(req, res, axios, hoursLog);
   });
+
+  app.get('/getLogo', (req, res) => {
+    console.log("Logo image request: ", req);
+    res.sendFile(__dirname + '/op_logo.png');
+  });
 }

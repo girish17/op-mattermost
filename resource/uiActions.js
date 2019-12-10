@@ -128,7 +128,7 @@ class UIactions {
             password: process.env.OP_ACCESS_TOKEN
           }
         }).then((response) => {
-          console.log("Time entry save response: %o", response);
+          console.log("Time logged. Save response: %o", response);
           res.send("Time logged successfully :)").status(200);
           return true;
         }).catch((error) => {

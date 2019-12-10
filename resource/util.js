@@ -30,6 +30,7 @@ class Util {
         "dialog": {
           "callback_id": "log_time_dlg",
           "title": "Log time for work package",
+          "icon_url": url + 'getLogo',
           "elements": [{
             "display_name": "Work package",
             "name": "work_package",
