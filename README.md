@@ -9,6 +9,3 @@ Same as described [here](https://github.com/girish17/op-slack-connector#setup-an
 - `MM_URL=http://<your host or ip address>:8065/api/v4/    #needed for pointing to Mattermost installation`  
 - `MATTERMOST_ACCESS_TOKEN=<personal access token>        # https://docs.mattermost.com/developer/personal-access-tokens.html`
 - `OP_ACCESS_TOKEN=<openproject access token obtained from profile page>`
-
-# Usage
-`docker pull girish17/op-mattermost:latest`
