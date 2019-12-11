@@ -2,13 +2,19 @@ class UIactions {
 
   constructor(opURL, mmURL, intURL) {
     const Util = require('./util');
+    const Message = require('./message');
     this.moment = require('moment');
     this.util = new Util();
+    this.message = new Message(mmURL);
     this.opURL = opURL;
     this.mmURL = mmURL;
     this.intURL = intURL;
     this.projectId = '';
     this.optLen = 3;
+    this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **";
+    this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
+    this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
+    this.dlgCreateErrMsg =  "**It's an internal problem. Dialog creation failed :pensive: **";
   }
 
   showSelProject(req, res, axios) {
@@ -40,10 +46,12 @@ class UIactions {
       }
       else {
         res.send("Invalid request").status(400);
+        return false;
       }
     }).catch(error => {
       console.log("Error in getting projects from OP", error);
       res.send("Open Project server down!!").status(500);
+      return false;
     });
   }
 
@@ -83,7 +91,7 @@ class UIactions {
           res.type('application/json').send(updateMsg).status(200);
         }).catch(error => {
           console.log("Error while creating projects dialog", error);
-          res.send("**Dialog creation failed**").status(500);
+          this.message.showFailMsg(req, res, axios, this.dlgCreateErrMsg);
         })
       }, (reason) => {
         console.log("Request failed for /work_packages: %o", reason);
@@ -129,29 +137,24 @@ class UIactions {
           }
         }).then((response) => {
           console.log("Time logged. Save response: %o", response);
-          res.send("Time logged successfully :)").status(200);
+          this.message.showSuccessMsg(req, res, axios, this.timeLogSuccessMsg);
           return true;
         }).catch((error) => {
           console.log("OP time entries create error: %o", error);
-          res.send("Time logging failed :(").status(400);
+          this.message.showFailMsg(req, res, axios, this.timeLogFailMsg);
           return false;
         });
       }
       else {
         console.log("Date or billable hours incorrect");
-        let updateMsg = JSON.stringify({
-          "update": {
-            "message": "Please try again!"
-          },
-          "ephemeral_text": "It seems that date or billable hours was incorrect :thinking_face:"
-        });
-        res.type('application/json').send(updateMsg).status(200);
+        this.message.showFailMsg(req, res, axios, this.dateTimeIPErrMsg);
         return false;
       }
     }
-    else
+    else {
       console.log("empty submission");
-
+      return false;
+    }
   }
 
 };
