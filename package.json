@@ -24,7 +24,7 @@
     "Connector"
   ],
   "author": "Girish M",
-  "license": "GPL-3.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/girish17/op-mattermost/issues"
   },

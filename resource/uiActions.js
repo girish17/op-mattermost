@@ -10,16 +10,12 @@ class UIactions {
     this.mmURL = mmURL;
     this.intURL = intURL;
     this.projectId = '';
-    this.optLen = 3;
-    this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **";
-    this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
-    this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
-    this.dlgCreateErrMsg =  "**It's an internal problem. Dialog creation failed :pensive: **";
+    this.optLen = 3;    
   }
 
   showSelProject(req, res, axios) {
-    console.log("Request from mattermost: ", req);
-    console.log("Response from mattermost: ", res);
+    //("Request from mattermost: ", req);
+    //("Response from mattermost: ", res);
     axios({
       url: 'projects',
       method: 'get',
@@ -29,7 +25,7 @@ class UIactions {
         password: process.env.OP_ACCESS_TOKEN
       }
     }).then((response) => {
-      console.log("Projects obtained from OP: %o", response);
+      //("Projects obtained from OP: %o", response);
       var optArray = [];
       response.data._embedded.elements.forEach(element => {
         optArray.push({
@@ -39,7 +35,7 @@ class UIactions {
       });
 
       let wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray);
-      console.log("optArray for projects", wpOptJSON);
+      //("optArray for projects", wpOptJSON);
 
       if (req.body.token === process.env.MATTERMOST_SLASH_TOKEN) {
         res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
@@ -49,7 +45,7 @@ class UIactions {
         return false;
       }
     }).catch(error => {
-      console.log("Error in getting projects from OP", error);
+      //("Error in getting projects from OP", error);
       res.send("Open Project server down!!").status(500);
       return false;
     });
@@ -68,7 +64,7 @@ class UIactions {
           password: process.env.OP_ACCESS_TOKEN
         }
       }).then((response) => {
-        console.log("WP obtained from OP: %o", response);
+        //("WP obtained from OP: %o", response);
         response.data._embedded.elements.forEach(element => {
           optArray.push({
             "text": element.subject,
@@ -78,10 +74,10 @@ class UIactions {
 
         let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, optArray));
 
-        console.log("logTimeDlgJSON: " + logTimeDlgJSON);
+        //("logTimeDlgJSON: " + logTimeDlgJSON);
 
         axios.post(this.mmURL + 'actions/dialogs/open', logTimeDlgJSON).then(response => {
-          console.log("Response from projects dialog: ", response);
+          //("Response from projects dialog: ", response);
           let updateMsg = JSON.stringify({
             "update": {
               "message": "Updated!"
@@ -90,11 +86,11 @@ class UIactions {
           });
           res.type('application/json').send(updateMsg).status(200);
         }).catch(error => {
-          console.log("Error while creating projects dialog", error);
-          this.message.showFailMsg(req, res, axios, this.dlgCreateErrMsg);
+          //("Error while creating projects dialog", error);
+          this.message.showFailMsg(req, res, axios, this.util.dlgCreateErrMsg);
         })
       }, (reason) => {
-        console.log("Request failed for /work_packages: %o", reason);
+        //("Request failed for /work_packages: %o", reason);
         return false;
       });
     }
@@ -103,9 +99,9 @@ class UIactions {
   handleSubmission(req, res, axios, hoursLog) {
     if (req.body.submission) {
       const { spent_on, comments, billable_hours, activity, work_package } = req.body.submission;
-      console.log("Submission data: ");
-      console.log("spent_on: ", spent_on, " comments: ", comments);
-      console.log(" billable_hours: ", billable_hours, " activity: ", activity, " work_package: ", work_package);
+      //("Submission data: ");
+      //("spent_on: ", spent_on, " comments: ", comments);
+      //(" billable_hours: ", billable_hours, " activity: ", activity, " work_package: ", work_package);
       if (this.util.checkDate(this.moment, spent_on) && this.util.checkHours(hoursLog, parseFloat(billable_hours))) {
         /*log time data to open project*/
         axios({
@@ -136,23 +132,24 @@ class UIactions {
             password: process.env.OP_ACCESS_TOKEN
           }
         }).then((response) => {
-          console.log("Time logged. Save response: %o", response);
-          this.message.showSuccessMsg(req, res, axios, this.timeLogSuccessMsg);
+          //("Time logged. Save response: %o", response);
+          this.message.showSuccessMsg(req, res, axios, this.util.timeLogSuccessMsg);
           return true;
         }).catch((error) => {
-          console.log("OP time entries create error: %o", error);
-          this.message.showFailMsg(req, res, axios, this.timeLogFailMsg);
+          //("OP time entries create error: %o", error);
+          this.message.showFailMsg(req, res, axios, this.util.timeLogFailMsg);
           return false;
         });
       }
       else {
-        console.log("Date or billable hours incorrect");
-        this.message.showFailMsg(req, res, axios, this.dateTimeIPErrMsg);
+        //("Date or billable hours incorrect");
+        this.message.showFailMsg(req, res, axios, this.util.dateTimeIPErrMsg);
         return false;
       }
     }
     else {
-      console.log("empty submission");
+      //("empty submission");
+      this.message.showFailMsg(req, res, axios, this.util.wpDtlEmptyMsg);
       return false;
     }
   }
