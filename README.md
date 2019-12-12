@@ -11,3 +11,6 @@
     - `MATTERMOST_ACCESS_TOKEN=<personal access token>        # https://docs.mattermost.com/developer/personal-access-tokens.html`
     - `OP_ACCESS_TOKEN=<openproject access token obtained from profile page>`
   - Step 7 shall be replaced with creation of Mattermost slash command as described [here](https://docs.mattermost.com/developer/slash-commands.html)
+
+# Demo
+![Demo](./resource/op-mattermost-demo.gif)

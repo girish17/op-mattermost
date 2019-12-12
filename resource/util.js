@@ -5,7 +5,7 @@ class Util {
     this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
     this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: **";
-    this.wpDtlEmptyMsg = "**Work package details not entered :( Please try again.**";
+    this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/logtime [hours]`";
   }
 
   checkHours(hoursLog, hours) {
