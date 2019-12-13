@@ -7,6 +7,7 @@
 - OpenProject community edition
 - Mattermost preview
 - ngrok
+- docker
 - Node js and npm modules
   - express
   - axios
@@ -15,7 +16,8 @@
   - nodemon
 
 ## Installing dependencies
-
+- Docker
+  - [Download and install](https://docs.docker.com/install/) instructions
 - OpenProject
   - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
   - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret \
