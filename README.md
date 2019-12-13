@@ -2,6 +2,37 @@
 
 [OpenProject](https://www.openproject.org/) and [Mattermost](https://mattermost.com/) integration to log time for a work package. This integration is built along the lines of [op-slack-connector](https://github.com/girish17/op-slack-connector)
 
+## Dependencies
+
+- OpenProject community edition
+- Mattermost preview
+- ngrok
+- Node js and npm modules
+  - express
+  - axios
+  - moment
+  - dotenv
+  - nodemon
+
+## Installing dependencies
+
+- OpenProject
+  - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
+  - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret \
+     -v /var/lib/openproject/pgdata:/var/openproject/pgdata \
+     -v /var/lib/openproject/static:/var/openproject/assets \
+     openproject/community:latest`
+  - `docker stop openproject`
+  - `docker start openproject`
+- Mattermost
+  - `docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview`
+- ngrok
+  - [Download and install](https://ngrok.com/download)
+  - Run `./ngrok http 3000`
+- Node js
+  - [Download and install](https://nodejs.org/en/download/)
+  - Run `npm install` to install npm dependencies
+
 ## Setup and contribution guidelines
 
 - Same as described [here](https://github.com/girish17/op-slack-connector#setup-and-contribution-guidelines).
