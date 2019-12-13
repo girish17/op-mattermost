@@ -1,6 +1,6 @@
 {
   "name": "@girish17/op-mattermost",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "OpenProject and Mattermost connector",
   "main": "index.js",
   "dependencies": {
