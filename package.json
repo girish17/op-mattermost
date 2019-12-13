@@ -1,5 +1,5 @@
 {
-  "name": "op-mattermost",
+  "name": "@girish17/op-mattermost",
   "version": "1.0.0",
   "description": "OpenProject and Mattermost connector",
   "main": "index.js",
@@ -12,6 +12,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "preinstall": "./configure",	  
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,5 +29,6 @@
   "bugs": {
     "url": "https://github.com/girish17/op-mattermost/issues"
   },
-  "homepage": "https://github.com/girish17/op-mattermost#readme"
+  "homepage": "https://github.com/girish17/op-mattermost#readme",
+  "publishConfig": {"registry": "https://npm.pkg.github.com/"} 
 }
