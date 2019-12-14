@@ -7,6 +7,7 @@
 - OpenProject community edition
 - Mattermost preview
 - ngrok
+- docker
 - Node js and npm modules
   - express
   - axios
@@ -15,15 +16,19 @@
   - nodemon
 
 ## Installing dependencies
-
+- Docker
+  - [Download and install](https://docs.docker.com/install/) instructions
 - OpenProject
-  - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
-  - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret \
-     -v /var/lib/openproject/pgdata:/var/openproject/pgdata \
-     -v /var/lib/openproject/static:/var/openproject/assets \
-     openproject/community:latest`
-  - `docker stop openproject`
-  - `docker start openproject`
+  - Quick install 
+    - `docker run -it -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:latest` or
+  - Recommended install
+    - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
+    - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret \
+       -v /var/lib/openproject/pgdata:/var/openproject/pgdata \
+       -v /var/lib/openproject/static:/var/openproject/assets \
+       openproject/community:latest`
+    - `docker stop openproject`
+    - `docker start openproject`
 - Mattermost
   - `docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview`
 - ngrok
