@@ -5,16 +5,16 @@ OK="n"
 until [ $OK = "y" ]
 do
     echo '\nPlease enter the following environment variables. Note: URLs must end with /'
-    read -p 'OP_URL (http://localhost:8080/): ' OP_URL
+    read -p 'OP_URL (http://localhost:8080/api/v3/): ' OP_URL
     if [ -z "$OP_URL" ]
     then
-        OP_URL="http://localhost:8080/"
+        OP_URL="http://localhost:8080/api/v3/"
     fi
     read -p 'INT_URL (enter an http url obtained by running ngrok on 3000 port ): ' INT_URL
-    read -p 'MM_URL (http://localhost:8065/): ' MM_URL
+    read -p 'MM_URL (http://localhost:8065/api/v4/): ' MM_URL
     if [ -z "$MM_URL" ]
     then
-        MM_URL="http://localhost:8065/"
+        MM_URL="http://localhost:8065/api/v4/"
     fi
 
     echo "\nPlease enter the generated access tokens for OpenProject and Mattermost"
