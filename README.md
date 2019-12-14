@@ -16,10 +16,11 @@
   - nodemon
 
 ## Installing dependencies
+
 - Docker
   - [Download and install](https://docs.docker.com/install/) instructions
 - OpenProject
-  - Quick install 
+  - Quick install
     - `docker run -it -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:latest` or
   - Recommended install
     - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
