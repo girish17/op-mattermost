@@ -10,13 +10,7 @@
     "moment": "^2.24.0",
     "nodemon": "^1.19.1"
   },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.2.2",
-    "sinon": "^7.5.0"
-  },
   "scripts": {
-    "preinstall": "sh configure.sh",
     "test": "mocha",
     "start": "node index.js"
   },
@@ -37,5 +31,9 @@
   "homepage": "https://github.com/girish17/op-mattermost#readme",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
   }
 }
