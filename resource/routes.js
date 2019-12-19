@@ -40,8 +40,8 @@ module.exports = (app, axios) => {
       if (text != undefined) {
         hoursLog = parseFloat(text);
       }
-      if ((isNaN(hoursLog) || hoursLog < 0.0 || hoursLog > 99.9) && command == "/logtime") {
-        res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/logtime [hours]`").status(400);
+      if ((isNaN(hoursLog) || hoursLog < 0.0 || hoursLog > 99.9) || command != "/logtime") {
+        res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/logtime [hours]`").status(500);
       }
       else {
         uiActions.showSelProject(req, res, axios);

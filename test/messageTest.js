@@ -18,12 +18,15 @@ const sinon = require('sinon');
 const dotenv = require('dotenv');
 const message = require('../resource/message');
 const axios = require('axios');
+const chai = require('chai');
+let assert = chai.assert;
 
 dotenv.config();
 
-describe('Test messages in op-mattermost', () => {
+describe.skip('Test messages in op-mattermost', () => {
+    let msg = 'Show success message post succeeded!';
+    
     before(() => {
-        let msg = 'Show success message post succeeded!';
         let server = sinon.fakeServer.create();
         server.respondWith("POST",
             process.env.mmURL,
@@ -42,6 +45,6 @@ describe('Test messages in op-mattermost', () => {
         let res = {
 
         }
-        Message.showSuccessMsg(req, res, axios, msg);
+        assert(Message.showSuccessMsg(req, res, axios, msg));
     });
 })
