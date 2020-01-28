@@ -23,9 +23,8 @@ let assert = chai.assert;
 
 dotenv.config();
 
-describe.skip('Test messages in op-mattermost', () => {
+describe('Test messages in op-mattermost', () => {
     let msg = 'Show success message post succeeded!';
-    
     before(() => {
         let server = sinon.fakeServer.create();
         server.respondWith("POST",
