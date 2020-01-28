@@ -22,8 +22,8 @@ const axios = require('axios');
 dotenv.config();
 
 describe('Test messages in op-mattermost', () => {
+    let msg = 'Show success message post succeeded!';
     before(() => {
-        let msg = 'Show success message post succeeded!';
         let server = sinon.fakeServer.create();
         server.respondWith("POST",
             process.env.mmURL,
