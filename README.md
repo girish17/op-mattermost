@@ -8,12 +8,7 @@
 - Mattermost preview
 - ngrok
 - docker
-- Node js and npm modules
-  - express
-  - axios
-  - moment
-  - dotenv
-  - nodemon
+- Node js and [npm modules](package.json)
 
 ## Installing dependencies
 
