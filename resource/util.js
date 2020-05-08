@@ -41,7 +41,11 @@ class Util {
   checkDate(moment, dateTxt) {
     /*Valid dates within last one year*/
     let dateDiff = moment().diff(moment(dateTxt, 'YYYY-MM-DD', true), 'days');
-    if (dateDiff >= 0 && dateDiff < 366)
+    let daysUpperBound = 365;
+    if(moment().isLeapYear()) {
+      daysUpperBound = 366;
+    }
+    if (dateDiff >= 0 && dateDiff <= daysUpperBound)
       return true;
 
     return false;
