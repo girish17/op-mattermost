@@ -34,7 +34,7 @@
   - [Download and install](https://nodejs.org/en/download/)
   - Run `npm install` to install npm dependencies
 
-## Setup and contribution guidelines
+## Setup
 
 - Same as described [here](https://github.com/girish17/op-slack-connector#setup-and-contribution-guidelines).
   - Except for step 3 which invovles creation of `.env` file. Run `sh configure.sh` to create `.env` using command line. The entries in `.env` would contain following:
