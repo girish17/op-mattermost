@@ -19,9 +19,9 @@
     - `docker run -it -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:latest` or
   - Recommended install
     - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
-    - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret \
-       -v /var/lib/openproject/pgdata:/var/openproject/pgdata \
-       -v /var/lib/openproject/static:/var/openproject/assets \
+    - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret 
+       -v /var/lib/openproject/pgdata:/var/openproject/pgdata 
+       -v /var/lib/openproject/static:/var/openproject/assets 
        openproject/community:latest`
     - `docker stop openproject`
     - `docker start openproject`
@@ -34,7 +34,7 @@
   - [Download and install](https://nodejs.org/en/download/)
   - Run `npm install` to install npm dependencies
 
-## Setup and contribution guidelines
+## Setup
 
 - Same as described [here](https://github.com/girish17/op-slack-connector#setup-and-contribution-guidelines).
   - Except for step 3 which invovles creation of `.env` file. Run `sh configure.sh` to create `.env` using command line. The entries in `.env` would contain following:
