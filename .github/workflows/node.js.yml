@@ -20,13 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      env:
-        OP_ACCESS_TOKEN: ${{ secrets.OP_ACCESS_TOKEN }}
-        MATTERMOST_SLASH_TOKEN: ${{ secrets.MATTERMOST_SLASH_TOKEN }}
-        MATTERMOST_ACCESS_TOKEN: ${{ secrets.MATTERMOST_ACCESS_TOKEN }}
-        INT_URL: https://op-mattermost.herokuapp.com/
-        MM_URL:  https://op-mattermost-mm.herokuapp.com/api/v4/
-        OP_URL: https://op-mattermost.openproject.com/api/v3/
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -34,3 +27,10 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+      env:
+        OP_ACCESS_TOKEN: ${{ secrets.OP_ACCESS_TOKEN }}
+        MATTERMOST_SLASH_TOKEN: ${{ secrets.MATTERMOST_SLASH_TOKEN }}
+        MATTERMOST_ACCESS_TOKEN: ${{ secrets.MATTERMOST_ACCESS_TOKEN }}
+        INT_URL: https://op-mattermost.herokuapp.com/
+        MM_URL:  https://op-mattermost-mm.herokuapp.com/api/v4/
+        OP_URL: https://op-mattermost.openproject.com/api/v3/
