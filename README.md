@@ -1,4 +1,4 @@
-# op-mattermost
+# op-mattermost ![Node.js Package](https://github.com/girish17/op-mattermost/workflows/Node.js%20Package/badge.svg?event=deployment_status)
 
 [OpenProject](https://www.openproject.org/) and [Mattermost](https://mattermost.com/) integration to log time for a work package. This integration is built along the lines of [op-slack-connector](https://github.com/girish17/op-slack-connector)
 
