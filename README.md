@@ -34,17 +34,23 @@
   - [Download and install](https://nodejs.org/en/download/)
   - Run `npm install` to install npm dependencies
 
-## Setup
+## Development setup
 
-- Same as described [here](https://github.com/girish17/op-slack-connector#setup-and-contribution-guidelines).
-  - Except for step 3 which invovles creation of `.env` file. Run `sh configure.sh` to create `.env` using command line. The entries in `.env` would contain following:
+- Fork and `git clone` the repo using HTTPS
+- Install and launch all the dependencies as mentioned above and open the cloned directory in an editor or IDE of your choice
+- Run `sh configure.sh` to create `.env` using bash command line. The entries in `.env` would contain following:
     - `OP_URL=http://<your host or ip address>:8080/api/v3/    #needed for pointing to OpenProject installation`
     - `INT_URL=<ngrok url>/                                   #needed for exposing the integration running on port 3000`
     - `MM_URL=http://<your host or ip address>:8065/api/v4/    #needed for pointing to Mattermost installation`  
     - `MATTERMOST_ACCESS_TOKEN=<personal access token>        # https://docs.mattermost.com/developer/personal-access-tokens.html`
     - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token>  #needed for slash command validation`
     - `OP_ACCESS_TOKEN=<openproject access token obtained from profile page>`
-  - Step 7 shall be replaced with creation of Mattermost slash command as described [here](https://docs.mattermost.com/developer/slash-commands.html)
+- In the project root directory do `npm init` to generate (or update existing) package.json file
+- Then run `npm install` to download and install the node modules from npm
+- Run op-mattermost in the console using `npm start` (usually launches on port 3000)
+- Run `ngrok http 3000` to get a public IP address (this will be the request URL for op-mattermost integration)
+- Create a custom Mattermost slash command `/logtime` as described [here](https://docs.mattermost.com/developer/slash-commands.html) amd provide the ngrok IP address as the request URL
+- Test the integration by trying `/logtime 1` in the message bar
 
 ## Demo
 
