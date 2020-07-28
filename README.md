@@ -50,6 +50,7 @@
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
 - Run `ngrok http 3000` to get a public IP address (this will be the request URL for op-mattermost integration)
 - Create a custom Mattermost slash command `/logtime` as described [here](https://docs.mattermost.com/developer/slash-commands.html) amd provide the ngrok IP address as the request URL
+- In OpenProject, create a custom field `billable hours` for all workpackages in a project
 - Test the integration by trying `/logtime 1` in the message bar
 
 ## Demo
