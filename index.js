@@ -22,6 +22,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 
 app.use(bodyParser.json());

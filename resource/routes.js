@@ -21,9 +21,6 @@ module.exports = (app, axios) => {
 
   let hoursLog = 0;
 
-  const dotenv = require('dotenv');
-  dotenv.config();
-
   const opURL = process.env.OP_URL;
   const mmURL = process.env.MM_URL;
   const intURL = process.env.INT_URL;
