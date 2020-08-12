@@ -156,7 +156,12 @@ class UIactions {
           return true;
         }).catch((error) => {
           console.log("OP time entries create error: %o", error);
-          this.message.showFailMsg(req, res, axios, this.util.timeLogFailMsg);
+          if(error.response.status == 403) {
+            this.message.showFailMsg(req, res, axios, this.util.timeLogForbiddenMsg);
+          }
+          else {
+            this.message.showFailMsg(req, res, axios, this.util.timeLogFailMsg);
+          }
           return false;
         });
       }

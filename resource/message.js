@@ -63,7 +63,7 @@ class Message {
         axios.post(this.mmURL + 'posts/ephemeral',
             failMsg, this.config).then((result) => {
                 console.log('message posted: %o', result);
-                if (result.data.status === "OK") {
+                if (result.data) {
                     res.send('Show fail message post succeeded!').status(200);
                     return;
                 }

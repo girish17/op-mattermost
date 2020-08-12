@@ -17,10 +17,13 @@
 
 */
 
+const moment = require("moment");
+
 class Util {
 
   constructor() {
     this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **";
+    this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
     this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
     this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: **";
@@ -66,13 +69,15 @@ class Util {
           "display_name": "Work package",
           "name": "work_package",
           "type": "select",
-          "options": optArray
+          "options": optArray,
+          "default": optArray[0].value
         },
         {
           "display_name": "Date",
           "name": "spent_on",
           "type": "text",
-          "placeholder": "YYYY-MM-DD"
+          "placeholder": "YYYY-MM-DD",
+          "default": moment().format('YYYY-MM-DD')
         },
         {
           "display_name": "Comment",
@@ -110,13 +115,15 @@ class Util {
               "text": "Other",
               "value": "opt6"
             },
-          ]
+          ],
+          "default": "opt3"
         },
         {
           "display_name": "Billable hours",
           "name": "billable_hours",
           "type": "text",
-          "placeholder": "hours like 0.5, 1, 3 ..."
+          "placeholder": "hours like 0.5, 1, 3 ...",
+          "default": "0.0"
         }],
         "submit_label": "Log time",
         "notify_on_cancel": true
@@ -143,7 +150,8 @@ class Util {
                   }
                 },
                 "type": "select",
-                "options": optArray
+                "options": optArray,
+                "default": optArray[0].value
               }]
           }
         ]
