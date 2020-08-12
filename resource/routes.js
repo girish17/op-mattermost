@@ -36,7 +36,7 @@ module.exports = (app, axios) => {
     const { text, command, token} = req.body;
     if(token === process.env.MATTERMOST_SLASH_TOKEN)
     {
-      //("Request Body to / ", JSON.stringify(req.body, null, 2));
+      console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
       if (text != undefined) {
         hoursLog = parseFloat(text);
       }
@@ -54,17 +54,17 @@ module.exports = (app, axios) => {
   });
 
   app.post('/projSel', (req, res) => {
-    //("Project dialog submit request: ", req);
+    console.log("Project dialog submit request: ", req);
     uiActions.loadTimeLogDlg(req, res, axios);
   });
 
   app.post('/logTime', (req, res) => {
-    //("Work package submit request: ", req);
+    console.log("Work package submit request: ", req);
     uiActions.handleSubmission(req, res, axios, hoursLog);
   });
 
   app.get('/getLogo', (req, res) => {
-    //("Logo image request: ", req);
+    console.log("Logo image request: ", req);
     res.sendFile(__dirname + '/op_logo.png');
   });
 }
