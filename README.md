@@ -39,14 +39,16 @@
     - `INT_URL=http://<your host or ip address>:3000/         #needed for exposing the integration running on port 3000`
     - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`  
     - `MATTERMOST_ACCESS_TOKEN=<personal access token>        #https://docs.mattermost.com/developer/personal-access-tokens.html`
-    - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token>  #needed for slash command validation`
+    - `MATTERMOST_LOG_TIME_TOKEN=<use the mattermost slash command token for logtime>  #needed for slash command validation`
+    - `MATTERMOST_GET_TIME_LOG_TOKEN=<use the mattermost slash command token for gettimelog>`
     - `OP_ACCESS_TOKEN=<openproject access token obtained from profile page>`
 - In the project root directory do `npm init` to generate (or update existing) package.json file
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
 - Create a custom Mattermost slash command `/logtime` as described [here](https://docs.mattermost.com/developer/slash-commands.html) and provide local host or IP address (with port 3000) as the request URL
+- Similarly, create `/gettimelog` slash command to fetch time logs
 - In OpenProject, create a custom field `billable hours` for all workpackages in a project
-- Test the integration by trying `/logtime 1` in the message bar
+- Test the integration by trying `/logtime 1` in the message bar, then try `/gettimelog`
 
 ## Demo
 

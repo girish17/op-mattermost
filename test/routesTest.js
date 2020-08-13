@@ -55,7 +55,7 @@ describe("Test POST / with token", () => {
     it("should return appropriate usage help", (done) => {
         let msg = "*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/logtime [hours]`";
         server.post("")
-              .send({text: '100', token: process.env.MATTERMOST_SLASH_TOKEN})
+              .send({text: '100', token: process.env.MATTERMOST_LOG_TIME_TOKEN})
               .expect("Content-type", /text/)
               .expect(500)
               .end((err, res) => {

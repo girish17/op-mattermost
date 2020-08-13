@@ -24,7 +24,11 @@ do
     then
         OP_URL="http://localhost:8080/api/v3"
     fi
-    read -p 'INT_URL (enter an http url obtained by running ngrok on 3000 port ): ' INT_URL
+    read -p 'INT_URL (http://localhost:3000/): ' INT_URL
+    if [ -z "$INT_URL" ]
+    then
+        INT_URL="http://localhost:3000"
+    fi
     read -p 'MM_URL (http://localhost:8065/api/v4): ' MM_URL
     if [ -z "$MM_URL" ]
     then
@@ -33,7 +37,8 @@ do
 
     echo "\nPlease enter the generated access tokens for OpenProject and Mattermost"
     read -p 'MATTERMOST_ACCESS_TOKEN: ' MATTERMOST_ACCESS_TOKEN
-    read -p 'MATTERMOST_SLASH_TOKEN: ' MATTERMOST_SLASH_TOKEN
+    read -p 'MATTERMOST_LOG_TIME_TOKEN: ' MATTERMOST_LOG_TIME_TOKEN
+    read -p 'MATTERMOST_GET_TIME_LOG_TOKEN: ' MATTERMOST_GET_TIME_LOG_TOKEN
     read -p 'OP_ACCESS_TOKEN: ' OP_ACCESS_TOKEN
 
     echo '\nInput environment variables:\n'
@@ -41,7 +46,7 @@ do
     echo INT_URL=$INT_URL
     echo MM_URL=$MM_URL
     echo MATTERMOST_ACCESS_TOKEN=$MATTERMOST_ACCESS_TOKEN
-    echo MATTERMOST_SLASH_TOKEN=$MATTERMOST_SLASH_TOKEN
+    echo MATTERMOST_LOG_TIME_TOKEN=$MATTERMOST_LOG_TIME_TOKEN
     echo OP_ACCESS_TOKEN=$OP_ACCESS_TOKEN
 
     read -p 'Is this OK (y/n) ? ' OK
@@ -51,7 +56,7 @@ do
     fi
 done
 echo '\nGenerating .env file...'
-ENV_CONTENTS='OP_URL='$OP_URL'/\nINT_URL='$INT_URL'/\nMM_URL='$MM_URL'/\nMATTERMOST_ACCESS_TOKEN='$MATTERMOST_ACCESS_TOKEN'\nMATTERMOST_SLASH_TOKEN='$MATTERMOST_SLASH_TOKEN'\nOP_ACCESS_TOKEN='$OP_ACCESS_TOKEN
+ENV_CONTENTS='OP_URL='$OP_URL'/\nINT_URL='$INT_URL'/\nMM_URL='$MM_URL'/\nMATTERMOST_ACCESS_TOKEN='$MATTERMOST_ACCESS_TOKEN'\nMATTERMOST_LOG_TIME_TOKEN='$MATTERMOST_LOG_TIME_TOKEN'\nOP_ACCESS_TOKEN='$OP_ACCESS_TOKEN
 
 touch .env
 echo $ENV_CONTENTS > .env

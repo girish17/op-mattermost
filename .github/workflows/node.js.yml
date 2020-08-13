@@ -44,8 +44,8 @@ jobs:
     - run: npm test
       env:
         OP_ACCESS_TOKEN: ${{ secrets.OP_ACCESS_TOKEN }}
-        MATTERMOST_SLASH_TOKEN: ${{ secrets.MATTERMOST_SLASH_TOKEN }}
+        MATTERMOST_LOG_TIME_TOKEN: ${{ secrets.MATTERMOST_LOG_TIME_TOKEN }}
         MATTERMOST_ACCESS_TOKEN: ${{ secrets.MATTERMOST_ACCESS_TOKEN }}
         INT_URL: https://op-mattermost.herokuapp.com/
         MM_URL:  https://op-mattermost-mm.herokuapp.com/api/v4/
-        OP_URL: https://op-mattermost.openproject.com/api/v3/
+        OP_URL: https://op-mattermost-op.herokuapp.com/api/v3/

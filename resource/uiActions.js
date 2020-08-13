@@ -56,7 +56,7 @@ class UIactions {
       let wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray);
       console.log("optArray for projects", wpOptJSON);
 
-      if (req.body.token === process.env.MATTERMOST_SLASH_TOKEN) {
+      if (req.body.token === process.env.MATTERMOST_LOG_TIME_TOKEN) {
         res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
       }
       else {

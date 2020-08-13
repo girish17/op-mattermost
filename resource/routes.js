@@ -34,7 +34,7 @@ module.exports = (app, axios) => {
 
   app.post('/', (req, res) => {
     const { text, command, token} = req.body;
-    if(token === process.env.MATTERMOST_SLASH_TOKEN) {
+    if(token === process.env.MATTERMOST_LOG_TIME_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
       if (text != undefined) {
         hoursLog = parseFloat(text);
