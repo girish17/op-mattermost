@@ -178,6 +178,34 @@ class UIactions {
     }
   }
 
+  getTimeLog(req, res, axios) {
+    console.log("Request from mattermost: ", req);
+    console.log("Response from mattermost: ", res);
+    axios({
+      url: 'time_entries?sortBy=[["createdAt", "desc"]]',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: {
+        username: 'apikey',
+        password: process.env.OP_ACCESS_TOKEN
+      }
+    }).then((response) => {
+      console.log("Time entries obtained from OP: %o", response);
+      var timeLogArray = [];
+      response.data._embedded.elements.forEach(element => {
+        timeLogArray.push({
+          "spentOn": element.spentOn,
+          "project": element._links.project.title,
+          "workPackage": element._links.workPackage.title,
+          "activity": element._links.activity.title,
+          "loggedHours": this.moment.duration(element.hours).humanize(),
+          "billableHours": this.moment.duration(element.customField1, "hours").humanize(),
+          "comment": element.comment.raw
+        });
+      });
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
+    });
+  }
 };
 
 module.exports = UIactions;

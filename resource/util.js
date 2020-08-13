@@ -150,14 +150,32 @@ class Util {
                   }
                 },
                 "type": "select",
-                "options": optArray,
-                "default": optArray[0].value
+                "options": optArray
               }]
           }
         ]
       }
     };
     return optJSON;
+  }
+
+  getTimeLogJSON(timeLogArray) {
+    let tableTxt = "#### Time entries logged by you\n";
+    tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment               |\n";
+    tableTxt += "|:---------|:--------|:-------------|:---------|:------------|:------------|:----------------------|\n";
+    timeLogArray.forEach(element => {
+      if(element.comment === null)
+      {
+        element.comment = "";
+      }
+      tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n"; 
+    });
+
+    let timeLogJSON = {
+      "response_type": "in_channel",
+      "text": tableTxt
+    };
+    return timeLogJSON;
   }
 }
 

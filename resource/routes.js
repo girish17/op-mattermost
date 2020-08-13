@@ -34,8 +34,7 @@ module.exports = (app, axios) => {
 
   app.post('/', (req, res) => {
     const { text, command, token} = req.body;
-    if(token === process.env.MATTERMOST_SLASH_TOKEN)
-    {
+    if(token === process.env.MATTERMOST_SLASH_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
       if (text != undefined) {
         hoursLog = parseFloat(text);
@@ -47,8 +46,7 @@ module.exports = (app, axios) => {
         uiActions.showSelProject(req, res, axios);
       }
     }
-    else
-    {
+    else {
       res.send("Invalid request").status(400);
     }
   });
@@ -66,5 +64,22 @@ module.exports = (app, axios) => {
   app.get('/getLogo', (req, res) => {
     console.log("Logo image request: ", req);
     res.sendFile(__dirname + '/op_logo.png');
+  });
+
+  app.get('/getTimeLog', (req, res) => {
+    console.log("Request to getTimeLog: ", req);
+    const command = req.query.command;
+    const token = req.headers.authorization.split('Token ')[1];
+    if(token === process.env.MATTERMOST_GET_TIME_LOG_TOKEN) {
+      if (command != "/gettimelog") {
+        res.send("*Let's try again...* \n `/getTimeLog`").status(500);
+      }
+      else {
+        uiActions.getTimeLog(req, res, axios);
+      }
+    }
+    else {
+      res.send("Invalid request").status(400);
+    }
   });
 }
