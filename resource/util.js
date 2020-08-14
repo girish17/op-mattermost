@@ -160,22 +160,30 @@ class Util {
   }
 
   getTimeLogJSON(timeLogArray) {
-    let tableTxt = "#### Time entries logged by you\n";
-    tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment               |\n";
-    tableTxt += "|:---------|:--------|:-------------|:---------|:------------|:------------|:----------------------|\n";
-    timeLogArray.forEach(element => {
-      if(element.comment === null)
-      {
-        element.comment = "";
+    if(timeLogArray.length != 0) {
+      let tableTxt = "#### Time entries logged by you\n";
+      tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment |\n";
+      tableTxt += "|:---------|:--------|:-------------|:---------|:------------|:------------|:--------|\n";
+      timeLogArray.forEach(element => {
+        if(element.comment === null)
+        {
+          element.comment = "";
+        }
+        tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n"; 
+      });
+  
+      let timeLogJSON = {
+        "response_type": "in_channel",
+        "text": tableTxt
+      };
+      return timeLogJSON;
+    }
+    else {
+      return {
+        "response_type": "in_channel",
+        "text": "**No time entries to show :(. Log time using `/logtime` and then try.**"
       }
-      tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n"; 
-    });
-
-    let timeLogJSON = {
-      "response_type": "in_channel",
-      "text": tableTxt
-    };
-    return timeLogJSON;
+    }
   }
 }
 
