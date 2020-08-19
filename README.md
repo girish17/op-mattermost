@@ -50,7 +50,7 @@
 
 ## Demo
 
-![Demo](resource/op-mattermost-demo.gif)
+![Demo](resource/op-mattermost-demo-v2.gif)
 
 ## COPYING
 
