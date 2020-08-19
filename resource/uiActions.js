@@ -39,8 +39,7 @@ class UIactions {
   }
 
   showSelProject(req, res, axios, action) {
-    console.log("Request from mattermost: ", req);
-    console.log("Response from mattermost: ", res);
+    console.log("Request in showSelProject: ", req);
     axios({
       url: 'projects',
       method: 'get',
@@ -55,17 +54,15 @@ class UIactions {
           "value": "opt" + element.id
         });
       });
-
-      let wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action);
-      console.log("optArray for projects", wpOptJSON);
-
-      if (req.body.token === process.env.MATTERMOST_LOG_TIME_TOKEN || req.body.token === process.env.MATTERMOST_CREATE_WP_TOKEN) {
-        res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
+      let wpOptJSON = '';
+      if(req.body.text) {
+        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, '');  
       }
       else {
-        res.send("Invalid slash command token.").status(400);
-        return false;
+        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, 'update');        
       }
+      console.log("optArray for projects", wpOptJSON);
+      res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
     }).catch(error => {
       console.log("Error in getting projects from OP", error);
       res.send("Open Project server down!!").status(500);
@@ -252,8 +249,8 @@ class UIactions {
     };
   };
 
-  saveWp(req, res, axios) {
-    console.log("Request to saveWp handler: ", req);
+  saveWP(req, res, axios) {
+    console.log("Request to saveWP handler: ", req);
     if (req.body.submission) {
       const { subject, type, assignee, notify } = req.body.submission;
       console.log("Submission data: ");
@@ -283,7 +280,7 @@ class UIactions {
         auth: this.opAuth
       }).then(response => {
         console.log("Work package saved. Save response: %o", response);
-        this.message.showSuccessMsg(req, res, axios, this.util.saveWpSuccessMsg);
+        this.message.showSuccessMsg(req, res, axios, this.util.saveWPSuccessMsg);
         return true;
       }).catch((error) => {
         console.log("OP WP entries create error: %o", error);
@@ -297,5 +294,10 @@ class UIactions {
       });
     }
   };
+
+  showMenuButtons(req, res) {
+    console.log("Request to showMenuButtons handler: ", req);
+    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuButtonJSON(this.intURL))).status(200);
+  }
 }
 module.exports = UIactions;
