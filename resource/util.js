@@ -27,8 +27,8 @@ class Util {
     this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
     this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: **";
-    this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/logtime [hours]`";
-    this.saveWpSuccessMsg = "**Work package created! You are awesome :sunglasses: **";
+    this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op [hours]`";
+    this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **";
   }
 
   checkHours(hoursLog, hours) {
@@ -134,8 +134,8 @@ class Util {
     return logTimeDlgObj;
   }
 
-  getWpOptJSON(url, optArray, action) {
-    let optJSON = {
+  getWpOptJSON(url, optArray, action, mode) {
+    let wpOptObj = {
       "response_type": "in_channel",
       "message": "Select a project",
       "props": {
@@ -157,7 +157,15 @@ class Util {
         ]
       }
     };
-    return optJSON;
+    if(mode === 'update') {
+      let optJSON = {
+        "update": wpOptObj
+      };
+      return optJSON;
+    }
+    else {
+      return wpOptObj;
+    }
   }
 
   getTimeLogJSON(timeLogArray) {
@@ -174,15 +182,19 @@ class Util {
       });
   
       let timeLogJSON = {
-        "response_type": "in_channel",
-        "text": tableTxt
+        "update": {
+          "message": tableTxt,
+          "props": {}
+        }
       };
       return timeLogJSON;
     }
     else {
       return {
-        "response_type": "in_channel",
-        "text": "**No time entries to show :(. Log time using `/logtime` and then try.**"
+        "update": {
+          "message": tableTxt,
+          "props": {}
+        }
       }
     }
   }
@@ -190,7 +202,7 @@ class Util {
   getWpCreateJSON(triggerId, url, typeArray, assigneeArray) {
     let createWpDlgObj = {
       "trigger_id": triggerId,
-      "url": url + 'saveWp',
+      "url": url + 'saveWP',
       "dialog": {
         "callback_id": "create_wp_dlg",
         "title": "Create a work package",
@@ -228,6 +240,41 @@ class Util {
       }
     }
     return createWpDlgObj;
+  }
+
+  getMenuButtonJSON(url) {
+    let menuButtonJSON = {
+      "response_type": "in_channel",
+      "props": {
+        "attachments": [
+          {
+            "pretext": "Hello :) What would you like to do?",
+            "text": "Please click on a button...",
+            "actions": [
+              {
+                "name": "Create Work Package",
+                "integration": {
+                  "url": url + "createWP",
+                  "context": {
+                    "action": "createWP"
+                  }
+                }
+              },
+              {
+                "name": "View time logs",
+                "integration": {
+                  "url": url + "getTimeLog",
+                  "context": {
+                    "action": "getTimeLog"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+    return menuButtonJSON;
   }
 }
 module.exports = Util;
