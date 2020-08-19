@@ -1,4 +1,4 @@
-# op-mattermost 
+# op-mattermost                                             ![Node.js CI](https://github.com/girish17/op-mattermost/workflows/Node.js%20CI/badge.svg)
 
 [OpenProject](https://www.openproject.org/) and [Mattermost](https://mattermost.com/) integration to log time for a work package. This integration is built along the lines of [op-slack-connector](https://github.com/girish17/op-slack-connector)
 
