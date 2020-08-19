@@ -34,16 +34,19 @@ module.exports = (app, axios) => {
 
   app.post('/', (req, res) => {
     const { text, command, token} = req.body;
-    if(token === process.env.MATTERMOST_LOG_TIME_TOKEN) {
+    if(token === process.env.MATTERMOST_SLASH_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
-      if (text != undefined) {
+      if (text !== "") {
         hoursLog = parseFloat(text);
-      }
-      if ((isNaN(hoursLog) || hoursLog < 0.0 || hoursLog > 99.9) || command != "/logtime") {
-        res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/logtime [hours]`").status(500);
+        if ((isNaN(hoursLog) || hoursLog < 0.0 || hoursLog > 99.9) || command != "/op") {
+          res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/op [hours]`").status(500);
+        }
+        else {
+          uiActions.showSelProject(req, res, axios, "showTimeLogDlg");
+        }
       }
       else {
-        uiActions.showSelProject(req, res, axios, "showTimeLogDlg");
+        uiActions.showMenuButtons(req, res);
       }
     }
     else {
@@ -76,41 +79,18 @@ module.exports = (app, axios) => {
     res.sendFile(__dirname + '/op_logo.png');
   });
 
-  app.get('/getTimeLog', (req, res) => {
+  app.post('/getTimeLog', (req, res) => {
     console.log("Request to getTimeLog: ", req);
-    const command = req.query.command;
-    const token = req.headers.authorization.split('Token ')[1];
-    if(token === process.env.MATTERMOST_GET_TIME_LOG_TOKEN) {
-      if (command != "/gettimelog") {
-        res.send("*Let's try again...* \n `/getTimeLog`").status(500);
-      }
-      else {
-        uiActions.getTimeLog(req, res, axios);
-      }
-    }
-    else {
-      res.send("Invalid request").status(400);
-    }
+    uiActions.getTimeLog(req, res, axios);
   });
 
   app.post('/createWP', (req, res) => {
     console.log("Request to createWP: ", req);
-    const { command, token } = req.body;
-    if(token === process.env.MATTERMOST_CREATE_WP_TOKEN) {
-      if(command != '/createwp') {
-        res.send("*Let's try again...* \n `/createWP`").status(500);
-      }
-      else {
-        uiActions.showSelProject(req, res, axios, "createWP");
-      }
-    }
-    else {
-      res.send("Invalid request").status(400);
-    }
+    uiActions.showSelProject(req, res, axios, "createWP");
   });
 
-  app.post('/saveWp', (req, res) => {
+  app.post('/saveWP', (req, res) => {
     console.log("Work package save request: ", req);
-    uiActions.saveWp(req, res, axios);
+    uiActions.saveWP(req, res, axios);
   })
 }
