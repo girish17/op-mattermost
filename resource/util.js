@@ -28,6 +28,7 @@ class Util {
     this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: **";
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/logtime [hours]`";
+    this.saveWpSuccessMsg = "**Work package created! You are awesome :sunglasses: **";
   }
 
   checkHours(hoursLog, hours) {
@@ -133,7 +134,7 @@ class Util {
     return logTimeDlgObj;
   }
 
-  getWpOptJSON(url, optArray) {
+  getWpOptJSON(url, optArray, action) {
     let optJSON = {
       "response_type": "in_channel",
       "message": "Select a project",
@@ -146,7 +147,7 @@ class Util {
                 "integration": {
                   "url": url + "projSel",
                   "context": {
-                    "action": "showTimeLogDlg"
+                    "action": action
                   }
                 },
                 "type": "select",
@@ -185,6 +186,48 @@ class Util {
       }
     }
   }
-}
 
+  getWpCreateJSON(triggerId, url, typeArray, assigneeArray) {
+    let createWpDlgObj = {
+      "trigger_id": triggerId,
+      "url": url + 'saveWp',
+      "dialog": {
+        "callback_id": "create_wp_dlg",
+        "title": "Create a work package",
+        "icon_url": url + 'getLogo',
+        "elements": [{
+          "display_name": "Subject",
+          "name": "subject",
+          "type": "text",
+          "placeholder": "Name of work package"
+        },
+        {
+          "display_name": "Select Type",
+          "name": "type",
+          "type": "select",
+          "options": typeArray,
+          "default": "opt1"
+        },
+        {
+          "display_name": "Assignee",
+          "name": "assignee",
+          "type": "select",
+          "options": assigneeArray,
+          "optional": true
+        },
+        {
+          "display_name": "Notify interested users?",
+          "placeholder": "Send email.",
+          "name": "notify",
+          "type": "bool",
+          "optional": true,
+          "help_text": "Note that this controls notifications for all users interested in changes to the work package (e.g. current user, watchers, author and assignee)"
+        }],
+        "submit_label": "Create Work Package",
+        "notify_on_cancel": true
+      }
+    }
+    return createWpDlgObj;
+  }
+}
 module.exports = Util;

@@ -43,7 +43,7 @@ module.exports = (app, axios) => {
         res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/logtime [hours]`").status(500);
       }
       else {
-        uiActions.showSelProject(req, res, axios);
+        uiActions.showSelProject(req, res, axios, "showTimeLogDlg");
       }
     }
     else {
@@ -53,7 +53,17 @@ module.exports = (app, axios) => {
 
   app.post('/projSel', (req, res) => {
     console.log("Project dialog submit request: ", req);
-    uiActions.loadTimeLogDlg(req, res, axios);
+    switch (req.body.context.action) {
+      case 'showTimeLogDlg':
+        uiActions.loadTimeLogDlg(req, res, axios);
+        break;
+      case 'createWP':
+        uiActions.createWP(req, res, axios);
+        break;
+      default:
+        res.send("Invalid action type").status(400);
+        break;
+    }
   });
 
   app.post('/logTime', (req, res) => {
@@ -82,4 +92,25 @@ module.exports = (app, axios) => {
       res.send("Invalid request").status(400);
     }
   });
+
+  app.post('/createWP', (req, res) => {
+    console.log("Request to createWP: ", req);
+    const { command, token } = req.body;
+    if(token === process.env.MATTERMOST_CREATE_WP_TOKEN) {
+      if(command != '/createwp') {
+        res.send("*Let's try again...* \n `/createWP`").status(500);
+      }
+      else {
+        uiActions.showSelProject(req, res, axios, "createWP");
+      }
+    }
+    else {
+      res.send("Invalid request").status(400);
+    }
+  });
+
+  app.post('/saveWp', (req, res) => {
+    console.log("Work package save request: ", req);
+    uiActions.saveWp(req, res, axios);
+  })
 }

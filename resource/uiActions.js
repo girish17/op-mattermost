@@ -17,6 +17,8 @@
 
 */
 
+const { response } = require('express');
+
 class UIactions {
 
   constructor(opURL, mmURL, intURL) {
@@ -29,20 +31,21 @@ class UIactions {
     this.mmURL = mmURL;
     this.intURL = intURL;
     this.projectId = '';
-    this.optLen = 3;    
+    this.optLen = 3;
+    this.opAuth = {
+      username: 'apikey',
+      password: process.env.OP_ACCESS_TOKEN
+    }  
   }
 
-  showSelProject(req, res, axios) {
+  showSelProject(req, res, axios, action) {
     console.log("Request from mattermost: ", req);
     console.log("Response from mattermost: ", res);
     axios({
       url: 'projects',
       method: 'get',
       baseURL: this.opURL,
-      auth: {
-        username: 'apikey',
-        password: process.env.OP_ACCESS_TOKEN
-      }
+      auth: this.opAuth
     }).then((response) => {
       console.log("Projects obtained from OP: %o", response);
       var optArray = [];
@@ -53,14 +56,14 @@ class UIactions {
         });
       });
 
-      let wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray);
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action);
       console.log("optArray for projects", wpOptJSON);
 
-      if (req.body.token === process.env.MATTERMOST_LOG_TIME_TOKEN) {
+      if (req.body.token === process.env.MATTERMOST_LOG_TIME_TOKEN || req.body.token === process.env.MATTERMOST_CREATE_WP_TOKEN) {
         res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
       }
       else {
-        res.send("Invalid request").status(400);
+        res.send("Invalid slash command token.").status(400);
         return false;
       }
     }).catch(error => {
@@ -78,10 +81,7 @@ class UIactions {
         url: 'projects/' + this.projectId + '/work_packages',
         method: 'get',
         baseURL: this.opURL,
-        auth: {
-          username: 'apikey',
-          password: process.env.OP_ACCESS_TOKEN
-        }
+        auth: this.opAuth
       }).then((response) => {
         console.log("WP obtained from OP: %o", response);
         response.data._embedded.elements.forEach(element => {
@@ -146,10 +146,7 @@ class UIactions {
             "spentOn": spent_on,
             "customField1": billable_hours
           },
-          auth: {
-            username: 'apikey',
-            password: process.env.OP_ACCESS_TOKEN
-          }
+          auth: this.opAuth
         }).then((response) => {
           console.log("Time logged. Save response: %o", response);
           this.message.showSuccessMsg(req, res, axios, this.util.timeLogSuccessMsg);
@@ -179,33 +176,126 @@ class UIactions {
   }
 
   getTimeLog(req, res, axios) {
-    console.log("Request from mattermost: ", req);
-    console.log("Response from mattermost: ", res);
-    axios({
-      url: 'time_entries?sortBy=[["createdAt", "desc"]]',
-      method: 'get',
-      baseURL: this.opURL,
-      auth: {
-        username: 'apikey',
-        password: process.env.OP_ACCESS_TOKEN
-      }
-    }).then((response) => {
-      console.log("Time entries obtained from OP: %o", response);
-      var timeLogArray = [];
-      response.data._embedded.elements.forEach(element => {
-        timeLogArray.push({
-          "spentOn": element.spentOn,
-          "project": element._links.project.title,
-          "workPackage": element._links.workPackage.title,
-          "activity": element._links.activity.title,
-          "loggedHours": this.moment.duration(element.hours).humanize(),
-          "billableHours": this.moment.duration(element.customField1, "hours").humanize(),
-          "comment": element.comment.raw
+      console.log("Request from mattermost: ", req);
+      console.log("Response from mattermost: ", res);
+      axios({
+        url: 'time_entries?sortBy=[["createdAt", "desc"]]',
+        method: 'get',
+        baseURL: this.opURL,
+        auth: this.opAuth
+      }).then((response) => {
+        console.log("Time entries obtained from OP: %o", response);
+        var timeLogArray = [];
+        response.data._embedded.elements.forEach(element => {
+          timeLogArray.push({
+            "spentOn": element.spentOn,
+            "project": element._links.project.title,
+            "workPackage": element._links.workPackage.title,
+            "activity": element._links.activity.title,
+            "loggedHours": this.moment.duration(element.hours).humanize(),
+            "billableHours": this.moment.duration(element.customField1, "hours").humanize(),
+            "comment": element.comment.raw
+          });
         });
+        res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
       });
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
-    });
-  }
-};
+  };
 
+  createWP(req, res, axios) {
+    console.log("Request to createWP handler: ", req);
+    if (req.body.context.action === "createWP") {
+      this.projectId = req.body.context.selected_option.slice(this.optLen);
+        axios({
+          url: 'types',
+          method: 'get',
+          baseURL: this.opURL,
+          auth: this.opAuth
+        }).then((response) => {
+          console.log("Response from get types: ", response);
+          let typeArray = [];
+          response.data._embedded.elements.forEach(element => {
+            typeArray.push({
+              "text": element.name,
+              "value": "opt" + element.id
+            });
+          });
+          axios({
+            url: 'projects/' + this.projectId + '/available_assignees',
+            method: 'get',
+            baseURL: this.opURL,
+            auth: this.opAuth
+          }).then((response) => {
+            console.log("Response from get available assignees: ", response);
+            let assigneeArray = [];
+            response.data._embedded.elements.forEach(element => {
+              assigneeArray.push({
+                "text": element.name,
+                "value": "opt" + element.id
+              });
+            });
+            let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
+            axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
+              console.log("Response from wp create dialog: ", response);
+              let updateMsg = JSON.stringify({
+                "update": {
+                  "message": "Updated!"
+                },
+                "ephemeral_text": "Opening work package create dialog..."
+              });
+              res.type('application/json').send(updateMsg).status(200);
+            }).catch(error => {
+              console.log("Error while creating work package dialog", error);
+              this.message.showFailMsg(req, res, axios, this.util.dlgCreateErrMsg);
+            });
+        });
+      })
+    };
+  };
+
+  saveWp(req, res, axios) {
+    console.log("Request to saveWp handler: ", req);
+    if (req.body.submission) {
+      const { subject, type, assignee, notify } = req.body.submission;
+      console.log("Submission data: ");
+      console.log("subject: ", subject, " type: ", type, " assignee: ", assignee, " notify: ", notify);
+      let postWpData = {
+        "subject": subject,
+        "_links": {
+          "project": {
+            "href": "/api/v3/projects/" + this.projectId
+          },
+          "type": {
+            "href": "/api/v3/types/" + type.slice(this.optLen)
+          } 
+        }
+      };
+      if(assignee !== null) {
+        postWpData.assignee = {
+          "href": "/api/v3/users/" + assignee.slice(this.optLen)
+        }
+      }
+      /*save workpackage to openproject*/
+      axios({
+        url: 'work_packages?notify=' + notify,
+        method: 'post',
+        baseURL: this.opURL,
+        data: postWpData,
+        auth: this.opAuth
+      }).then(response => {
+        console.log("Work package saved. Save response: %o", response);
+        this.message.showSuccessMsg(req, res, axios, this.util.saveWpSuccessMsg);
+        return true;
+      }).catch((error) => {
+        console.log("OP WP entries create error: %o", error);
+        if(error.response.status == 403) {
+          this.message.showFailMsg(req, res, axios, this.util.timeLogForbiddenMsg);
+        }
+        else {
+          this.message.showFailMsg(req, res, axios, this.util.timeLogFailMsg);
+        }
+        return false;
+      });
+    }
+  };
+}
 module.exports = UIactions;
