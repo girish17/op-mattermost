@@ -58,7 +58,7 @@ module.exports = (app, axios) => {
     console.log("Project dialog submit request: ", req);
     switch (req.body.context.action) {
       case 'showTimeLogDlg':
-        uiActions.loadTimeLogDlg(req, res, axios);
+        uiActions.loadTimeLogDlg(req, res, axios, hoursLog);
         break;
       case 'createWP':
         uiActions.createWP(req, res, axios);

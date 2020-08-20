@@ -35,7 +35,7 @@ class UIactions {
     this.opAuth = {
       username: 'apikey',
       password: process.env.OP_ACCESS_TOKEN
-    }  
+    }
   }
 
   showSelProject(req, res, axios, action) {
@@ -55,11 +55,11 @@ class UIactions {
         });
       });
       let wpOptJSON = '';
-      if(req.body.text) {
-        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, '');  
+      if (req.body.text) {
+        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, '');
       }
       else {
-        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, 'update');        
+        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, 'update');
       }
       console.log("optArray for projects", wpOptJSON);
       res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
@@ -70,7 +70,7 @@ class UIactions {
     });
   }
 
-  loadTimeLogDlg(req, res, axios) {
+  loadTimeLogDlg(req, res, axios, hoursLog) {
     if (req.body.context.action === "showTimeLogDlg") {
       let optArray = [];
       this.projectId = req.body.context.selected_option.slice(this.optLen);
@@ -88,7 +88,7 @@ class UIactions {
           });
         });
 
-        let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, optArray));
+        let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, optArray, hoursLog));
 
         console.log("logTimeDlgJSON: " + logTimeDlgJSON);
 
@@ -103,7 +103,7 @@ class UIactions {
           res.type('application/json').send(updateMsg).status(200);
         }).catch(error => {
           console.log("Error while creating projects dialog", error);
-          this.message.showFailMsg(req, res, axios, this.util.dlgCreateErrMsg);
+          this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
         })
       }, (reason) => {
         console.log("Request failed for /work_packages: %o", reason);
@@ -118,132 +118,138 @@ class UIactions {
       console.log("Submission data: ");
       console.log("spent_on: ", spent_on, " comments: ", comments);
       console.log(" billable_hours: ", billable_hours, " activity: ", activity, " work_package: ", work_package);
-      if (this.util.checkDate(this.moment, spent_on) && this.util.checkHours(hoursLog, parseFloat(billable_hours))) {
-        /*log time data to open project*/
-        axios({
-          url: 'time_entries',
-          method: 'post',
-          baseURL: this.opURL,
-          data: {
-            "_links": {
-              "project": {
-                "href": "/api/v3/projects/" + this.projectId
+      if (this.util.checkDate(this.moment, spent_on)) {
+        if (this.util.checkHours(hoursLog, parseFloat(billable_hours))) {
+          /*log time log data to open project*/
+          axios({
+            url: 'time_entries',
+            method: 'post',
+            baseURL: this.opURL,
+            data: {
+              "_links": {
+                "project": {
+                  "href": "/api/v3/projects/" + this.projectId
+                },
+                "activity": {
+                  "href": "/api/v3/time_entries/activities/" + activity.slice(this.optLen)
+                },
+                "workPackage": {
+                  "href": "/api/v3/work_packages/" + work_package.slice(this.optLen)
+                }
               },
-              "activity": {
-                "href": "/api/v3/time_entries/activities/" + activity.slice(this.optLen)
+              "hours": this.moment.duration(hoursLog, 'h').toISOString(),
+              "comment": {
+                "raw": comments
               },
-              "workPackage": {
-                "href": "/api/v3/work_packages/" + work_package.slice(this.optLen)
-              }
+              "spentOn": spent_on,
+              "customField1": billable_hours
             },
-            "hours": this.moment.duration(hoursLog, 'h').toISOString(),
-            "comment": {
-              "raw": comments
-            },
-            "spentOn": spent_on,
-            "customField1": billable_hours
-          },
-          auth: this.opAuth
-        }).then((response) => {
-          console.log("Time logged. Save response: %o", response);
-          this.message.showSuccessMsg(req, res, axios, this.util.timeLogSuccessMsg);
-          return true;
-        }).catch((error) => {
-          console.log("OP time entries create error: %o", error);
-          if(error.response.status == 403) {
-            this.message.showFailMsg(req, res, axios, this.util.timeLogForbiddenMsg);
-          }
-          else {
-            this.message.showFailMsg(req, res, axios, this.util.timeLogFailMsg);
-          }
+            auth: this.opAuth
+          }).then((response) => {
+            console.log("Time logged. Save response: %o", response);
+            this.message.showMsg(req, res, axios, this.util.timeLogSuccessMsg);
+            return true;
+          }).catch((error) => {
+            console.log("OP time entries create error: %o", error);
+            if (error.response.status == 403) {
+              this.message.showMsg(req, res, axios, this.util.timeLogForbiddenMsg);
+            }
+            else {
+              this.message.showMsg(req, res, axios, this.util.timeLogFailMsg);
+            }
+            return false;
+          });
+        }
+        else {
+          console.log("Billable hours incorrect: ", billable_hours);
+          this.message.showMsg(req, res, axios, this.util.billableHoursErrMsg);
           return false;
-        });
+        }
       }
       else {
-        console.log("Date or billable hours incorrect");
-        this.message.showFailMsg(req, res, axios, this.util.dateTimeIPErrMsg);
+        console.log("Date incorrect: ", spent_on);
+        this.message.showMsg(req, res, axios, this.util.dateErrMsg);
         return false;
       }
     }
     else {
       console.log("empty submission");
-      this.message.showFailMsg(req, res, axios, this.util.wpDtlEmptyMsg);
+      this.message.showMsg(req, res, axios, this.util.wpDtlEmptyMsg);
       return false;
     }
   }
 
   getTimeLog(req, res, axios) {
-      console.log("Request from mattermost: ", req);
-      console.log("Response from mattermost: ", res);
-      axios({
-        url: 'time_entries?sortBy=[["createdAt", "desc"]]',
-        method: 'get',
-        baseURL: this.opURL,
-        auth: this.opAuth
-      }).then((response) => {
-        console.log("Time entries obtained from OP: %o", response);
-        var timeLogArray = [];
-        response.data._embedded.elements.forEach(element => {
-          timeLogArray.push({
-            "spentOn": element.spentOn,
-            "project": element._links.project.title,
-            "workPackage": element._links.workPackage.title,
-            "activity": element._links.activity.title,
-            "loggedHours": this.moment.duration(element.hours).humanize(),
-            "billableHours": this.moment.duration(element.customField1, "hours").humanize(),
-            "comment": element.comment.raw
-          });
+    console.log("Request to getTimeLog: ", req);
+    axios({
+      url: 'time_entries?sortBy=[["createdAt", "desc"]]',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("Time entries obtained from OP: %o", response);
+      var timeLogArray = [];
+      response.data._embedded.elements.forEach(element => {
+        timeLogArray.push({
+          "spentOn": element.spentOn,
+          "project": element._links.project.title,
+          "workPackage": element._links.workPackage.title,
+          "activity": element._links.activity.title,
+          "loggedHours": this.moment.duration(element.hours).humanize(),
+          "billableHours": this.moment.duration(element.customField1, "hours").humanize(),
+          "comment": element.comment.raw
         });
-        res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
       });
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
+    });
   };
 
   createWP(req, res, axios) {
     console.log("Request to createWP handler: ", req);
     if (req.body.context.action === "createWP") {
       this.projectId = req.body.context.selected_option.slice(this.optLen);
+      axios({
+        url: 'types',
+        method: 'get',
+        baseURL: this.opURL,
+        auth: this.opAuth
+      }).then((response) => {
+        console.log("Response from get types: ", response);
+        let typeArray = [];
+        response.data._embedded.elements.forEach(element => {
+          typeArray.push({
+            "text": element.name,
+            "value": "opt" + element.id
+          });
+        });
         axios({
-          url: 'types',
+          url: 'projects/' + this.projectId + '/available_assignees',
           method: 'get',
           baseURL: this.opURL,
           auth: this.opAuth
         }).then((response) => {
-          console.log("Response from get types: ", response);
-          let typeArray = [];
+          console.log("Response from get available assignees: ", response);
+          let assigneeArray = [];
           response.data._embedded.elements.forEach(element => {
-            typeArray.push({
+            assigneeArray.push({
               "text": element.name,
               "value": "opt" + element.id
             });
           });
-          axios({
-            url: 'projects/' + this.projectId + '/available_assignees',
-            method: 'get',
-            baseURL: this.opURL,
-            auth: this.opAuth
-          }).then((response) => {
-            console.log("Response from get available assignees: ", response);
-            let assigneeArray = [];
-            response.data._embedded.elements.forEach(element => {
-              assigneeArray.push({
-                "text": element.name,
-                "value": "opt" + element.id
-              });
+          let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
+          axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
+            console.log("Response from wp create dialog: ", response);
+            let updateMsg = JSON.stringify({
+              "update": {
+                "message": "Updated!"
+              },
+              "ephemeral_text": "Opening work package create dialog..."
             });
-            let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
-            axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
-              console.log("Response from wp create dialog: ", response);
-              let updateMsg = JSON.stringify({
-                "update": {
-                  "message": "Updated!"
-                },
-                "ephemeral_text": "Opening work package create dialog..."
-              });
-              res.type('application/json').send(updateMsg).status(200);
-            }).catch(error => {
-              console.log("Error while creating work package dialog", error);
-              this.message.showFailMsg(req, res, axios, this.util.dlgCreateErrMsg);
-            });
+            res.type('application/json').send(updateMsg).status(200);
+          }).catch(error => {
+            console.log("Error while creating work package dialog", error);
+            this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
+          });
         });
       })
     };
@@ -263,10 +269,10 @@ class UIactions {
           },
           "type": {
             "href": "/api/v3/types/" + type.slice(this.optLen)
-          } 
+          }
         }
       };
-      if(assignee !== null) {
+      if (assignee !== null) {
         postWpData.assignee = {
           "href": "/api/v3/users/" + assignee.slice(this.optLen)
         }
@@ -280,18 +286,26 @@ class UIactions {
         auth: this.opAuth
       }).then(response => {
         console.log("Work package saved. Save response: %o", response);
-        this.message.showSuccessMsg(req, res, axios, this.util.saveWPSuccessMsg);
+        this.message.showMsg(req, res, axios, this.util.saveWPSuccessMsg);
         return true;
       }).catch((error) => {
         console.log("OP WP entries create error: %o", error);
-        if(error.response.status == 403) {
-          this.message.showFailMsg(req, res, axios, this.util.timeLogForbiddenMsg);
+        if (error.response.status == 403) {
+          this.message.showMsg(req, res, axios, this.util.timeLogForbiddenMsg);
         }
         else {
-          this.message.showFailMsg(req, res, axios, this.util.timeLogFailMsg);
+          this.message.showMsg(req, res, axios, this.util.timeLogFailMsg);
         }
         return false;
       });
+    }
+    else if (req.body.cancelled) {
+      console.log("Dialog cancelled.");
+      this.message.showMsg(req, res, axios, this.util.dlgCancelMsg);
+    }
+    else {
+      console.log("Empty request body.");
+      this.message.showMsg(req, res, axios, this.util.genericErrMsg);
     }
   };
 

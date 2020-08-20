@@ -25,10 +25,13 @@ class Util {
     this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **";
     this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
     this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
-    this.dateTimeIPErrMsg = "**It seems that date or billable hours was incorrect :thinking: **";
-    this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: **";
+    this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
+    this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
+    this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try again?**";
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op [hours]`";
     this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **";
+    this.dlgCancelMsg = "** If you would like to try again then, `/op` **";
+    this.genericErrMsg = "** Unknown error occurred :pensive: Can you please try again? **";
   }
 
   checkHours(hoursLog, hours) {
@@ -49,7 +52,7 @@ class Util {
     /*Valid dates within last one year*/
     let dateDiff = moment().diff(moment(dateTxt, 'YYYY-MM-DD', true), 'days');
     let daysUpperBound = 365;
-    if(moment().isLeapYear()) {
+    if (moment().isLeapYear()) {
       daysUpperBound = 366;
     }
     if (dateDiff >= 0 && dateDiff <= daysUpperBound)
@@ -58,7 +61,7 @@ class Util {
     return false;
   }
 
-  getlogTimeDlgObj(triggerId, url, optArray) {
+  getlogTimeDlgObj(triggerId, url, optArray, hoursLog) {
     let logTimeDlgObj = {
       "trigger_id": triggerId,
       "url": url + 'logTime',
@@ -78,6 +81,7 @@ class Util {
           "name": "spent_on",
           "type": "text",
           "placeholder": "YYYY-MM-DD",
+          "help_text": "Please enter date within last one year and in YYYY-MM-DD format",
           "default": moment().format('YYYY-MM-DD')
         },
         {
@@ -124,7 +128,8 @@ class Util {
           "name": "billable_hours",
           "type": "text",
           "placeholder": "hours like 0.5, 1, 3 ...",
-          "default": "0.0"
+          "default": "0.0",
+          "help_text": "Please enter billable hours less than or equal to " + hoursLog
         }],
         "submit_label": "Log time",
         "notify_on_cancel": true
@@ -157,7 +162,7 @@ class Util {
         ]
       }
     };
-    if(mode === 'update') {
+    if (mode === 'update') {
       let optJSON = {
         "update": wpOptObj
       };
@@ -169,18 +174,17 @@ class Util {
   }
 
   getTimeLogJSON(timeLogArray) {
-    if(timeLogArray.length != 0) {
+    if (timeLogArray.length != 0) {
       let tableTxt = "#### Time entries logged by you\n";
       tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment |\n";
       tableTxt += "|:---------|:--------|:-------------|:---------|:------------|:------------|:--------|\n";
       timeLogArray.forEach(element => {
-        if(element.comment === null)
-        {
+        if (element.comment === null) {
           element.comment = "";
         }
-        tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n"; 
+        tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n";
       });
-  
+
       let timeLogJSON = {
         "update": {
           "message": tableTxt,
@@ -249,7 +253,7 @@ class Util {
         "attachments": [
           {
             "pretext": "Hello :) What would you like to do?",
-            "text": "Please click on a button...",
+            "text": "For *logging time*, try `/op` followed by hours e.g. `/op 1`",
             "actions": [
               {
                 "name": "Create Work Package",

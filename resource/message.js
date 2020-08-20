@@ -26,8 +26,8 @@ class Message {
         this.mmURL = mmURL;
     }
 
-    showSuccessMsg(req, res, axios, msg) {
-        let successMsg = {
+    showMsg(req, res, axios, msg) {
+        let msgObj = {
             "user_id": req.body.user_id,
             "post": {
                 "channel_id": req.body.channel_id,
@@ -35,48 +35,21 @@ class Message {
             }
         };
         axios.post(this.mmURL + 'posts/ephemeral',
-            successMsg, this.config).then((result) => {
+        msgObj, this.config).then((result) => {
                 console.log('message posted: %o', result);
                 if (result.data) {
-                    res.send('Show success message post succeeded!').status(200);
+                    res.send('Show message post succeeded!').status(200);
                     return;
                 }
                 else {
-                    console.log('Show success message post failed!');
+                    console.log('Show message post failed!');
                     res.send().status(400);
                     return;
                 }
             }).catch((err) => {
-                console.log('Show success message post failed: %o', err);
-                res.send().status(500);
-            });
-    }
-
-    showFailMsg(req, res, axios, msg) {
-        let failMsg = {
-            "user_id": req.body.user_id,
-            "post": {
-                "channel_id": req.body.channel_id,
-                "message": msg
-            }
-        };
-        axios.post(this.mmURL + 'posts/ephemeral',
-            failMsg, this.config).then((result) => {
-                console.log('message posted: %o', result);
-                if (result.data) {
-                    res.send('Show fail message post succeeded!').status(200);
-                    return;
-                }
-                else {
-                    console.log('Show fail message failed!');
-                    res.send().status(400);
-                    return;
-                }
-            }).catch((err) => {
-                console.log('Show fail message post failed: %o', err);
+                console.log('Show message post failed: %o', err);
                 res.send().status(500);
             });
     }
 }
-
 module.exports = Message;
