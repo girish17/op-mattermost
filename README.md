@@ -50,7 +50,7 @@
 
 ## Demo
 
-![Demo](resource/op-mattermost-demo-v2.gif)
+[Demo video](https://github.com/girish17/op-mattermost/blob/master/resource/op-mattermost-demo-v2.gif) recorded using [vlc](https://www.videolan.org/vlc) and converted to GIF using [ffmpeg](https://ffmpeg.org)
 
 ## COPYING
 
