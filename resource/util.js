@@ -29,7 +29,7 @@ class Util {
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try again?**";
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op [hours]`";
-    this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **";
+    this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op [hours]`";
     this.dlgCancelMsg = "** If you would like to try again then, `/op` **";
     this.genericErrMsg = "** Unknown error occurred :pensive: Can you please try again? **";
   }
@@ -73,6 +73,7 @@ class Util {
           "display_name": "Work package",
           "name": "work_package",
           "type": "select",
+          "placeholder": "Type to search for a work package",
           "options": optArray,
           "default": optArray[0].value
         },
@@ -88,13 +89,14 @@ class Util {
           "display_name": "Comment",
           "name": "comments",
           "type": "textarea",
-          "help_text": "Please mention comments if any",
+          "placeholder": "Please mention comments if any",
           "optional": true
         },
         {
           "display_name": "Select Activity",
           "name": "activity",
           "type": "select",
+          "placeholder": "Type to search for activity",
           "options": [
             {
               "text": "Development",
@@ -142,13 +144,13 @@ class Util {
   getWpOptJSON(url, optArray, action, mode) {
     let wpOptObj = {
       "response_type": "in_channel",
-      "message": "Select a project",
+      "message": "Type to search for a project...",
       "props": {
         "attachments": [
           {
             "actions": [
               {
-                "name": "Select a project...",
+                "name": "Type to search for a project...",
                 "integration": {
                   "url": url + "projSel",
                   "context": {
@@ -221,6 +223,7 @@ class Util {
           "display_name": "Select Type",
           "name": "type",
           "type": "select",
+          "placeholder": "Type to search for type",
           "options": typeArray,
           "default": "opt1"
         },
@@ -228,6 +231,7 @@ class Util {
           "display_name": "Assignee",
           "name": "assignee",
           "type": "select",
+          "placeholder": "Type to search for users",
           "options": assigneeArray,
           "optional": true
         },
@@ -270,6 +274,15 @@ class Util {
                   "url": url + "getTimeLog",
                   "context": {
                     "action": "getTimeLog"
+                  }
+                }
+              },
+              {
+                "name": "Bye :wave:",
+                "integration": {
+                  "url": url + "bye",
+                  "context": {
+                    "action": "bye"
                   }
                 }
               }

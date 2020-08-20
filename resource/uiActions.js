@@ -96,7 +96,7 @@ class UIactions {
           console.log("Response from projects dialog: ", response);
           let updateMsg = JSON.stringify({
             "update": {
-              "message": "Updated!"
+              "message": "Type to search projects..."
             },
             "ephemeral_text": "Opening time log dialog..."
           });

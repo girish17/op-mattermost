@@ -17,6 +17,8 @@
 
 */
 
+const Message = require('./message');
+
 module.exports = (app, axios) => {
 
   let hoursLog = 0;
@@ -93,4 +95,10 @@ module.exports = (app, axios) => {
     console.log("Work package save request: ", req);
     uiActions.saveWP(req, res, axios);
   })
+
+  app.post('/bye', (req, res) => {
+    console.log("Bye request: ", req);
+    let msg = new Message(mmURL);
+    msg.showMsg(req, res, axios, ":wave:");
+  });
 }
