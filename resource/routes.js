@@ -35,32 +35,31 @@ module.exports = (app, axios) => {
   });
 
   app.post('/', (req, res) => {
-    const { text, command, token} = req.body;
+    const {command, token} = req.body;
     if(token === process.env.MATTERMOST_SLASH_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
-      if (text !== "") {
-        hoursLog = parseFloat(text);
-        if ((isNaN(hoursLog) || hoursLog < 0.0 || hoursLog > 99.9) || command != "/op") {
-          res.send("*0.1 hour to 99.9 hours works well here :) Let's try again...* \n `/op [hours]`").status(500);
-        }
-        else {
-          uiActions.showSelProject(req, res, axios, "showTimeLogDlg");
-        }
+      if(command === "/op") {
+        uiActions.showMenuButtons(req, res);
       }
       else {
-        uiActions.showMenuButtons(req, res);
+        res.send("*I don't understand ", command, ". Let's try again...* \n `/op`").status(500);
       }
     }
     else {
-      res.send("Invalid request").status(400);
+      res.send("Invalid slash token").status(400);
     }
   });
 
+  app.post('/createTimeLog', (req, res) => {
+    console.log("Create time log request: ", req);
+    uiActions.showSelProject(req, res, axios, "showSelWP");
+  });
+
   app.post('/projSel', (req, res) => {
-    console.log("Project dialog submit request: ", req);
+    console.log("Project submit request: ", req);
     switch (req.body.context.action) {
-      case 'showTimeLogDlg':
-        uiActions.loadTimeLogDlg(req, res, axios, hoursLog);
+      case 'showSelWP':
+        uiActions.showSelWP(req, res, axios, "showTimeLogDlg");
         break;
       case 'createWP':
         uiActions.createWP(req, res, axios);
@@ -71,9 +70,21 @@ module.exports = (app, axios) => {
     }
   });
 
-  app.post('/logTime', (req, res) => {
+  app.post('/wpSel', (req, res) => {
     console.log("Work package submit request: ", req);
-    uiActions.handleSubmission(req, res, axios, hoursLog);
+    switch (req.body.context.action) {
+      case 'showTimeLogDlg':
+        uiActions.loadTimeLogDlg(req, res, axios);
+        break;
+      default:
+        res.send("Invalid action type").status(400);
+        break;  
+    }
+  });
+
+  app.post('/logTime', (req, res) => {
+    console.log("Time log submit request: ", req);
+    uiActions.handleSubmission(req, res, axios);
   });
 
   app.get('/getLogo', (req, res) => {
@@ -97,8 +108,13 @@ module.exports = (app, axios) => {
   })
 
   app.post('/bye', (req, res) => {
-    console.log("Bye request: ", req);
-    let msg = new Message(mmURL);
-    msg.showMsg(req, res, axios, ":wave:");
+    console.log("Request to showBye handler: ", req);
+    let byeMsg = JSON.stringify({
+      "update": {
+        "message": ":wave:",
+        "props": {}
+      },
+    });
+    res.type('application/json').send(byeMsg).status(200);
   });
 }

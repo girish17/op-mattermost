@@ -31,6 +31,7 @@ class UIactions {
     this.mmURL = mmURL;
     this.intURL = intURL;
     this.projectId = '';
+    this.wpId = '';
     this.optLen = 3;
     this.opAuth = {
       username: 'apikey',
@@ -47,22 +48,22 @@ class UIactions {
       auth: this.opAuth
     }).then((response) => {
       console.log("Projects obtained from OP: %o", response);
-      var optArray = [];
+      var projectOptArray = [];
       response.data._embedded.elements.forEach(element => {
-        optArray.push({
+        projectOptArray.push({
           "text": element.name,
           "value": "opt" + element.id
         });
       });
-      let wpOptJSON = '';
+      let projectOptJSON = '';
       if (req.body.text) {
-        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, '');
+        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, '');
       }
       else {
-        wpOptJSON = this.util.getWpOptJSON(this.intURL, optArray, action, 'update');
+        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, 'update');
       }
-      console.log("optArray for projects", wpOptJSON);
-      res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
+      console.log("optArray for projects", projectOptJSON);
+      res.set('Content-Type', 'application/json').send(JSON.stringify(projectOptJSON)).status(200);
     }).catch(error => {
       console.log("Error in getting projects from OP", error);
       res.send("Open Project server down!!").status(500);
@@ -70,56 +71,88 @@ class UIactions {
     });
   }
 
-  loadTimeLogDlg(req, res, axios, hoursLog) {
-    if (req.body.context.action === "showTimeLogDlg") {
-      let optArray = [];
-      this.projectId = req.body.context.selected_option.slice(this.optLen);
-      axios({
-        url: 'projects/' + this.projectId + '/work_packages',
-        method: 'get',
-        baseURL: this.opURL,
-        auth: this.opAuth
-      }).then((response) => {
-        console.log("WP obtained from OP: %o", response);
-        response.data._embedded.elements.forEach(element => {
-          optArray.push({
-            "text": element.subject,
-            "value": "opt" + element.id
-          });
+  showSelWP(req, res, axios, action) {
+    console.log("Request in showSelWP: ", req);
+    this.projectId = req.body.context.selected_option.slice(this.optLen);
+    axios({
+      url: 'projects/' + this.projectId + '/work_packages',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("WP obtained from OP: %o", response);
+      let wpOptArray = [];
+      response.data._embedded.elements.forEach(element => {
+        wpOptArray.push({
+          "text": element.subject,
+          "value": "opt" + element.id
         });
-
-        let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, optArray, hoursLog));
-
-        console.log("logTimeDlgJSON: " + logTimeDlgJSON);
-
-        axios.post(this.mmURL + 'actions/dialogs/open', logTimeDlgJSON).then(response => {
-          console.log("Response from projects dialog: ", response);
-          let updateMsg = JSON.stringify({
-            "update": {
-              "message": "Type to search projects..."
-            },
-            "ephemeral_text": "Opening time log dialog..."
-          });
-          res.type('application/json').send(updateMsg).status(200);
-        }).catch(error => {
-          console.log("Error while creating projects dialog", error);
-          this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
-        })
-      }, (reason) => {
-        console.log("Request failed for /work_packages: %o", reason);
-        return false;
       });
-    }
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, action);
+      console.log("opt Array for WP: ", wpOptJSON);
+      res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
+    }, (reason) => {
+      console.log("Request failed for /work_packages: %o", reason);
+      this.message.showMsg(req, res, axios, this.util.wpFetchErrMsg);
+      return false;
+    });
   }
 
-  handleSubmission(req, res, axios, hoursLog) {
+  loadTimeLogDlg(req, res, axios) {
+    this.wpId = req.body.context.selected_option.slice(this.optLen);
+    axios({
+      url: 'time_entries/form',
+      method: 'post',
+      baseURL: this.opURL,
+      auth: this.opAuth,
+      data: {
+        "_links": {
+          "workPackage": {
+            "href": "/api/v3/work_packages/" + this.wpId
+          }
+        }
+      }
+    }).then((response) => {
+      console.log("Activities obtained from OP: %o", response);
+      let activityOptArray = [];
+      response.data._embedded.schema.activity._embedded.allowedValues.forEach(element => {
+        activityOptArray.push({
+          "text": element.name,
+          "value": "opt" + element.id
+        });
+      });
+      let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, activityOptArray));
+      console.log("logTimeDlgJSON: " + logTimeDlgJSON);
+      axios.post(this.mmURL + 'actions/dialogs/open', logTimeDlgJSON).then(response => {
+        console.log("Response from projects dialog: ", response);
+        let updateMsg = JSON.stringify({
+          "update": {
+            "message": "Updated!",
+            "props": {}
+          },
+          "ephemeral_text": "Opening time log dialog..."
+        });
+        res.type('application/json').send(updateMsg).status(200);
+      }).catch(error => {
+        console.log("Error while creating projects dialog", error);
+        this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
+        return false;
+      });
+    }).catch((error) => {
+      console.log("Error in fetching activities: ", error);
+      this.message.showMsg(req, res, axios, this.util.activityFetchErrMsg);
+      return false;
+    });
+  }
+
+  handleSubmission(req, res, axios) {
     if (req.body.submission) {
-      const { spent_on, comments, billable_hours, activity, work_package } = req.body.submission;
+      const { spent_on, comments, spent_hours, billable_hours, activity} = req.body.submission;
       console.log("Submission data: ");
-      console.log("spent_on: ", spent_on, " comments: ", comments);
-      console.log(" billable_hours: ", billable_hours, " activity: ", activity, " work_package: ", work_package);
+      console.log("spent_on: ", spent_on, " comments: ", comments, " spent_hours: ", spent_hours);
+      console.log(" billable_hours: ", billable_hours, " activity: ", activity);
       if (this.util.checkDate(this.moment, spent_on)) {
-        if (this.util.checkHours(hoursLog, parseFloat(billable_hours))) {
+        if (this.util.checkHours(spent_hours, parseFloat(billable_hours))) {
           /*log time log data to open project*/
           axios({
             url: 'time_entries',
@@ -134,10 +167,10 @@ class UIactions {
                   "href": "/api/v3/time_entries/activities/" + activity.slice(this.optLen)
                 },
                 "workPackage": {
-                  "href": "/api/v3/work_packages/" + work_package.slice(this.optLen)
+                  "href": "/api/v3/work_packages/" + this.wpId
                 }
               },
-              "hours": this.moment.duration(hoursLog, 'h').toISOString(),
+              "hours": this.moment.duration(spent_hours*60, "m"),
               "comment": {
                 "raw": comments
               },
@@ -195,8 +228,8 @@ class UIactions {
           "project": element._links.project.title,
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
-          "loggedHours": this.moment.duration(element.hours).humanize(),
-          "billableHours": this.moment.duration(element.customField1, "hours").humanize(),
+          "loggedHours": this.moment.duration(element.hours, "h").humanize(),
+          "billableHours": element.customField1 + ' hours',
           "comment": element.comment.raw
         });
       });
@@ -206,53 +239,56 @@ class UIactions {
 
   createWP(req, res, axios) {
     console.log("Request to createWP handler: ", req);
-    if (req.body.context.action === "createWP") {
-      this.projectId = req.body.context.selected_option.slice(this.optLen);
+    this.projectId = req.body.context.selected_option.slice(this.optLen);
+    axios({
+      url: 'types',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("Response from get types: ", response);
+      let typeArray = [];
+      response.data._embedded.elements.forEach(element => {
+        typeArray.push({
+          "text": element.name,
+          "value": "opt" + element.id
+        });
+      });
       axios({
-        url: 'types',
+        url: 'projects/' + this.projectId + '/available_assignees',
         method: 'get',
         baseURL: this.opURL,
         auth: this.opAuth
       }).then((response) => {
-        console.log("Response from get types: ", response);
-        let typeArray = [];
+        console.log("Response from get available assignees: ", response);
+        let assigneeArray = [];
         response.data._embedded.elements.forEach(element => {
-          typeArray.push({
+          assigneeArray.push({
             "text": element.name,
             "value": "opt" + element.id
           });
         });
-        axios({
-          url: 'projects/' + this.projectId + '/available_assignees',
-          method: 'get',
-          baseURL: this.opURL,
-          auth: this.opAuth
-        }).then((response) => {
-          console.log("Response from get available assignees: ", response);
-          let assigneeArray = [];
-          response.data._embedded.elements.forEach(element => {
-            assigneeArray.push({
-              "text": element.name,
-              "value": "opt" + element.id
-            });
+        let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
+        axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
+          console.log("Response from wp create dialog: ", response);
+          let updateMsg = JSON.stringify({
+            "update": {
+              "message": "Updated!",
+              "props": {}
+            },
+            "ephemeral_text": "Opening work package create dialog..."
           });
-          let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
-          axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
-            console.log("Response from wp create dialog: ", response);
-            let updateMsg = JSON.stringify({
-              "update": {
-                "message": "Updated!"
-              },
-              "ephemeral_text": "Opening work package create dialog..."
-            });
-            res.type('application/json').send(updateMsg).status(200);
-          }).catch(error => {
-            console.log("Error while creating work package dialog", error);
-            this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
-          });
+          res.type('application/json').send(updateMsg).status(200);
+        }).catch(error => {
+          console.log("Error while creating work package dialog", error);
+          this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
         });
-      })
-    };
+      });
+    }).catch((error) => {
+      console.log("Error in fetching types: ", error);
+      this.message.showMsg(req, res, axios, this.util.typeFetchErrMsg);
+      return false;
+    });
   };
 
   saveWP(req, res, axios) {

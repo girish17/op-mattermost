@@ -22,14 +22,17 @@ const moment = require("moment");
 class Util {
 
   constructor() {
-    this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **";
+    this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op`";
     this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
-    this.timeLogFailMsg = "**That didn't work :pensive: Seems like OP server is down!**";
+    this.timeLogFailMsg = "**That didn't work :pensive: An internal error occured!**";
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try again?**";
-    this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op [hours]`";
-    this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op [hours]`";
+    this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op`";
+    this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op`";
+    this.wpFetchErrMsg = "**That didn't work :pensive: Couldn't fetch work packages from OP**";
+    this.activityFetchErrMsg = "**That didn't work :pensive: Couldn't fetch activities from OP**";
+    this.typeFetchErrMsg = "**That didn't work :pensive: Couldn't to fetch types from OP**";
     this.dlgCancelMsg = "** If you would like to try again then, `/op` **";
     this.genericErrMsg = "** Unknown error occurred :pensive: Can you please try again? **";
   }
@@ -61,7 +64,7 @@ class Util {
     return false;
   }
 
-  getlogTimeDlgObj(triggerId, url, optArray, hoursLog) {
+  getlogTimeDlgObj(triggerId, url, activityOptArray) {
     let logTimeDlgObj = {
       "trigger_id": triggerId,
       "url": url + 'logTime',
@@ -69,14 +72,7 @@ class Util {
         "callback_id": "log_time_dlg",
         "title": "Log time for work package",
         "icon_url": url + 'getLogo',
-        "elements": [{
-          "display_name": "Work package",
-          "name": "work_package",
-          "type": "select",
-          "placeholder": "Type to search for a work package",
-          "options": optArray,
-          "default": optArray[0].value
-        },
+        "elements": [
         {
           "display_name": "Date",
           "name": "spent_on",
@@ -97,33 +93,15 @@ class Util {
           "name": "activity",
           "type": "select",
           "placeholder": "Type to search for activity",
-          "options": [
-            {
-              "text": "Development",
-              "value": "opt3"
-            },
-            {
-              "text": "Management",
-              "value": "opt1"
-            },
-            {
-              "text": "Specification",
-              "value": "opt2"
-            },
-            {
-              "text": "Testing",
-              "value": "opt4"
-            },
-            {
-              "text": "Support",
-              "value": "opt5"
-            },
-            {
-              "text": "Other",
-              "value": "opt6"
-            },
-          ],
-          "default": "opt3"
+          "options": activityOptArray,
+          "default": activityOptArray[0].value
+        },
+        {
+          "display_name": "Spent hours",
+          "name": "spent_hours",
+          "type": "text",
+          "placeholder": "hours like 0.5, 1, 3 ...",
+          "help_text": "Please enter spent hours to be logged"
         },
         {
           "display_name": "Billable hours",
@@ -131,7 +109,7 @@ class Util {
           "type": "text",
           "placeholder": "hours like 0.5, 1, 3 ...",
           "default": "0.0",
-          "help_text": "Please enter billable hours less than or equal to " + hoursLog
+          "help_text": "Please ensure billable hours is less than or equal to spent hours"
         }],
         "submit_label": "Log time",
         "notify_on_cancel": true
@@ -141,10 +119,10 @@ class Util {
     return logTimeDlgObj;
   }
 
-  getWpOptJSON(url, optArray, action, mode) {
-    let wpOptObj = {
+  getProjectOptJSON(url, optArray, action, mode) {
+    let projectOptObj = {
       "response_type": "in_channel",
-      "message": "Type to search for a project...",
+      "message": "*Please select a project*",
       "props": {
         "attachments": [
           {
@@ -166,13 +144,41 @@ class Util {
     };
     if (mode === 'update') {
       let optJSON = {
-        "update": wpOptObj
+        "update": projectOptObj
       };
       return optJSON;
     }
     else {
-      return wpOptObj;
+      return projectOptObj;
     }
+  }
+
+  getWpOptJSON(url, optArray, action) {
+    let wpOptJSON = {
+      "update": {
+        "response_type": "in_channel",
+        "message": "*Please select a work package*",
+        "props": {
+          "attachments": [
+            {
+              "actions": [
+                {
+                  "name": "Type to search for a work package...",
+                  "integration": {
+                    "url": url + "wpSel",
+                    "context": {
+                      "action": action
+                    }
+                  },
+                  "type": "select",
+                  "options": optArray
+                }]
+            }
+          ]
+        }
+      }
+    };
+    return wpOptJSON;
   }
 
   getTimeLogJSON(timeLogArray) {
@@ -256,9 +262,18 @@ class Util {
       "props": {
         "attachments": [
           {
-            "pretext": "Hello :) What would you like to do?",
-            "text": "For *logging time*, try `/op` followed by hours e.g. `/op 1`",
+            "pretext": "Hello :)",
+            "text": "What would you like me to do?",
             "actions": [
+              {
+                "name": "Log time",
+                "integration": {
+                  "url": url + "createTimeLog",
+                  "context": {
+                    "action": "showSelWP"
+                  }
+                }
+              },
               {
                 "name": "Create Work Package",
                 "integration": {
