@@ -27,7 +27,7 @@ class Util {
     this.timeLogFailMsg = "**That didn't work :pensive: An internal error occured!**";
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
-    this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try again?**";
+    this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op` again?**";
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op`";
     this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op`";
     this.wpFetchErrMsg = "**That didn't work :pensive: Couldn't fetch work packages from OP**";
