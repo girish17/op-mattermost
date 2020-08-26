@@ -1,6 +1,9 @@
 # op-mattermost                                             
 
-[OpenProject](https://www.openproject.org/) and [Mattermost](https://mattermost.com/) integration to log time for a work package. This integration is built along the lines of [op-slack-connector](https://github.com/girish17/op-slack-connector). For latest code and wiki, please visit the [Notabug repository](https://notabug.org/girishm/op-mattermost) for this project.
+[OpenProject](https://www.openproject.org/) integration for [Mattermost](https://mattermost.com/). Currently supports following operations using a slash command -
+	- Create time entry for a work package
+	- Create work package for a project
+	- View time logs
 
 ## Dependencies
 
