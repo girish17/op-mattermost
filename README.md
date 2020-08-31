@@ -57,6 +57,8 @@
 
 ## COPYING
 
+![GPLv3 or later](resource/gplv3-or-later.png)
+
 Copyright (C) 2020, 2019 Girish M
 
 This program is free software: you can redistribute it and/or modify
