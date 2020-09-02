@@ -182,8 +182,9 @@ class Util {
   }
 
   getTimeLogJSON(timeLogArray) {
+    let tableTxt = '';
     if (timeLogArray.length != 0) {
-      let tableTxt = "#### Time entries logged by you\n";
+      tableTxt = "#### Time entries logged by you\n";
       tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment |\n";
       tableTxt += "|:---------|:--------|:-------------|:---------|:------------|:------------|:--------|\n";
       timeLogArray.forEach(element => {
