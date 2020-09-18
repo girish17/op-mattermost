@@ -33,11 +33,11 @@
   - [Download and install](https://nodejs.org/en/download/)
   - Run `npm install` to install npm dependencies
 
-## Development setup
+## Setup
 
 - Fork and `git clone` the repo using HTTPS
 - Install and launch all the dependencies as mentioned above and open the cloned directory in an editor or IDE of your choice
-- Run `sh configure.sh` to create `.env` using bash command line. The entries in `.env` would contain following:
+- Run `sh configure.sh` to create `.env` using bash command line. Alternatively, create a `.env` file using a text editor with the following entries:
     - `OP_URL=http://<your host or ip address>:8080/api/v3/   #needed for pointing to OpenProject installation`
     - `INT_URL=http://<your host or ip address>:3000/         #needed for exposing the integration running on port 3000`
     - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`  
