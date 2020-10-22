@@ -18,13 +18,13 @@
   - [Download and install](https://docs.docker.com/install/) instructions
 - OpenProject
   - Quick install
-    - `docker run -it -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:latest` or
+    - `docker run -it -p 8080:80 -e SECRET_KEY_BASE=secret openproject/community:11` or
   - Recommended install
     - `sudo mkdir -p /var/lib/openproject/{pgdata, static}`
     - `docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret 
        -v /var/lib/openproject/pgdata:/var/openproject/pgdata 
        -v /var/lib/openproject/static:/var/openproject/assets
-       openproject/community:latest`
+       openproject/community:11`
     - `docker stop openproject`
     - `docker start openproject`
 - Mattermost
