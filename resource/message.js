@@ -39,12 +39,12 @@ class Message {
                 console.log('message posted: %o', result);
                 if (result.data) {
                     res.send('Show message post succeeded!').status(200);
-                    return;
+
                 }
                 else {
                     console.log('Show message post failed!');
                     res.send().status(400);
-                    return;
+
                 }
             }).catch((err) => {
                 console.log('Show message post failed: %o', err);

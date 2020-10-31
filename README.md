@@ -1,6 +1,6 @@
 # op-mattermost                                             
 
-[OpenProject](https://www.openproject.org/) integration for [Mattermost](https://mattermost.com/). Currently supports following operations using a slash command -
+[OpenProject](https://www.openproject.org/) integration for [Mattermost](https://mattermost.com/). Currently, supports following operations using a slash command -
 	- Create time entry for a work package
 	- Create work package for a project
 	- View time logs
@@ -47,8 +47,8 @@
 - In the project root directory do `npm init` to generate (or update existing) package.json file
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
-- Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html) and provide local host or IP address (with port 3000) as the request URL
-- In OpenProject, create a custom field `billable hours` for all workpackages in a project
+- Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html) and provide localhost or IP address (with port 3000) as the request URL
+- In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 
 ## Demo

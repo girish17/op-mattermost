@@ -24,7 +24,7 @@ class Util {
   constructor() {
     this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op`";
     this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
-    this.timeLogFailMsg = "**That didn't work :pensive: An internal error occured!**";
+    this.timeLogFailMsg = "**That didn't work :pensive: An internal error occurred!**";
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op` again?**";
@@ -43,11 +43,7 @@ class Util {
     }
     else {
       /*Check for billable hours to be less than hours log*/
-      if (hours <= hoursLog) {
-        return true;
-      }
-      else
-        return false;
+      return hours <= hoursLog;
     }
   }
 
@@ -58,14 +54,13 @@ class Util {
     if (moment().isLeapYear()) {
       daysUpperBound = 366;
     }
-    if (dateDiff >= 0 && dateDiff <= daysUpperBound)
-      return true;
+    return dateDiff >= 0 && dateDiff <= daysUpperBound;
 
-    return false;
+
   }
 
-  getlogTimeDlgObj(triggerId, url, activityOptArray) {
-    let logTimeDlgObj = {
+  getLogTimeDlgObj(triggerId, url, activityOptArray) {
+    return {
       "trigger_id": triggerId,
       "url": url + 'logTime',
       "dialog": {
@@ -73,50 +68,48 @@ class Util {
         "title": "Log time for work package",
         "icon_url": url + 'getLogo',
         "elements": [
-        {
-          "display_name": "Date",
-          "name": "spent_on",
-          "type": "text",
-          "placeholder": "YYYY-MM-DD",
-          "help_text": "Please enter date within last one year and in YYYY-MM-DD format",
-          "default": moment().format('YYYY-MM-DD')
-        },
-        {
-          "display_name": "Comment",
-          "name": "comments",
-          "type": "textarea",
-          "placeholder": "Please mention comments if any",
-          "optional": true
-        },
-        {
-          "display_name": "Select Activity",
-          "name": "activity",
-          "type": "select",
-          "placeholder": "Type to search for activity",
-          "options": activityOptArray,
-          "default": activityOptArray[0].value
-        },
-        {
-          "display_name": "Spent hours",
-          "name": "spent_hours",
-          "type": "text",
-          "placeholder": "hours like 0.5, 1, 3 ...",
-          "help_text": "Please enter spent hours to be logged"
-        },
-        {
-          "display_name": "Billable hours",
-          "name": "billable_hours",
-          "type": "text",
-          "placeholder": "hours like 0.5, 1, 3 ...",
-          "default": "0.0",
-          "help_text": "Please ensure billable hours is less than or equal to spent hours"
-        }],
+          {
+            "display_name": "Date",
+            "name": "spent_on",
+            "type": "text",
+            "placeholder": "YYYY-MM-DD",
+            "help_text": "Please enter date within last one year and in YYYY-MM-DD format",
+            "default": moment().format('YYYY-MM-DD')
+          },
+          {
+            "display_name": "Comment",
+            "name": "comments",
+            "type": "textarea",
+            "placeholder": "Please mention comments if any",
+            "optional": true
+          },
+          {
+            "display_name": "Select Activity",
+            "name": "activity",
+            "type": "select",
+            "placeholder": "Type to search for activity",
+            "options": activityOptArray,
+            "default": activityOptArray[0].value
+          },
+          {
+            "display_name": "Spent hours",
+            "name": "spent_hours",
+            "type": "text",
+            "placeholder": "hours like 0.5, 1, 3 ...",
+            "help_text": "Please enter spent hours to be logged"
+          },
+          {
+            "display_name": "Billable hours",
+            "name": "billable_hours",
+            "type": "text",
+            "placeholder": "hours like 0.5, 1, 3 ...",
+            "default": "0.0",
+            "help_text": "Please ensure billable hours is less than or equal to spent hours"
+          }],
         "submit_label": "Log time",
         "notify_on_cancel": true
       }
-    }
-
-    return logTimeDlgObj;
+    };
   }
 
   getProjectOptJSON(url, optArray, action, mode) {
@@ -143,10 +136,9 @@ class Util {
       }
     };
     if (mode === 'update') {
-      let optJSON = {
+      return {
         "update": projectOptObj
       };
-      return optJSON;
     }
     else {
       return projectOptObj;
@@ -154,7 +146,7 @@ class Util {
   }
 
   getWpOptJSON(url, optArray, action) {
-    let wpOptJSON = {
+    return {
       "update": {
         "response_type": "in_channel",
         "message": "*Please select a work package*",
@@ -178,12 +170,11 @@ class Util {
         }
       }
     };
-    return wpOptJSON;
   }
 
   getTimeLogJSON(timeLogArray) {
     let tableTxt = '';
-    if (timeLogArray.length != 0) {
+    if (timeLogArray.length !== 0) {
       tableTxt = "#### Time entries logged by you\n";
       tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment |\n";
       tableTxt += "|:---------|:--------|:-------------|:---------|:------------|:------------|:--------|\n";
@@ -194,13 +185,12 @@ class Util {
         tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n";
       });
 
-      let timeLogJSON = {
+      return {
         "update": {
           "message": tableTxt,
           "props": {}
         }
       };
-      return timeLogJSON;
     }
     else {
       return {
@@ -213,7 +203,7 @@ class Util {
   }
 
   getWpCreateJSON(triggerId, url, typeArray, assigneeArray) {
-    let createWpDlgObj = {
+    return {
       "trigger_id": triggerId,
       "url": url + 'saveWP',
       "dialog": {
@@ -226,39 +216,38 @@ class Util {
           "type": "text",
           "placeholder": "Name of work package"
         },
-        {
-          "display_name": "Select Type",
-          "name": "type",
-          "type": "select",
-          "placeholder": "Type to search for type",
-          "options": typeArray,
-          "default": "opt1"
-        },
-        {
-          "display_name": "Assignee",
-          "name": "assignee",
-          "type": "select",
-          "placeholder": "Type to search for users",
-          "options": assigneeArray,
-          "optional": true
-        },
-        {
-          "display_name": "Notify interested users?",
-          "placeholder": "Send email.",
-          "name": "notify",
-          "type": "bool",
-          "optional": true,
-          "help_text": "Note that this controls notifications for all users interested in changes to the work package (e.g. current user, watchers, author and assignee)"
-        }],
+          {
+            "display_name": "Select Type",
+            "name": "type",
+            "type": "select",
+            "placeholder": "Type to search for type",
+            "options": typeArray,
+            "default": "opt1"
+          },
+          {
+            "display_name": "Assignee",
+            "name": "assignee",
+            "type": "select",
+            "placeholder": "Type to search for users",
+            "options": assigneeArray,
+            "optional": true
+          },
+          {
+            "display_name": "Notify interested users?",
+            "placeholder": "Send email.",
+            "name": "notify",
+            "type": "bool",
+            "optional": true,
+            "help_text": "Note that this controls notifications for all users interested in changes to the work package (e.g. current user, watchers, author and assignee)"
+          }],
         "submit_label": "Create Work Package",
         "notify_on_cancel": true
       }
-    }
-    return createWpDlgObj;
+    };
   }
 
   getMenuButtonJSON(url) {
-    let menuButtonJSON = {
+    return {
       "response_type": "in_channel",
       "props": {
         "attachments": [
@@ -306,8 +295,7 @@ class Util {
           }
         ]
       }
-    }
-    return menuButtonJSON;
+    };
   }
 }
 module.exports = Util;

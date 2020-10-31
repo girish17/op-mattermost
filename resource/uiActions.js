@@ -16,9 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 */
-
-const { response } = require('express');
-
+// noinspection JSUnresolvedVariable
 class UIactions {
 
   constructor(opURL, mmURL, intURL) {
@@ -48,14 +46,14 @@ class UIactions {
       auth: this.opAuth
     }).then((response) => {
       console.log("Projects obtained from OP: %o", response);
-      var projectOptArray = [];
+      let projectOptArray = [];
       response.data._embedded.elements.forEach(element => {
         projectOptArray.push({
           "text": element.name,
           "value": "opt" + element.id
         });
       });
-      let projectOptJSON = '';
+      let projectOptJSON;
       if (req.body.text) {
         projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, '');
       }
@@ -73,6 +71,7 @@ class UIactions {
 
   showSelWP(req, res, axios, action) {
     console.log("Request in showSelWP: ", req);
+    // noinspection JSUnresolvedVariable
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
       url: 'projects/' + this.projectId + '/work_packages',
@@ -121,7 +120,7 @@ class UIactions {
           "value": "opt" + element.id
         });
       });
-      let logTimeDlgJSON = JSON.stringify(this.util.getlogTimeDlgObj(req.body.trigger_id, this.intURL, activityOptArray));
+      let logTimeDlgJSON = JSON.stringify(this.util.getLogTimeDlgObj(req.body.trigger_id, this.intURL, activityOptArray));
       console.log("logTimeDlgJSON: " + logTimeDlgJSON);
       axios.post(this.mmURL + 'actions/dialogs/open', logTimeDlgJSON).then(response => {
         console.log("Response from projects dialog: ", response);
@@ -184,7 +183,7 @@ class UIactions {
             return true;
           }).catch((error) => {
             console.log("OP time entries create error: %o", error);
-            if (error.response.status == 403) {
+            if (error.response.status === 403) {
               this.message.showMsg(req, res, axios, this.util.timeLogForbiddenMsg);
             }
             else {
@@ -221,7 +220,7 @@ class UIactions {
       auth: this.opAuth
     }).then((response) => {
       console.log("Time entries obtained from OP: %o", response);
-      var timeLogArray = [];
+      let timeLogArray = [];
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
           "spentOn": element.spentOn,
@@ -326,7 +325,7 @@ class UIactions {
         return true;
       }).catch((error) => {
         console.log("OP WP entries create error: %o", error);
-        if (error.response.status == 403) {
+        if (error.response.status === 403) {
           this.message.showMsg(req, res, axios, this.util.timeLogForbiddenMsg);
         }
         else {

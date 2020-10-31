@@ -17,11 +17,11 @@
 
 */
 
-const Message = require('./message');
+require('./message');
 
 module.exports = (app, axios) => {
 
-  let hoursLog = 0;
+
 
   const opURL = process.env.OP_URL;
   const mmURL = process.env.MM_URL;
