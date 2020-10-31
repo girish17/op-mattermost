@@ -24,19 +24,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/op-mattermost.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/message.js" beforeDir="false" afterPath="$PROJECT_DIR$/resource/message.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/resource/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/uiActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/resource/uiActions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/resource/util.js" afterDir="false" />
+    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="webstorm code inspection - suggested fixes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +33,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1jUjSnm38AohYPfD9fdxFzFQjdk" />
@@ -83,8 +77,16 @@
       <updated>1603865570130</updated>
       <workItem from="1603865573666" duration="2280000" />
       <workItem from="1604147839981" duration="1263000" />
-      <workItem from="1604155958646" duration="194000" />
+      <workItem from="1604155958646" duration="522000" />
     </task>
+    <task id="LOCAL-00001" summary="webstorm code inspection - suggested fixes">
+      <created>1604156310894</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1604156310894</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -101,6 +103,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="webstorm code inspection - suggested fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="webstorm code inspection - suggested fixes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="229" y="523" width="1084" height="732" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603866096544">
@@ -179,6 +185,10 @@
       <screen x="0" y="356" width="1920" height="1173" />
     </state>
     <state x="282" y="500" width="977" height="733" key="SettingsEditor/0.356.1920.1173/1920.0.1200.1920@0.356.1920.1173" timestamp="1603865669029" />
+    <state x="555" y="678" width="800" height="531" key="Vcs.Push.Dialog.v2" timestamp="1604156486375">
+      <screen x="0" y="356" width="1920" height="1173" />
+    </state>
+    <state x="555" y="678" width="800" height="531" key="Vcs.Push.Dialog.v2/0.356.1920.1173/1920.0.1200.1920@0.356.1920.1173" timestamp="1604156486375" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
