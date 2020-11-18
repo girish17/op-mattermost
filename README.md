@@ -27,7 +27,7 @@
        openproject/community:11`
     - `docker stop openproject`
     - `docker start openproject`
-    For up to date info on OpenProject installation refer their [official docs](https://docs.openproject.org/installation-and-operations/installation/docker).
+  - For up to date info on OpenProject installation refer their [official docs](https://docs.openproject.org/installation-and-operations/installation/docker).
 - Mattermost
   - `docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview`
 - Node js
