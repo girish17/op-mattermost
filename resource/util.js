@@ -95,6 +95,7 @@ class Util {
             "name": "spent_hours",
             "type": "text",
             "placeholder": "hours like 0.5, 1, 3 ...",
+            "default": "0.5",
             "help_text": "Please enter spent hours to be logged"
           },
           {
