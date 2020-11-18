@@ -56,7 +56,6 @@ class Util {
     }
     return dateDiff >= 0 && dateDiff <= daysUpperBound;
 
-
   }
 
   getLogTimeDlgObj(triggerId, url, activityOptArray) {
@@ -193,6 +192,7 @@ class Util {
       };
     }
     else {
+      tableTxt = "Couldn't find time entries logged by you :confused: Try logging time using `/op`";
       return {
         "update": {
           "message": tableTxt,

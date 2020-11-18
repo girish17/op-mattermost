@@ -174,7 +174,7 @@ class UIactions {
                 "raw": comments
               },
               "spentOn": spent_on,
-              "customField1": billable_hours
+              "customField2": billable_hours
             },
             auth: this.opAuth
           }).then((response) => {
@@ -228,7 +228,7 @@ class UIactions {
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
           "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": element.customField1 + ' hours',
+          "billableHours": element.customField2 + ' hours',
           "comment": element.comment.raw
         });
       });
