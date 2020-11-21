@@ -182,7 +182,7 @@ class Util {
         if (element.comment === null) {
           element.comment = "";
         }
-        tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment + " |\n";
+        tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment.replace(/\n/g, " ") + " |\n";
       });
 
       return {
