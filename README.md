@@ -1,9 +1,9 @@
 # op-mattermost      ![Node.js CI](https://github.com/girish17/op-mattermost/workflows/Node.js%20CI/badge.svg)                                       
 
 [OpenProject](https://www.openproject.org/) integration for [Mattermost](https://mattermost.com/). Currently, supports following operations using a slash command -
-	- Create time entry for a work package
-	- Create work package for a project
-	- View time logs
+- Create time entry for a work package
+- Create work package for a project
+- View time logs
 
 ## Dependencies
 
