@@ -45,7 +45,7 @@
     - `MATTERMOST_ACCESS_TOKEN=<personal access token>        #https://docs.mattermost.com/developer/personal-access-tokens.html`
     - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>  #needed for slash command validation`
     - `OP_ACCESS_TOKEN=<openproject access token (a.k.a apikey) obtained from user account page>`
-- In the project root directory do `npm init` to generate (or update existing) package.json file
+- In the project root directory do `npm init` to generate (or update existing) `package.json` file
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
 - Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html) and provide localhost or IP address (with port 3000) as the request URL
