@@ -24,10 +24,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="changed to MATTERMOST_BOT_TOKEN">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/utilTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/test/utilTest.js" afterDir="false" />
-    </list>
+    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +99,7 @@
       <workItem from="1608274505797" duration="138000" />
       <workItem from="1608274660159" duration="2556000" />
       <workItem from="1608547408924" duration="22000" />
-      <workItem from="1609741736021" duration="321000" />
+      <workItem from="1609741736021" duration="649000" />
     </task>
     <task id="LOCAL-00001" summary="webstorm code inspection - suggested fixes">
       <created>1604156310894</created>
@@ -153,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608205395500</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="1. changed one year to 365 days in unit test 2. added donate button in README.md">
+      <created>1609742189215</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1609742189215</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,7 +183,8 @@
     <MESSAGE value="spent hours default value setting" />
     <MESSAGE value="new line in comments removed from time logs" />
     <MESSAGE value="changed to MATTERMOST_BOT_TOKEN" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed to MATTERMOST_BOT_TOKEN" />
+    <MESSAGE value="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
