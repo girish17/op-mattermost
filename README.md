@@ -1,4 +1,4 @@
-# op-mattermost      ![Node.js CI](https://github.com/girish17/op-mattermost/workflows/Node.js%20CI/badge.svg)                                       
+# op-mattermost      ![Node.js CI](https://github.com/girish17/op-mattermost/workflows/Node.js%20CI/badge.svg)  [![Donation](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/GirishModiletappa)                                     
 
 [OpenProject](https://www.openproject.org/) integration for [Mattermost](https://mattermost.com/). Currently, supports following operations using a slash command -
 - Create time entry for a work package
