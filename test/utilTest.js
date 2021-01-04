@@ -53,8 +53,8 @@ describe('Tests for util class', () => {
 
         let moment = require('moment');
 
-        it('true when date within last one year', () => {
-            let dateWithinOneYear = moment().subtract(1, 'year').format('YYYY-MM-DD').toString();
+        it('true when date within last one year i.e. 365 days', () => {
+            let dateWithinOneYear = moment().subtract(365, 'day').format('YYYY-MM-DD').toString();
             assert.equal(util.checkDate(moment, dateWithinOneYear), true);
         });
 
