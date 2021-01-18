@@ -54,7 +54,7 @@
 
 ## Demo
 
-[Demo video](resource/op-mattermost-demo-v2.gif) recorded using [vlc](https://www.videolan.org/vlc) and converted to GIF using [ffmpeg](https://ffmpeg.org)
+![Demo video](resource/op-mattermost-demo-v2.gif) recorded using [vlc](https://www.videolan.org/vlc) and converted to GIF using [ffmpeg](https://ffmpeg.org)
 
 ## COPYING
 
