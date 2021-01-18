@@ -2,3 +2,4 @@
 node_modules
 workspaceConfig.code-workspace
 .vscode
+.idea
