@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -24,7 +27,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
+    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,7 +104,8 @@
       <workItem from="1608274505797" duration="138000" />
       <workItem from="1608274660159" duration="2556000" />
       <workItem from="1608547408924" duration="22000" />
-      <workItem from="1609741736021" duration="649000" />
+      <workItem from="1609741736021" duration="1087000" />
+      <workItem from="1609745916567" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="webstorm code inspection - suggested fixes">
       <created>1604156310894</created>
