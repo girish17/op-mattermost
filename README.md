@@ -52,6 +52,10 @@
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 
+## Wiki
+
+Development wiki is available [here](https://github.com/girish17/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
+
 ## Demo
 
 [Demo video](resource/op-mattermost-demo-v2.gif) recorded using [vlc](https://www.videolan.org/vlc) and converted to GIF using [ffmpeg](https://ffmpeg.org)
