@@ -29,6 +29,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configure.sh" beforeDir="false" afterPath="$PROJECT_DIR$/configure.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +48,14 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1jUjSnm38AohYPfD9fdxFzFQjdk" />
   <component name="ProjectViewState">
@@ -106,6 +117,12 @@
       <workItem from="1608547408924" duration="22000" />
       <workItem from="1609741736021" duration="1087000" />
       <workItem from="1609745916567" duration="11000" />
+      <workItem from="1612196487367" duration="41000" />
+      <workItem from="1615305162371" duration="621000" />
+      <workItem from="1615360680907" duration="22000" />
+      <workItem from="1615630027039" duration="1210000" />
+      <workItem from="1615739424626" duration="7000" />
+      <workItem from="1615869587810" duration="7839000" />
     </task>
     <task id="LOCAL-00001" summary="webstorm code inspection - suggested fixes">
       <created>1604156310894</created>
