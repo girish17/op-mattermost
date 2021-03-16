@@ -26,6 +26,7 @@
     - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`  
     - `MATTERMOST_ACCESS_TOKEN=<personal access token>        #https://docs.mattermost.com/developer/personal-access-tokens.html`
     - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>  #needed for slash command validation`
+    - `MATTERMOST_BOT_TOKEN=<use the mattermost bot access token>  #needed for validation for posting messages as bot`
     - `OP_ACCESS_TOKEN=<openproject access token (a.k.a apikey) obtained from user account page>`
 - In the project root directory do `npm init` to generate (or update existing) `package.json` file
 - Then run `npm install` to download and install the node modules from npm
