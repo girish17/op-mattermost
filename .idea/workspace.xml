@@ -4,30 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BranchesTreeState">
-    <expand>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:notabug" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md">
+    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="added wiki info">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -106,6 +87,9 @@
       <workItem from="1608547408924" duration="22000" />
       <workItem from="1609741736021" duration="1087000" />
       <workItem from="1609745916567" duration="11000" />
+      <workItem from="1612263079010" duration="3470000" />
+      <workItem from="1612424825309" duration="3580000" />
+      <workItem from="1615997758155" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="webstorm code inspection - suggested fixes">
       <created>1604156310894</created>
@@ -172,11 +156,41 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
           </value>
         </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="1" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
@@ -191,6 +205,76 @@
     <MESSAGE value="changed to MATTERMOST_BOT_TOKEN" />
     <MESSAGE value="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
     <option name="LAST_COMMIT_MESSAGE" value="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1896" height="976" key="GridCell.Tab.0.bottom" timestamp="1612270941318">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.0.bottom/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941318" />
+    <state width="1896" height="976" key="GridCell.Tab.0.center" timestamp="1612270941318">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.0.center/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941318" />
+    <state width="1896" height="976" key="GridCell.Tab.0.left" timestamp="1612270941317">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.0.left/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941317" />
+    <state width="1896" height="976" key="GridCell.Tab.0.right" timestamp="1612270941318">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.0.right/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941318" />
+    <state width="1896" height="976" key="GridCell.Tab.1.bottom" timestamp="1612270941322">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.1.bottom/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941322" />
+    <state width="1896" height="976" key="GridCell.Tab.1.center" timestamp="1612270941318">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.1.center/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941318" />
+    <state width="1896" height="976" key="GridCell.Tab.1.left" timestamp="1612270941318">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.1.left/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941318" />
+    <state width="1896" height="976" key="GridCell.Tab.1.right" timestamp="1612270941318">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.1.right/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941318" />
+    <state width="1896" height="976" key="GridCell.Tab.2.bottom" timestamp="1612270941323">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.2.bottom/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941323" />
+    <state width="1896" height="976" key="GridCell.Tab.2.center" timestamp="1612270941322">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.2.center/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941322" />
+    <state width="1896" height="976" key="GridCell.Tab.2.left" timestamp="1612270941322">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.2.left/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941322" />
+    <state width="1896" height="976" key="GridCell.Tab.2.right" timestamp="1612270941322">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.2.right/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941322" />
+    <state width="1896" height="976" key="GridCell.Tab.3.bottom" timestamp="1612270941323">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.3.bottom/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941323" />
+    <state width="1896" height="976" key="GridCell.Tab.3.center" timestamp="1612270941323">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.3.center/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941323" />
+    <state width="1896" height="976" key="GridCell.Tab.3.left" timestamp="1612270941323">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.3.left/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941323" />
+    <state width="1896" height="976" key="GridCell.Tab.3.right" timestamp="1612270941323">
+      <screen x="0" y="406" width="1920" height="1152" />
+    </state>
+    <state width="1896" height="976" key="GridCell.Tab.3.right/0.406.1920.1152/1920.0.1200.1920@0.406.1920.1152" timestamp="1612270941323" />
+    <state x="2115" y="698" width="802" height="528" key="Vcs.Push.Dialog.v2" timestamp="1612164836509">
+      <screen x="1920" y="0" width="1200" height="1920" />
+    </state>
+    <state x="2115" y="698" width="802" height="528" key="Vcs.Push.Dialog.v2/0.406.1920.1152/1920.0.1200.1920@1920.0.1200.1920" timestamp="1612164836509" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
