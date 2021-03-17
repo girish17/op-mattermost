@@ -7,8 +7,8 @@
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "moment": "^2.24.0",
-    "nodemon": "^2.0.4"
+    "moment": "^2.29.1",
+    "nodemon": "^2.0.7"
   },
   "scripts": {
     "test": "mocha",
@@ -34,10 +34,10 @@
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
-    "chai": "^4.2.0",
-    "mocha": "^7.1.1",
+    "chai": "^4.3.4",
+    "mocha": "^7.2.0",
     "should": "^13.2.3",
-    "sinon": "^9.0.1",
+    "sinon": "^9.2.4",
     "supertest": "^4.0.2"
   }
 }
