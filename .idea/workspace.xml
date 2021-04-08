@@ -27,7 +27,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md" />
+    <list default="true" id="3ee663f2-6582-4cac-8db5-1e1d8f9afff2" name="Default Changelist" comment="1. changed one year to 365 days in unit test 2. added donate button in README.md">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/uiActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/resource/uiActions.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,6 +62,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -69,6 +74,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="aws" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -117,7 +123,15 @@
       <workItem from="1615360680907" duration="22000" />
       <workItem from="1615630027039" duration="1210000" />
       <workItem from="1615739424626" duration="7000" />
-      <workItem from="1615869587810" duration="8186000" />
+      <workItem from="1615869587810" duration="8802000" />
+      <workItem from="1615963256688" duration="611000" />
+      <workItem from="1617260932193" duration="1116000" />
+      <workItem from="1617348114067" duration="695000" />
+      <workItem from="1617553560287" duration="18000" />
+      <workItem from="1617607782893" duration="271000" />
+      <workItem from="1617685754453" duration="642000" />
+      <workItem from="1617770550446" duration="2748000" />
+      <workItem from="1617858846930" duration="6525000" />
     </task>
     <task id="LOCAL-00001" summary="webstorm code inspection - suggested fixes">
       <created>1604156310894</created>

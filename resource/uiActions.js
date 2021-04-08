@@ -40,7 +40,7 @@ class UIactions {
   showSelProject(req, res, axios, action) {
     console.log("Request in showSelProject: ", req);
     axios({
-      url: 'projects',
+      url: 'projects?sortBy=[["created_at","desc"]]',
       method: 'get',
       baseURL: this.opURL,
       auth: this.opAuth
@@ -74,7 +74,7 @@ class UIactions {
     // noinspection JSUnresolvedVariable
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
-      url: 'projects/' + this.projectId + '/work_packages',
+      url: 'projects/' + this.projectId + '/work_packages?sortBy=[["created_at","desc"]]',
       method: 'get',
       baseURL: this.opURL,
       auth: this.opAuth
