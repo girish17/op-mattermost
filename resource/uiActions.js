@@ -179,7 +179,7 @@ class UIactions {
             auth: this.opAuth
           }).then((response) => {
             console.log("Time logged. Save response: %o", response);
-            this.message.showMsg(req, res, axios, this.util.timeLogSuccessMsg);
+            this.message.showMsg(req, res, axios, "Time entry ID - " + response.data.id + this.util.timeLogSuccessMsg);
             return true;
           }).catch((error) => {
             console.log("OP time entries create error: %o", error);
@@ -312,7 +312,7 @@ class UIactions {
           "href": "/api/v3/users/" + assignee.slice(this.optLen)
         }
       }
-      /*save workpackage to openproject*/
+      /*save work-package to OpenProject*/
       axios({
         url: 'work_packages?notify=' + notify,
         method: 'post',
@@ -321,7 +321,7 @@ class UIactions {
         auth: this.opAuth
       }).then(response => {
         console.log("Work package saved. Save response: %o", response);
-        this.message.showMsg(req, res, axios, this.util.saveWPSuccessMsg);
+        this.message.showMsg(req, res, axios, "Work package ID - " + response.data.id + this.util.saveWPSuccessMsg);
         return true;
       }).catch((error) => {
         console.log("OP WP entries create error: %o", error);

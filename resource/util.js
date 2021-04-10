@@ -22,14 +22,14 @@ const moment = require("moment");
 class Util {
 
   constructor() {
-    this.timeLogSuccessMsg = "**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op`";
+    this.timeLogSuccessMsg = "\n**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op`";
     this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
     this.timeLogFailMsg = "**That didn't work :pensive: An internal error occurred!**";
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op` again?**";
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op`";
-    this.saveWPSuccessMsg = "**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op`";
+    this.saveWPSuccessMsg = "\n**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op`";
     this.wpFetchErrMsg = "**That didn't work :pensive: Couldn't fetch work packages from OP**";
     this.activityFetchErrMsg = "**That didn't work :pensive: Couldn't fetch activities from OP**";
     this.typeFetchErrMsg = "**That didn't work :pensive: Couldn't to fetch types from OP**";
