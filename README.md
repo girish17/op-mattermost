@@ -4,6 +4,7 @@
 - Create time entry for a work package
 - Create work package for a project
 - View time logs
+- Delete time log
 
 ## Dependencies
 
