@@ -29,6 +29,7 @@ class UIactions {
     this.mmURL = mmURL;
     this.intURL = intURL;
     this.projectId = '';
+    this.timeLogId = '';
     this.wpId = '';
     this.optLen = 3;
     this.opAuth = {
@@ -212,7 +213,7 @@ class UIactions {
   }
 
   getTimeLog(req, res, axios) {
-    console.log("Request to getTimeLog: ", req);
+    console.log("Request to getTimeLog handler: ", req);
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
@@ -233,6 +234,51 @@ class UIactions {
         });
       });
       res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
+    }).catch((error) => {
+      console.log("Error in getting time logs: ", error);
+      this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
+    });
+  };
+
+  showTimeLogSel(req, res, axios) {
+    console.log("Request to showTimeLogSel handler: ", req);
+    axios({
+      url: 'time_entries?sortBy=[["createdAt", "desc"]]',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("Time entries obtained from OP: %o", response);
+      let timeLogArray = [];
+      response.data._embedded.elements.forEach(element => {
+        timeLogArray.push({
+          "value": "opt" + element.id,
+          "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.duration(element.hours, "h").humanize()
+        });
+      });
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "delSelTimeLog")).status(200);
+    }).catch((error) => {
+      console.log("Error in getting time logs: ", error);
+      this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
+    });
+  };
+
+  delTimeLog(req, res, axios) {
+    console.log("Request to delTimeLog handler: ", req);
+    this.timeLogId = req.body.context.selected_option.slice(this.optLen);
+    axios({
+      url: 'time_entries/' + this.timeLogId,
+      method: 'delete',
+      headers: {'Content-Type': 'application/json'},
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("Time entry deleted. Response %o", response);
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogDelMsgJSON(this.util.timeLogDelMsg)).status(200);
+    }).catch((error) => {
+      console.log("Error in time entry deletion: ", error);
+      this.message.showMsg(req, res, axios, this.util.timeLogDelErrMsg);
+      return false;
     });
   };
 

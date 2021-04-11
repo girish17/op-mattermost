@@ -25,6 +25,8 @@ class Util {
     this.timeLogSuccessMsg = "\n**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op`";
     this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
     this.timeLogFailMsg = "**That didn't work :pensive: An internal error occurred!**";
+    this.timeLogDelMsg = "**Time log deleted!**";
+    this.timeLogDelErrMsg = "**That didn't work :pensive: Couldn't delete time log\n Please try again...`/op`**";
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op` again?**";
@@ -172,6 +174,53 @@ class Util {
     };
   }
 
+  getTimeLogOptJSON(url, optArray, action) {
+    if(optArray.length !== 0) {
+      return {
+        "update": {
+          "response_type": "in_channel",
+          "message": "*Please select a time log*",
+          "props": {
+            "attachments": [
+              {
+                "actions": [
+                  {
+                    "name": "Type to search for a time log...",
+                    "integration": {
+                      "url": url + "delTimeLog",
+                      "context": {
+                        "action": action
+                      }
+                    },
+                    "type": "select",
+                    "options": optArray
+                  }]
+              }
+            ]
+          }
+        }
+      };
+    }
+    else {
+      return {
+        "update": {
+          "response_type": "in_channel",
+          "message": "Couldn't find time entries to delete :confused: Try logging time using `/op`",
+          "props": {}
+        }
+      };
+    }
+  }
+
+  getTimeLogDelMsgJSON(msg) {
+    return {
+      "update": {
+        "response_type": "in_channel",
+        "message": msg,
+        "props": {}
+      }
+    }
+  }
   getTimeLogJSON(timeLogArray) {
     let tableTxt = '';
     if (timeLogArray.length !== 0) {
@@ -280,6 +329,15 @@ class Util {
                   "url": url + "getTimeLog",
                   "context": {
                     "action": "getTimeLog"
+                  }
+                }
+              },
+              {
+                "name": "Delete time log",
+                "integration": {
+                  "url": url + "delTimeLog",
+                  "context": {
+                    "action": "delTimeLog"
                   }
                 }
               },

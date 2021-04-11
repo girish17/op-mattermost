@@ -95,6 +95,17 @@ module.exports = (app, axios) => {
     uiActions.getTimeLog(req, res, axios);
   });
 
+  app.post('/delTimeLog', (req, res) => {
+    console.log("Request to delTimeLog: ", req);
+    switch (req.body.context.action) {
+      case "delSelTimeLog":
+        uiActions.delTimeLog(req, res, axios);
+        break;
+      default:
+        uiActions.showTimeLogSel(req, res, axios);
+    }
+  });
+
   app.post('/createWP', (req, res) => {
     console.log("Request to createWP: ", req);
     uiActions.showSelProject(req, res, axios, "createWP");

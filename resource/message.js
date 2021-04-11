@@ -36,7 +36,6 @@ class Message {
         };
         axios.post(this.mmURL + 'posts/ephemeral',
         msgObj, this.config).then((result) => {
-                console.log('message posted: %o', result);
                 if (result.data) {
                     res.send('Show message post succeeded!').status(200);
 
