@@ -273,7 +273,7 @@ class UIactions {
       auth: this.opAuth
     }).then((response) => {
       console.log("Time entry deleted. Response %o", response);
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogDelMsgJSON(this.util.timeLogDelMsg)).status(200);
+      res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getTimeLogDelMsgJSON(this.util.timeLogDelMsg, this.intURL))).status(200);
     }).catch((error) => {
       console.log("Error in time entry deletion: ", error);
       this.message.showMsg(req, res, axios, this.util.timeLogDelErrMsg);

@@ -134,7 +134,7 @@ class Util {
                 "options": optArray
               },
               {
-                "name": "Cancel search",
+                "name": "Cancel Project search",
                 "integration": {
                   "url": url + "bye"
                 }
@@ -175,9 +175,9 @@ class Util {
                   "options": optArray
                 },
                 {
-                  "name": "Cancel search",
+                  "name": "Cancel WP search",
                   "integration": {
-                    "url": url + "bye"
+                    "url": url + "createTimeLog"
                   }
                 }]
             }
@@ -231,15 +231,32 @@ class Util {
     }
   }
 
-  getTimeLogDelMsgJSON(msg) {
+  getTimeLogDelMsgJSON(msg, url) {
     return {
       "update": {
         "response_type": "in_channel",
-        "message": msg,
-        "props": {}
+        "props": {
+          "attachments": [
+            {
+              "text": msg,
+              "actions": [
+                {
+                  "name": "View time logs",
+                  "integration": {
+                    "url": url + "getTimeLog",
+                    "context": {
+                      "action": "getTimeLog"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
       }
-    }
+    };
   }
+
   getTimeLogJSON(timeLogArray) {
     let tableTxt = '';
     if (timeLogArray.length !== 0) {
