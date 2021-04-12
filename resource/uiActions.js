@@ -39,7 +39,6 @@ class UIactions {
   }
 
   showSelProject(req, res, axios, action) {
-    console.log("Request in showSelProject: ", req);
     axios({
       url: 'projects?sortBy=[["created_at","desc"]]',
       method: 'get',
@@ -71,7 +70,6 @@ class UIactions {
   }
 
   showSelWP(req, res, axios, action) {
-    console.log("Request in showSelWP: ", req);
     // noinspection JSUnresolvedVariable
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
@@ -213,7 +211,6 @@ class UIactions {
   }
 
   getTimeLog(req, res, axios) {
-    console.log("Request to getTimeLog handler: ", req);
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
@@ -241,7 +238,6 @@ class UIactions {
   };
 
   showTimeLogSel(req, res, axios) {
-    console.log("Request to showTimeLogSel handler: ", req);
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
@@ -253,19 +249,22 @@ class UIactions {
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
           "value": "opt" + element.id,
-          "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.duration(element.hours, "h").humanize()
+          "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.duration(element.hours, "h").humanize() + '-' + element._links.workPackage.title + '-' + element._links.activity.title + '-' + element._links.project.title
         });
       });
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "delSelTimeLog")).status(200);
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "cnfDelTimeLog")).status(200);
     }).catch((error) => {
       console.log("Error in getting time logs: ", error);
       this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
     });
   };
 
-  delTimeLog(req, res, axios) {
-    console.log("Request to delTimeLog handler: ", req);
+  cnfDelTimeLog(req, res) {
     this.timeLogId = req.body.context.selected_option.slice(this.optLen);
+    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL))).status(200);
+  }
+
+  delTimeLog(req, res, axios) {
     axios({
       url: 'time_entries/' + this.timeLogId,
       method: 'delete',
@@ -390,9 +389,8 @@ class UIactions {
     }
   };
 
-  showMenuButtons(req, res) {
-    console.log("Request to showMenuButtons handler: ", req);
-    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuButtonJSON(this.intURL))).status(200);
+  showMenuBtn(req, res) {
+    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuBtnJSON(this.intURL))).status(200);
   }
 }
 module.exports = UIactions;

@@ -132,7 +132,14 @@ class Util {
                 },
                 "type": "select",
                 "options": optArray
-              }]
+              },
+              {
+                "name": "Cancel search",
+                "integration": {
+                  "url": url + "bye"
+                }
+              }
+            ]
           }
         ]
       }
@@ -166,6 +173,12 @@ class Util {
                   },
                   "type": "select",
                   "options": optArray
+                },
+                {
+                  "name": "Cancel search",
+                  "integration": {
+                    "url": url + "bye"
+                  }
                 }]
             }
           ]
@@ -194,6 +207,12 @@ class Util {
                     },
                     "type": "select",
                     "options": optArray
+                  },
+                  {
+                    "name": "Cancel search",
+                    "integration": {
+                      "url": url + "bye"
+                    }
                   }]
               }
             ]
@@ -296,7 +315,7 @@ class Util {
     };
   }
 
-  getMenuButtonJSON(url) {
+  getMenuBtnJSON(url) {
     return {
       "response_type": "in_channel",
       "props": {
@@ -353,6 +372,42 @@ class Util {
             ]
           }
         ]
+      }
+    };
+  }
+
+  getCnfDelBtnJSON(url, timeLog) {
+    return {
+      "update": {
+        "response_type": "in_channel",
+        "props": {
+          "attachments": [
+            {
+              "pretext": timeLog,
+              "text": "Confirm time log deletion?",
+              "actions": [
+                {
+                  "name": "Yes, Delete!",
+                  "integration": {
+                    "url": url + "delTimeLog",
+                    "context": {
+                      "action": "delSelTimeLog"
+                    }
+                  }
+                },
+                {
+                  "name": "No, go back.",
+                  "integration": {
+                    "url": url + "delTimeLog",
+                    "context": {
+                      "action": ""
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
       }
     };
   }

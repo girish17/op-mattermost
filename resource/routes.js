@@ -37,7 +37,7 @@ module.exports = (app, axios) => {
     if(token === process.env.MATTERMOST_SLASH_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
       if(command === "/op") {
-        uiActions.showMenuButtons(req, res);
+        uiActions.showMenuBtn(req, res);
       }
       else {
         res.send("*I don't understand ", command, ". Let's try again...* \n `/op`").status(500);
@@ -100,6 +100,9 @@ module.exports = (app, axios) => {
     switch (req.body.context.action) {
       case "delSelTimeLog":
         uiActions.delTimeLog(req, res, axios);
+        break;
+      case "cnfDelTimeLog":
+        uiActions.cnfDelTimeLog(req, res);
         break;
       default:
         uiActions.showTimeLogSel(req, res, axios);
