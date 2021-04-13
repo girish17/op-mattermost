@@ -3,6 +3,7 @@
 [OpenProject](https://www.openproject.org/) integration for [Mattermost](https://mattermost.com/). Currently, supports following operations using a slash command -
 - Create time entry for a work package
 - Create work package for a project
+- Delete work package
 - View time logs
 - Delete time log
 
