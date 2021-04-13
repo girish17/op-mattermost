@@ -261,7 +261,7 @@ class UIactions {
 
   cnfDelTimeLog(req, res) {
     this.timeLogId = req.body.context.selected_option.slice(this.optLen);
-    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL))).status(200);
+    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL + "delTimeLog", this.util.cnfDelTimeLogMsg, "delSelTimeLog"))).status(200);
   }
 
   delTimeLog(req, res, axios) {
@@ -282,7 +282,6 @@ class UIactions {
   };
 
   createWP(req, res, axios) {
-    console.log("Request to createWP handler: ", req);
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
       url: 'types',
@@ -336,7 +335,6 @@ class UIactions {
   };
 
   saveWP(req, res, axios) {
-    console.log("Request to saveWP handler: ", req);
     if (req.body.submission) {
       const { subject, type, assignee, notify } = req.body.submission;
       console.log("Submission data: ");
@@ -388,6 +386,54 @@ class UIactions {
       this.message.showMsg(req, res, axios, this.util.genericErrMsg);
     }
   };
+
+  showDelWPSel(req, res, axios) {
+    axios({
+      url: '/work_packages?sortBy=[["created_at","desc"]]',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("WP obtained from OP: %o", response);
+      let wpOptArray = [];
+      response.data._embedded.elements.forEach(element => {
+        wpOptArray.push({
+          "text": element.subject,
+          "value": "opt" + element.id
+        });
+      });
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, "cnfDelWP");
+      console.log("opt Array for WP: ", wpOptJSON);
+      res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
+    });
+  }
+
+  showCnfDelWP(req, res, axios) {
+    this.wpId = req.body.context.selected_option.slice(this.optLen);
+    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL+ "delWP", this.util.cnfDelWPMsg, "delWP"))).status(200);
+  }
+
+  delWP(req, res, axios) {
+    axios({
+      url: 'work_packages/' + this.wpId,
+      method: 'delete',
+      headers: {'Content-Type': 'application/json'},
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      console.log("WP deleted. Response %o", response);
+      res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getWPDelMsgJSON(this.util.wpDelMsg))).status(200);
+    }).catch((error) => {
+      console.log("Error in work package deletion: ", error);
+      if(error.response.status === 403) {
+        this.message.showMsg(req, res, axios, this.util.wpForbiddenMsg);
+      }
+      else {
+        this.message.showMsg(req, res, axios, this.util.wpDelErrMsg);
+      }
+      return false;
+    });
+  }
 
   showMenuBtn(req, res) {
     res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuBtnJSON(this.intURL))).status(200);

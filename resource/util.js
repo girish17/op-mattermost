@@ -27,12 +27,17 @@ class Util {
     this.timeLogFailMsg = "**That didn't work :pensive: An internal error occurred!**";
     this.timeLogDelMsg = "**Time log deleted!**";
     this.timeLogDelErrMsg = "**That didn't work :pensive: Couldn't delete time log\n Please try again...`/op`**";
+    this.cnfDelTimeLogMsg = "**Confirm time log deletion?**"
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op` again?**";
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op`";
     this.saveWPSuccessMsg = "\n**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op`";
     this.wpFetchErrMsg = "**That didn't work :pensive: Couldn't fetch work packages from OP**";
+    this.cnfDelWPMsg = "**Confirm work package deletion?** This will delete all associated time entries and child work packages";
+    this.wpDelErrMsg = "**That didn't work :pensive: Couldn't delete work package\n Please try again... `/op`**";
+    this.wpForbiddenMsg = "**You are not authorized to delete this work package**:angry:";
+    this.wpDelMsg = "**Work package deleted successfully!**";
     this.activityFetchErrMsg = "**That didn't work :pensive: Couldn't fetch activities from OP**";
     this.typeFetchErrMsg = "**That didn't work :pensive: Couldn't to fetch types from OP**";
     this.dlgCancelMsg = "** If you would like to try again then, `/op` **";
@@ -288,6 +293,22 @@ class Util {
     }
   }
 
+  getWPDelMsgJSON(msg) {
+    return {
+      "update": {
+        "response_type": "in_channel",
+        "props": {
+          "attachments": [
+            {
+              "text": msg,
+              "actions": []
+            }
+          ]
+        }
+      }
+    };
+  }
+
   getWpCreateJSON(triggerId, url, typeArray, assigneeArray) {
     return {
       "trigger_id": triggerId,
@@ -378,6 +399,15 @@ class Util {
                 }
               },
               {
+                "name": "Delete Work Package",
+                "integration": {
+                  "url": url + "delWP",
+                  "context": {
+                    "action": ""
+                  }
+                }
+              },
+              {
                 "name": "Bye :wave:",
                 "integration": {
                   "url": url + "bye",
@@ -393,29 +423,28 @@ class Util {
     };
   }
 
-  getCnfDelBtnJSON(url, timeLog) {
+  getCnfDelBtnJSON(url, msg, action) {
     return {
       "update": {
         "response_type": "in_channel",
         "props": {
           "attachments": [
             {
-              "pretext": timeLog,
-              "text": "Confirm time log deletion?",
+              "text": msg,
               "actions": [
                 {
                   "name": "Yes, Delete!",
                   "integration": {
-                    "url": url + "delTimeLog",
+                    "url": url,
                     "context": {
-                      "action": "delSelTimeLog"
+                      "action": action
                     }
                   }
                 },
                 {
                   "name": "No, go back.",
                   "integration": {
-                    "url": url + "delTimeLog",
+                    "url": url,
                     "context": {
                       "action": ""
                     }

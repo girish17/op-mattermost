@@ -74,6 +74,9 @@ module.exports = (app, axios) => {
       case 'showTimeLogDlg':
         uiActions.loadTimeLogDlg(req, res, axios);
         break;
+      case 'cnfDelWP':
+        uiActions.showCnfDelWP(req, res, axios);
+        break;
       default:
         res.send("Invalid action type").status(400);
         break;  
@@ -118,6 +121,18 @@ module.exports = (app, axios) => {
     console.log("Work package save request: ", req);
     uiActions.saveWP(req, res, axios);
   })
+
+  app.post('/delWP', (req, res) => {
+    console.log("Work package delete request: ", req);
+    switch (req.body.context.action) {
+      case 'delWP':
+        uiActions.delWP(req, res, axios);
+        break;
+      default:
+        uiActions.showDelWPSel(req, res, axios);
+        break;
+    }
+  });
 
   app.post('/bye', (req, res) => {
     console.log("Request to showBye handler: ", req);
