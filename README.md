@@ -67,7 +67,7 @@ Development wiki is available [here](https://notabug.org/girishm/op-mattermost/w
 
 ![GPLv3 or later](resource/gplv3-or-later.png)
 
-Copyright (C) 2020, 2019 Girish M
+Copyright (C) 2021, 20, 2019 Girish M
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
