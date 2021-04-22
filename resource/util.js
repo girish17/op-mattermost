@@ -353,13 +353,13 @@ class Util {
     };
   }
 
-  getMenuBtnJSON(url) {
+  getMenuBtnJSON(url, firstName) {
     return {
       "response_type": "in_channel",
       "props": {
         "attachments": [
           {
-            "pretext": "Hello :)",
+            "pretext": "Hello " + firstName + " :)",
             "text": "What would you like me to do?",
             "actions": [
               {

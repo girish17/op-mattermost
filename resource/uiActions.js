@@ -36,6 +36,7 @@ class UIactions {
       username: 'apikey',
       password: process.env.OP_ACCESS_TOKEN
     }
+    this.currentUser = '';
   }
 
   showSelProject(req, res, axios, action) {
@@ -435,8 +436,16 @@ class UIactions {
     });
   }
 
-  showMenuBtn(req, res) {
-    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuBtnJSON(this.intURL))).status(200);
+  showMenuBtn(req, res, axios) {
+    axios({
+      url: '/users/me',
+      method: 'get',
+      baseURL: this.opURL,
+      auth: this.opAuth
+    }).then((response) => {
+      this.currentUser = response.data.firstName;
+      res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuBtnJSON(this.intURL, this.currentUser))).status(200);
+    });
   }
 }
 module.exports = UIactions;

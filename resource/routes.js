@@ -37,7 +37,7 @@ module.exports = (app, axios) => {
     if(token === process.env.MATTERMOST_SLASH_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
       if(command === "/op") {
-        uiActions.showMenuBtn(req, res);
+        uiActions.showMenuBtn(req, res, axios);
       }
       else {
         res.send("*I don't understand ", command, ". Let's try again...* \n `/op`").status(500);
