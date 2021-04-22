@@ -46,7 +46,7 @@ class UIactions {
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("Projects obtained from OP: %o", response);
+      console.log("Projects obtained from OP: %o", response.data);
       let projectOptArray = [];
       response.data._embedded.elements.forEach(element => {
         projectOptArray.push({
@@ -64,13 +64,13 @@ class UIactions {
       console.log("optArray for projects", projectOptJSON);
       res.set('Content-Type', 'application/json').send(JSON.stringify(projectOptJSON)).status(200);
     }).catch(error => {
-      console.log("Error in getting projects from OP", error);
+      console.log("Error in getting projects from OP", error.response.data.message);
       res.send("Open Project server down!!").status(500);
       return false;
     });
   }
 
-  showSelWP(req, res, axios, action) {
+  showSelWP(req, res, axios, action, mode) {
     // noinspection JSUnresolvedVariable
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
@@ -79,7 +79,7 @@ class UIactions {
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("WP obtained from OP: %o", response);
+      console.log("WP obtained from OP: %o", response.data);
       let wpOptArray = [];
       response.data._embedded.elements.forEach(element => {
         wpOptArray.push({
@@ -87,11 +87,11 @@ class UIactions {
           "value": "opt" + element.id
         });
       });
-      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, action);
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, action, mode);
       console.log("opt Array for WP: ", wpOptJSON);
       res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
-    }, (reason) => {
-      console.log("Request failed for /work_packages: %o", reason);
+    }, (error) => {
+      console.log("Request failed for /work_packages: %o", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.wpFetchErrMsg);
       return false;
     });
@@ -112,7 +112,7 @@ class UIactions {
         }
       }
     }).then((response) => {
-      console.log("Activities obtained from OP: %o", response);
+      console.log("Activities obtained from OP: %o", response.data);
       let activityOptArray = [];
       response.data._embedded.schema.activity._embedded.allowedValues.forEach(element => {
         activityOptArray.push({
@@ -133,12 +133,12 @@ class UIactions {
         });
         res.type('application/json').send(updateMsg).status(200);
       }).catch(error => {
-        console.log("Error while creating projects dialog", error);
+        console.log("Error while creating projects dialog", error.response.data.message);
         this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
         return false;
       });
     }).catch((error) => {
-      console.log("Error in fetching activities: ", error);
+      console.log("Error in fetching activities: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.activityFetchErrMsg);
       return false;
     });
@@ -178,11 +178,11 @@ class UIactions {
             },
             auth: this.opAuth
           }).then((response) => {
-            console.log("Time logged. Save response: %o", response);
+            console.log("Time logged. Save response: %o", response.data);
             this.message.showMsg(req, res, axios, "Time entry ID - " + response.data.id + this.util.timeLogSuccessMsg);
             return true;
           }).catch((error) => {
-            console.log("OP time entries create error: %o", error);
+            console.log("OP time entries create error: %o", error.response.data.message);
             if (error.response.status === 403) {
               this.message.showMsg(req, res, axios, this.util.timeLogForbiddenMsg);
             }
@@ -211,14 +211,14 @@ class UIactions {
     }
   }
 
-  getTimeLog(req, res, axios) {
+  getTimeLog(req, res, axios, mode) {
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("Time entries obtained from OP: %o", response);
+      console.log("Time entries obtained from OP: %o", response.data);
       let timeLogArray = [];
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
@@ -231,21 +231,21 @@ class UIactions {
           "comment": element.comment.raw
         });
       });
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray)).status(200);
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray, mode)).status(200);
     }).catch((error) => {
-      console.log("Error in getting time logs: ", error);
+      console.log("Error in getting time logs: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
     });
   };
 
-  showTimeLogSel(req, res, axios) {
+  showTimeLogSel(req, res, axios, mode) {
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("Time entries obtained from OP: %o", response);
+      console.log("Time entries obtained from OP: %o", response.data);
       let timeLogArray = [];
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
@@ -253,9 +253,9 @@ class UIactions {
           "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.duration(element.hours, "h").humanize() + '-' + element._links.workPackage.title + '-' + element._links.activity.title + '-' + element._links.project.title
         });
       });
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "cnfDelTimeLog")).status(200);
+      res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "cnfDelTimeLog", mode)).status(200);
     }).catch((error) => {
-      console.log("Error in getting time logs: ", error);
+      console.log("Error in getting time logs: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
     });
   };
@@ -273,10 +273,10 @@ class UIactions {
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("Time entry deleted. Response %o", response);
+      console.log("Time entry deleted. Response %o", response.data);
       res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getTimeLogDelMsgJSON(this.util.timeLogDelMsg, this.intURL))).status(200);
     }).catch((error) => {
-      console.log("Error in time entry deletion: ", error);
+      console.log("Error in time entry deletion: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.timeLogDelErrMsg);
       return false;
     });
@@ -290,7 +290,7 @@ class UIactions {
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("Response from get types: ", response);
+      console.log("Response from get types: ", response.data);
       let typeArray = [];
       response.data._embedded.elements.forEach(element => {
         typeArray.push({
@@ -304,7 +304,7 @@ class UIactions {
         baseURL: this.opURL,
         auth: this.opAuth
       }).then((response) => {
-        console.log("Response from get available assignees: ", response);
+        console.log("Response from get available assignees: ", response.data);
         let assigneeArray = [];
         response.data._embedded.elements.forEach(element => {
           assigneeArray.push({
@@ -314,7 +314,7 @@ class UIactions {
         });
         let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
         axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
-          console.log("Response from wp create dialog: ", response);
+          console.log("Response from wp create dialog: ", response.data);
           let updateMsg = JSON.stringify({
             "update": {
               "message": "Updated!",
@@ -324,12 +324,12 @@ class UIactions {
           });
           res.type('application/json').send(updateMsg).status(200);
         }).catch(error => {
-          console.log("Error while creating work package dialog", error);
+          console.log("Error while creating work package dialog", error.response.data.message);
           this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
         });
       });
     }).catch((error) => {
-      console.log("Error in fetching types: ", error);
+      console.log("Error in fetching types: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.typeFetchErrMsg);
       return false;
     });
@@ -364,16 +364,19 @@ class UIactions {
         data: postWpData,
         auth: this.opAuth
       }).then(response => {
-        console.log("Work package saved. Save response: %o", response);
+        console.log("Work package saved. Save response: %o", response.data);
         this.message.showMsg(req, res, axios, "Work package ID - " + response.data.id + this.util.saveWPSuccessMsg);
         return true;
       }).catch((error) => {
-        console.log("OP WP entries create error: %o", error);
+        console.log("OP WP entries create error: %o", error.response.data.message);
         if (error.response.status === 403) {
-          this.message.showMsg(req, res, axios, this.util.timeLogForbiddenMsg);
+          this.message.showMsg(req, res, axios, this.util.wpCreateForbiddenMsg);
+        }
+        else if (error.response.status === 422) {
+          this.message.showMsg(req, res, axios, this.util.wpTypeErrMsg);
         }
         else {
-          this.message.showMsg(req, res, axios, this.util.timeLogFailMsg);
+          this.message.showMsg(req, res, axios, this.util.genericErrMsg);
         }
         return false;
       });
@@ -388,14 +391,14 @@ class UIactions {
     }
   };
 
-  showDelWPSel(req, res, axios) {
+  showDelWPSel(req, res, axios, mode) {
     axios({
       url: '/work_packages?sortBy=[["created_at","desc"]]',
       method: 'get',
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("WP obtained from OP: %o", response);
+      console.log("WP obtained from OP: %o", response.data);
       let wpOptArray = [];
       response.data._embedded.elements.forEach(element => {
         wpOptArray.push({
@@ -403,9 +406,12 @@ class UIactions {
           "value": "opt" + element.id
         });
       });
-      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, "cnfDelWP");
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, "cnfDelWP", mode);
       console.log("opt Array for WP: ", wpOptJSON);
       res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
+    }).catch((error) => {
+      console.log("Error is show work package selection: ", error.response.data.message);
+      this.message.showMsg(req, res, axios, this.util.wpFetchErrMsg);
     });
   }
 
@@ -422,10 +428,10 @@ class UIactions {
       baseURL: this.opURL,
       auth: this.opAuth
     }).then((response) => {
-      console.log("WP deleted. Response %o", response);
+      console.log("WP deleted. Response %o", response.data);
       res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getWPDelMsgJSON(this.util.wpDelMsg))).status(200);
     }).catch((error) => {
-      console.log("Error in work package deletion: ", error);
+      console.log("Error in work package deletion: ", error.response.data.message);
       if(error.response.status === 403) {
         this.message.showMsg(req, res, axios, this.util.wpForbiddenMsg);
       }
@@ -446,6 +452,22 @@ class UIactions {
       this.currentUser = response.data.firstName;
       res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getMenuBtnJSON(this.intURL, this.currentUser))).status(200);
     });
+  }
+
+  showByeMsg(req, res, mode) {
+    let byeMsg = {
+        "message": ":wave:",
+        "props": {}
+    };
+    if(mode === 'update') {
+      byeMsg = {
+        "update": byeMsg
+      };
+    }
+    else {
+      byeMsg.text = ":wave:";
+    }
+    res.type('application/json').send(JSON.stringify(byeMsg)).status(200);
   }
 }
 module.exports = UIactions;

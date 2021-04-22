@@ -22,25 +22,29 @@ const moment = require("moment");
 class Util {
 
   constructor() {
-    this.timeLogSuccessMsg = "\n**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op`";
+    this.timeLogSuccessMsg = "\n**Time logged! You are awesome :sunglasses: **\n To view time logged try `/op tl`";
     this.timeLogForbiddenMsg = "**It seems that you don't have permission to log time for this project :confused: **"
     this.timeLogFailMsg = "**That didn't work :pensive: An internal error occurred!**";
     this.timeLogDelMsg = "**Time log deleted!**";
-    this.timeLogDelErrMsg = "**That didn't work :pensive: Couldn't delete time log\n Please try again...`/op`**";
+    this.timeLogDelErrMsg = "**That didn't work :pensive: Couldn't delete time log\n Please try again...`/op dtl`**";
     this.cnfDelTimeLogMsg = "**Confirm time log deletion?**"
-    this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
-    this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
-    this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op` again?**";
+
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op`";
-    this.saveWPSuccessMsg = "\n**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op`";
+    this.saveWPSuccessMsg = "\n**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op lt`";
     this.wpFetchErrMsg = "**That didn't work :pensive: Couldn't fetch work packages from OP**";
     this.cnfDelWPMsg = "**Confirm work package deletion?** This will delete all associated time entries and child work packages";
-    this.wpDelErrMsg = "**That didn't work :pensive: Couldn't delete work package\n Please try again... `/op`**";
+    this.wpDelErrMsg = "**That didn't work :pensive: Couldn't delete work package\n Please try again... `/op dwp`**";
     this.wpForbiddenMsg = "**You are not authorized to delete this work package**:angry:";
     this.wpDelMsg = "**Work package deleted successfully!**";
+    this.wpTypeErrMsg = "**Work package type is not set to one of the allowed values. Couldn't create work package :pensive: **";
+    this.wpCreateForbiddenMsg = "**It seems that you don't have permission to create work package for this project :confused: **"
+
+    this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
+    this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
+    this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op lt` again?**";
     this.activityFetchErrMsg = "**That didn't work :pensive: Couldn't fetch activities from OP**";
     this.typeFetchErrMsg = "**That didn't work :pensive: Couldn't to fetch types from OP**";
-    this.dlgCancelMsg = "** If you would like to try again then, `/op` **";
+    this.dlgCancelMsg = "** If you would like to try again then, `/op cwp` **";
     this.genericErrMsg = "** Unknown error occurred :pensive: Can you please try again? **";
   }
 
@@ -159,80 +163,87 @@ class Util {
     }
   }
 
-  getWpOptJSON(url, optArray, action) {
-    return {
-      "update": {
-        "response_type": "in_channel",
-        "message": "*Please select a work package*",
-        "props": {
-          "attachments": [
-            {
-              "actions": [
-                {
-                  "name": "Type to search for a work package...",
-                  "integration": {
-                    "url": url + "wpSel",
-                    "context": {
-                      "action": action
-                    }
-                  },
-                  "type": "select",
-                  "options": optArray
-                },
-                {
-                  "name": "Cancel WP search",
-                  "integration": {
-                    "url": url + "createTimeLog"
+  getWpOptJSON(url, optArray, action, mode) {
+    let wpOptJSON = {
+      "response_type": "in_channel",
+      "message": "*Please select a work package*",
+      "props": {
+        "attachments": [
+          {
+            "actions": [
+              {
+                "name": "Type to search for a work package...",
+                "integration": {
+                  "url": url + "wpSel",
+                  "context": {
+                    "action": action
                   }
-                }]
-            }
-          ]
-        }
+                },
+                "type": "select",
+                "options": optArray
+              },
+              {
+                "name": "Cancel WP search",
+                "integration": {
+                  "url": url + "createTimeLog"
+                }
+              }]
+          }
+        ]
       }
     };
+
+    if(mode === 'update') {
+      wpOptJSON = {
+        "update": wpOptJSON
+      }
+    }
+
+    return wpOptJSON;
   }
 
-  getTimeLogOptJSON(url, optArray, action) {
+  getTimeLogOptJSON(url, optArray, action, mode) {
+    let timeLogOptJSON = {
+      "response_type": "in_channel",
+      "props": {}
+    }
     if(optArray.length !== 0) {
-      return {
-        "update": {
-          "response_type": "in_channel",
-          "message": "*Please select a time log*",
-          "props": {
-            "attachments": [
+      timeLogOptJSON.props =  {
+        "attachments": [
+          {
+            "actions": [
               {
-                "actions": [
-                  {
-                    "name": "Type to search for a time log...",
-                    "integration": {
-                      "url": url + "delTimeLog",
-                      "context": {
-                        "action": action
-                      }
-                    },
-                    "type": "select",
-                    "options": optArray
-                  },
-                  {
-                    "name": "Cancel search",
-                    "integration": {
-                      "url": url + "bye"
-                    }
-                  }]
-              }
-            ]
+                "name": "Type to search for a time log...",
+                "integration": {
+                  "url": url + "delTimeLog",
+                  "context": {
+                    "action": action
+                  }
+                },
+                "type": "select",
+                "options": optArray
+              },
+              {
+                "name": "Cancel search",
+                "integration": {
+                  "url": url + "bye"
+                }
+              }]
           }
-        }
+        ]
+      }
+    }
+    else {
+      timeLogOptJSON.text = "Couldn't find time entries to delete :confused: Try logging time using `/op`";
+    }
+
+    if(mode === 'update') {
+      return {
+        "update": timeLogOptJSON
       };
     }
     else {
-      return {
-        "update": {
-          "response_type": "in_channel",
-          "message": "Couldn't find time entries to delete :confused: Try logging time using `/op`",
-          "props": {}
-        }
-      };
+      return timeLogOptJSON;
     }
   }
 
@@ -262,8 +273,13 @@ class Util {
     };
   }
 
-  getTimeLogJSON(timeLogArray) {
+  getTimeLogJSON(timeLogArray, mode) {
     let tableTxt = '';
+    let timeLogObj = {
+        "response_type": "in_channel",
+        "props": {}
+    };
+
     if (timeLogArray.length !== 0) {
       tableTxt = "#### Time entries logged by you\n";
       tableTxt += "| Spent On | Project | Work Package | Activity | Logged Time | Billed Time | Comment |\n";
@@ -274,23 +290,21 @@ class Util {
         }
         tableTxt += "| " + element.spentOn + " | " + element.project + " | " + element.workPackage + " | " + element.activity + " | " + element.loggedHours + " | " + element.billableHours + " | " + element.comment.replace(/\n/g, " ") + " |\n";
       });
-
-      return {
-        "update": {
-          "message": tableTxt,
-          "props": {}
-        }
-      };
     }
     else {
       tableTxt = "Couldn't find time entries logged by you :confused: Try logging time using `/op`";
-      return {
-        "update": {
-          "message": tableTxt,
-          "props": {}
-        }
-      }
     }
+
+    if(mode === 'update') {
+      timeLogObj = {
+        "update": timeLogObj
+      };
+      timeLogObj.update.message = tableTxt;
+    }
+    else {
+      timeLogObj.text = tableTxt;
+    }
+    return timeLogObj;
   }
 
   getWPDelMsgJSON(msg) {

@@ -33,11 +33,33 @@ module.exports = (app, axios) => {
   });
 
   app.post('/', (req, res) => {
-    const {command, token} = req.body;
+    const {command, token, text} = req.body;
     if(token === process.env.MATTERMOST_SLASH_TOKEN) {
       console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
       if(command === "/op") {
-        uiActions.showMenuBtn(req, res, axios);
+        switch (text) {
+          case 'lt':
+            uiActions.showSelProject(req, res, axios, "showSelWP");
+            break;
+          case 'cwp':
+            uiActions.showSelProject(req, res, axios, "createWP");
+            break;
+          case 'tl':
+            uiActions.getTimeLog(req, res, axios, '');
+            break;
+          case 'dtl':
+            uiActions.showTimeLogSel(req, res, axios, '');
+            break;
+          case 'dwp':
+            uiActions.showDelWPSel(req, res, axios, '');
+            break;
+          case 'bye':
+            uiActions.showByeMsg(req, res, '');
+            break;
+          default:
+            uiActions.showMenuBtn(req, res, axios);
+            break;
+        }
       }
       else {
         res.send("*I don't understand ", command, ". Let's try again...* \n `/op`").status(500);
@@ -49,15 +71,15 @@ module.exports = (app, axios) => {
   });
 
   app.post('/createTimeLog', (req, res) => {
-    console.log("Create time log request: ", req);
+    console.log("Create time log request: ", JSON.stringify(req.body, null, 2));
     uiActions.showSelProject(req, res, axios, "showSelWP");
   });
 
   app.post('/projSel', (req, res) => {
-    console.log("Project submit request: ", req);
+    console.log("Project submit request: ", JSON.stringify(req.body, null, 2));
     switch (req.body.context.action) {
       case 'showSelWP':
-        uiActions.showSelWP(req, res, axios, "showTimeLogDlg");
+        uiActions.showSelWP(req, res, axios, "showTimeLogDlg", 'update');
         break;
       case 'createWP':
         uiActions.createWP(req, res, axios);
@@ -69,7 +91,7 @@ module.exports = (app, axios) => {
   });
 
   app.post('/wpSel', (req, res) => {
-    console.log("Work package submit request: ", req);
+    console.log("Work package submit request: ", JSON.stringify(req.body, null, 2));
     switch (req.body.context.action) {
       case 'showTimeLogDlg':
         uiActions.loadTimeLogDlg(req, res, axios);
@@ -84,22 +106,22 @@ module.exports = (app, axios) => {
   });
 
   app.post('/logTime', (req, res) => {
-    console.log("Time log submit request: ", req);
+    console.log("Time log submit request: ", JSON.stringify(req.body, null, 2));
     uiActions.handleSubmission(req, res, axios);
   });
 
   app.get('/getLogo', (req, res) => {
-    console.log("Logo image request: ", req);
+    console.log("Logo image request: ", JSON.stringify(req.body, null, 2));
     res.sendFile(__dirname + '/op_logo.png');
   });
 
   app.post('/getTimeLog', (req, res) => {
-    console.log("Request to getTimeLog: ", req);
-    uiActions.getTimeLog(req, res, axios);
+    console.log("Request to getTimeLog: ", JSON.stringify(req.body, null, 2));
+    uiActions.getTimeLog(req, res, axios, 'update');
   });
 
   app.post('/delTimeLog', (req, res) => {
-    console.log("Request to delTimeLog: ", req);
+    console.log("Request to delTimeLog: ", JSON.stringify(req.body, null, 2));
     switch (req.body.context.action) {
       case "delSelTimeLog":
         uiActions.delTimeLog(req, res, axios);
@@ -108,40 +130,35 @@ module.exports = (app, axios) => {
         uiActions.cnfDelTimeLog(req, res);
         break;
       default:
-        uiActions.showTimeLogSel(req, res, axios);
+        uiActions.showTimeLogSel(req, res, axios, 'update');
+        break;
     }
   });
 
   app.post('/createWP', (req, res) => {
-    console.log("Request to createWP: ", req);
+    console.log("Request to createWP: ", JSON.stringify(req.body, null, 2));
     uiActions.showSelProject(req, res, axios, "createWP");
   });
 
   app.post('/saveWP', (req, res) => {
-    console.log("Work package save request: ", req);
+    console.log("Work package save request: ", JSON.stringify(req.body, null, 2));
     uiActions.saveWP(req, res, axios);
   })
 
   app.post('/delWP', (req, res) => {
-    console.log("Work package delete request: ", req);
+    console.log("Work package delete request: ", JSON.stringify(req.body, null, 2));
     switch (req.body.context.action) {
       case 'delWP':
         uiActions.delWP(req, res, axios);
         break;
       default:
-        uiActions.showDelWPSel(req, res, axios);
+        uiActions.showDelWPSel(req, res, axios, 'update');
         break;
     }
   });
 
   app.post('/bye', (req, res) => {
-    console.log("Request to showBye handler: ", req);
-    let byeMsg = JSON.stringify({
-      "update": {
-        "message": ":wave:",
-        "props": {}
-      },
-    });
-    res.type('application/json').send(byeMsg).status(200);
+    console.log("Request to showBye handler: ", JSON.stringify(req.body, null, 2));
+    uiActions.showByeMsg(req, res, 'update');
   });
 }
