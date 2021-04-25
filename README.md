@@ -7,6 +7,10 @@
 - View time logs
 - Delete time log
 
+## Demo
+
+![Demo video](resource/op-mattermost-demo-v0.6.gif) recorded using [Peek](https://github.com/phw/peek).
+
 ## Dependencies
 
 - OpenProject community edition
@@ -55,13 +59,18 @@
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 
+## Command list
+
+- `/op` - Displays the general menu
+- `/op lt` - Log time for a work package
+- `/op cwp` - Create a work package for a project
+- `/op tl` - View time logs of the current user
+- `/op dwp` - Delete work package
+- `/op dtl` - Delete time log entry
+
 ## Wiki
 
 Development wiki is available [here](https://notabug.org/girishm/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
-
-## Demo
-
-![Demo video](resource/op-mattermost-demo-v0.6.gif) recorded using [Peek](https://github.com/phw/peek).
 
 ## COPYING
 
