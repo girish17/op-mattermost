@@ -138,8 +138,13 @@ class UIactions {
         return false;
       });
     }).catch((error) => {
-      console.log("Error in fetching activities: ", error.response.data.message);
-      this.message.showMsg(req, res, axios, this.util.activityFetchErrMsg);
+      console.log("Error in fetching activities: ", error);
+      if(error.response.status === 403) {
+        this.message.showMsg(req, res, axios, this.util.activityFetchErrMsg);
+      }
+      else {
+        this.message.showMsg(req, res, axios, this.util.genericErrMsg);
+      }
       return false;
     });
   }

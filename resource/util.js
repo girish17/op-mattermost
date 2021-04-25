@@ -34,7 +34,7 @@ class Util {
     this.wpFetchErrMsg = "**That didn't work :pensive: Couldn't fetch work packages from OP**";
     this.cnfDelWPMsg = "**Confirm work package deletion?** This will delete all associated time entries and child work packages";
     this.wpDelErrMsg = "**That didn't work :pensive: Couldn't delete work package\n Please try again... `/op dwp`**";
-    this.wpForbiddenMsg = "**You are not authorized to delete this work package**:angry:";
+    this.wpForbiddenMsg = "**Couldn't delete work package :confused: You are not authorized to do so.**";
     this.wpDelMsg = "**Work package deleted successfully!**";
     this.wpTypeErrMsg = "**Work package type is not set to one of the allowed values. Couldn't create work package :pensive: **";
     this.wpCreateForbiddenMsg = "**It seems that you don't have permission to create work package for this project :confused: **"
@@ -42,7 +42,7 @@ class Util {
     this.dateErrMsg = "**It seems that date was incorrect :thinking: Please enter a date within last one year and in YYYY-MM-DD format. **";
     this.billableHoursErrMsg = "**It seems that billable hours was incorrect :thinking: Please note billable hours should be less than or equal to logged hours. **";
     this.dlgCreateErrMsg = "**It's an internal problem. Dialog creation failed :pensive: Can you please try `/op lt` again?**";
-    this.activityFetchErrMsg = "**That didn't work :pensive: Couldn't fetch activities from OP**";
+    this.activityFetchErrMsg = "**Couldn't fetch activities from OP :confused: You are not authorized to log time for this work package.**";
     this.typeFetchErrMsg = "**That didn't work :pensive: Couldn't to fetch types from OP**";
     this.dlgCancelMsg = "** If you would like to try again then, `/op cwp` **";
     this.genericErrMsg = "** Unknown error occurred :pensive: Can you please try again? **";
