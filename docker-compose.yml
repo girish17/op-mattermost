@@ -16,18 +16,22 @@
 
 version: "2"
 services:
-  openproject:
-    image: "openproject/community"
-  mattermost:
-    image: "mattermost/mattermost-preview"
-  env_file: .env
   web:
     build: .
     ports:
       - "3000:3000"
+    env_file: .env
     volumes:
       - .:/usr/src/app
     depends_on:
       - openproject
       - mattermost
-    command: ["./wait_for_it.sh", "openproject:8080", "--", "npm", "start"]
+    command: [ "./wait_for_it.sh", "openproject:8080", "--", "npm", "start" ]
+  openproject:
+    image: "openproject/community:11"
+    ports:
+    - "8080:8080"
+  mattermost:
+    image: "mattermost/mattermost-preview"
+    ports:
+    - "8065:8065"
