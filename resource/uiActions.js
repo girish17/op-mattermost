@@ -64,8 +64,14 @@ class UIactions {
       console.log("optArray for projects", projectOptJSON);
       res.set('Content-Type', 'application/json').send(JSON.stringify(projectOptJSON)).status(200);
     }).catch(error => {
-      console.log("Error in getting projects from OP", error.response.data.message);
-      res.send("Open Project server down!!").status(500);
+      if(error.response.status === 401) {
+        console.log("Unauthorized: ", error.response.data.message);
+        res.send("**Unauthorized. Invalid OpenProject access token**").status(401);
+      }
+      else {
+        console.log("Error in getting projects from OP", error.response.data.message);
+        res.send("**Open Project server down!!**").status(500);
+      }
       return false;
     });
   }

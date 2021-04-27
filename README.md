@@ -9,7 +9,7 @@
 
 ## Demo
 
-![Demo video](resource/op-mattermost-demo-v0.6.gif) recorded using [Peek](https://github.com/phw/peek).
+![Demo video](resource/op-mattermost-demo-v0.7.gif) recorded using [Peek](https://github.com/phw/peek).
 
 ## Dependencies
 
