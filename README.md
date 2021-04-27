@@ -55,7 +55,7 @@
 - In the project root directory do `npm init` to generate (or update existing) `package.json` file
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
-- Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html) and provide localhost or IP address (with port 3000) as the request URL
+- Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html#custom-slash-command) and provide localhost or IP address (with port 3000) as the request URL and method as `POST`
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 
