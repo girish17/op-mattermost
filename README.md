@@ -47,8 +47,7 @@
 - Run `sh configure.sh` to create `.env` using bash command line. Alternatively, create a `.env` file using a text editor with the following entries:
     - `OP_URL=http://<your host or ip address>:8080/api/v3/   #needed for pointing to OpenProject installation`
     - `INT_URL=http://<your host or ip address>:3000/         #needed for exposing the integration running on port 3000`
-    - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`  
-    - `MATTERMOST_ACCESS_TOKEN=<personal access token>        #https://docs.mattermost.com/developer/personal-access-tokens.html`
+    - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`
     - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>  #needed for slash command validation`
     - `MATTERMOST_BOT_TOKEN=<use the mattermost bot access token>  #needed for validation for posting messages as bot`
     - `OP_ACCESS_TOKEN=<openproject access token (a.k.a apikey) obtained from user account page>`
@@ -56,6 +55,7 @@
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
 - Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html#custom-slash-command) and provide localhost or IP address (with port 3000) as the request URL and method as `POST`
+- Create a bot account with *System Admin* access as described [here](https://docs.mattermost.com/developer/bot-accounts.html#bot-account-creation) 
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 

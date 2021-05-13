@@ -23,8 +23,7 @@
 - Run `sh configure.sh` to create `.env` using bash command line. Alternatively, create a `.env` file using a text editor with the following entries:
     - `OP_URL=http://<your host or ip address>:8080/api/v3/   #needed for pointing to OpenProject installation`
     - `INT_URL=http://<your host or ip address>:3000/         #needed for exposing the integration running on port 3000`
-    - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`  
-    - `MATTERMOST_ACCESS_TOKEN=<personal access token>        #https://docs.mattermost.com/developer/personal-access-tokens.html`
+    - `MM_URL=http://<your host or ip address>:8065/api/v4/   #needed for pointing to Mattermost installation`
     - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>  #needed for slash command validation`
     - `MATTERMOST_BOT_TOKEN=<use the mattermost bot access token>  #needed for validation for posting messages as bot`
     - `OP_ACCESS_TOKEN=<openproject access token (a.k.a apikey) obtained from user account page>`
