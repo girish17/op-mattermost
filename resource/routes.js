@@ -28,8 +28,45 @@ module.exports = (app, axios) => {
   const UIActions = require('./uiActions');
   const uiActions = new UIActions(opURL, mmURL, intURL);
 
+  const ClientOAuth2 = require('client-oauth2');
+  const opOAuth = new ClientOAuth2({
+    clientId: 'OMSFC4LSqpNevjDFV3r7Wcp74vpP_ma-9M3BOg59ELA',
+    clientSecret: ' dklOlISMiZvhCXjIPZf-r8XQYWVAiWSHaDHsS3pHPOg ',
+    accessTokenUri: 'http://localhost:8080/oauth/token',
+    authorizationUri: 'http://localhost:8080/oauth/authorize',
+    redirectUri: 'https://localhost:3000/auth/op/callback'
+  })
+
   app.get('/', (req, res) => {
     res.send("Hello there! Good to see you here :) We don't know what to show here yet!").status(200);
+  });
+
+  app.get('/auth/op', function (req, res) {
+    let uri = opOAuth.code.getUri();
+
+    res.redirect(uri);
+  });
+
+  app.get('/auth/op/callback', function (req, res) {
+    opOAuth.code.getToken(req.originalUrl)
+        .then(function (user) {
+          console.log(user) //=> { accessToken: '...', tokenType: 'bearer', ... }
+
+          // Refresh the current users access token.
+          user.refresh().then(function (updatedUser) {
+            console.log(updatedUser !== user) //=> true
+            console.log(updatedUser.accessToken);
+          });
+
+          // Sign API requests on behalf of the current user.
+          user.sign({
+            method: 'get',
+            url: 'http://10.42.0.93:8080'
+          });
+
+          // We should store the token into a database.
+          return res.send(user.accessToken);
+        });
   });
 
   app.post('/', (req, res) => {
