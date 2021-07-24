@@ -70,7 +70,7 @@
 
 ## Wiki
 
-Development wiki is available [here](https://notabug.org/girishm/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
+Development wiki is available [here](https://github.com/girish17/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
 
 ## COPYING
 
