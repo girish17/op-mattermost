@@ -76,7 +76,7 @@ Development wiki is available [here](https://github.com/girish17/op-mattermost/w
 
 ![GPLv3 or later](resource/gplv3-or-later.png)
 
-Copyright (C) 2021, 20, 19 Girish M
+Copyright (C) 2019 to present, Girish M
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
