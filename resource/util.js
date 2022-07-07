@@ -330,6 +330,7 @@ class Util {
       "dialog": {
         "callback_id": "create_wp_dlg",
         "title": "Create a work package",
+	"introduction_text": "Create a work package by providing following details",
         "icon_url": url + 'getLogo',
         "elements": [{
           "display_name": "Subject",

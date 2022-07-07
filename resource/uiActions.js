@@ -185,7 +185,7 @@ class UIactions {
                 "raw": comments
               },
               "spentOn": spent_on,
-              "customField2": billable_hours
+              "customField1": billable_hours
             },
             auth: this.opAuth
           }).then((response) => {
@@ -238,7 +238,7 @@ class UIactions {
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
           "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": element.customField2 + ' hours',
+          "billableHours": element.customField1 + ' hours',
           "comment": element.comment.raw
         });
       });
@@ -324,6 +324,7 @@ class UIactions {
           });
         });
         let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
+	console.log("WpCreateDlgJSON: ", wpCreateDlgJSON);
         axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
           console.log("Response from wp create dialog: ", response.data);
           let updateMsg = JSON.stringify({
@@ -335,7 +336,7 @@ class UIactions {
           });
           res.type('application/json').send(updateMsg).status(200);
         }).catch(error => {
-          console.log("Error while creating work package dialog", error.response.data.message);
+          console.log("Error while creating work package dialog", error);
           this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
         });
       });
