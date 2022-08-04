@@ -28,6 +28,10 @@
   "bugs": {
     "url": "https://github.com/girish17/op-mattermost/issues"
   },
+  "funding": {
+    "type" : "individual",
+    "url" : "https://paypal.me/GirishModiletappa"
+  },
   "homepage": "https://github.com/girish17/op-mattermost#readme",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
