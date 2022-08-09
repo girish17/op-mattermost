@@ -157,6 +157,11 @@ module.exports = (app, axios) => {
     }
   });
 
+  app.post('/notifyChannel', (req, res) => {
+    console.log("Notify channel request: ", JSON.stringify(req.body, null, 2));
+    uiActions.notifyChannel(req, res, axios);
+  });
+
   app.post('/bye', (req, res) => {
     console.log("Request to showBye handler: ", JSON.stringify(req.body, null, 2));
     uiActions.showByeMsg(req, res, 'update');

@@ -466,6 +466,11 @@ class UIactions {
     });
   }
 
+  notifyChannel(req, res, axios) {
+    let msg = req.body.action + " - " + req.body.comment.raw + " in " + req.body._embedded.project.name + " project.";
+    this.message.showNotification(req, res, axios, msg);
+  }
+
   showByeMsg(req, res, mode) {
     let byeMsg = {
         "message": ":wave:",

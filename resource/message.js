@@ -50,5 +50,30 @@ class Message {
                 res.send().status(500);
             });
     }
+
+    showNotification(req, res, axios, msg) {
+        axios.get(this.mmURL + '/teams/name/op-mattermost/channels/name/op-mattermost', this.config).then((result) => {
+            console.log("Creating notification post for Channel ID: " + result.id);
+            let msgObj = {
+                "channel_id": req.body.channel_id,
+                "message": msg
+            };
+            axios.post(this.mmURL + 'posts',
+                msgObj, this.config).then((result) => {
+                if (result.data) {
+                    res.send('Show message post succeeded!').status(200);
+
+                }
+                else {
+                    console.log('Show message post failed!');
+                    res.send().status(400);
+
+                }
+            }).catch((err) => {
+                console.log('Show message post failed: %o', err);
+                res.send().status(500);
+            });
+        });
+    }
 }
 module.exports = Message;
