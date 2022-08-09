@@ -467,8 +467,9 @@ class UIactions {
   }
 
   notifyChannel(req, res, axios) {
-    let msg = req.body.action + " - " + req.body.comment.raw + " in " + req.body._embedded.project.name + " project.";
-    this.message.showNotification(req, res, axios, msg);
+    let msg = req.body.action;
+    console.log("Notification message: ", msg);
+    this.message.showNotification(res, axios, msg);
   }
 
   showByeMsg(req, res, mode) {
