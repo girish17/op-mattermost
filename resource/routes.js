@@ -28,6 +28,14 @@ module.exports = (app, axios) => {
   const UIActions = require('./uiActions');
   const uiActions = new UIActions(opURL, mmURL, intURL);
 
+  const RateLimit = require('express-rate-limit');
+  const limiter = new RateLimit({
+    windowMs: 1*60*1000,
+    max: 5
+  });
+
+  app.use(limiter);
+
   app.get('/', (req, res) => {
     res.send("Hello there! Good to see you here :) We don't know what to show here yet!").status(200);
   });
