@@ -59,7 +59,7 @@
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 
-## Command list
+## Slash Command list
 
 - `/op` - Displays the general menu
 - `/op lt` - Log time for a work package
