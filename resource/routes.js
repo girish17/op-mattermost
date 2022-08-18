@@ -29,9 +29,11 @@ module.exports = (app, axios) => {
   const uiActions = new UIActions(opURL, mmURL, intURL);
 
   const RateLimit = require('express-rate-limit');
-  const limiter = new RateLimit({
+  const limiter = RateLimit({
     windowMs: 1*60*1000,
-    max: 5
+    max: 5,
+    standardHeaders: true,
+    legacyHeaders: false
   });
 
   app.use(limiter);
