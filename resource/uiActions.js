@@ -507,5 +507,9 @@ class UIactions {
     }
     res.type('application/json').send(JSON.stringify(byeMsg)).status(200);
   }
+
+  notificationSubscribe(req, res, axios) {
+    this.message.showMsg(req, res, axios, this.util.subscribeMsg);
+  }
 }
 module.exports = UIactions;

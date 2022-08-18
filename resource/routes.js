@@ -66,6 +66,9 @@ module.exports = (app, axios) => {
           case 'bye':
             uiActions.showByeMsg(req, res, '');
             break;
+          case 'sub':
+            uiActions.notificationSubscribe(req, res, axios);
+            break;
           default:
             uiActions.showMenuBtn(req, res, axios);
             break;
@@ -170,6 +173,11 @@ module.exports = (app, axios) => {
   app.post('/notifyChannel', (req, res) => {
     console.log("Notify channel request: ", JSON.stringify(req.body, null, 2));
     uiActions.notifyChannel(req, res, axios);
+  });
+
+  app.post('/subscribe', (req, res) => {
+    console.log("Request to subscribe handler: ", JSON.stringify(req.body, null, 2));
+    uiActions.notificationSubscribe(req, res, axios);
   });
 
   app.post('/bye', (req, res) => {
