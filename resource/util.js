@@ -28,7 +28,7 @@ class Util {
     this.timeLogDelMsg = "**Time log deleted!**";
     this.timeLogDelErrMsg = "**That didn't work :pensive: Couldn't delete time log\n Please try again...`/op dtl`**";
     this.cnfDelTimeLogMsg = "**Confirm time log deletion?**";
-    this.subscribeMsg = "**Subscribed to OpenProject notifications :sunglasses:";
+    this.subscribeMsg = "**Subscribed to OpenProject notifications :sunglasses: **";
 
     this.wpDtlEmptyMsg = "**Work package details not entered :( Let's try again...**\n `/op`";
     this.saveWPSuccessMsg = "\n**Work package created! You are awesome :sunglasses: **\n To log time for a work package try `/op lt`";
