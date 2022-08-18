@@ -467,7 +467,27 @@ class UIactions {
   }
 
   notifyChannel(req, res, axios) {
-    let msg = req.body.action;
+    let action = req.body.action;
+    let notificationType = action.split(':')[0];
+    const {createdAt, updatedAt, _embedded, description, comment, fileName, identifier} = req.body[notificationType];
+    let msg = "unknown notification";
+    switch(notificationType) {
+	    case "project":
+                  msg = action + "-" + identifier + " at " + updatedAt;
+            	  break;
+            case "work_package":
+                  msg = action + "-" + description.raw + " for " + _embedded.project.name + " at " + updatedAt + " by " + _embedded.user.name;	
+		  break;
+            case "time_entry":
+                  msg = action + "-" + comment.raw + " for " + _embedded.project.name + " at " + updatedAt + " by " + _embedded.user.name;
+		  break;
+            case "attachment":
+                  msg = action + "-" + fileName + "-" + description.raw + " for " + " at " + createdAt + " by " + _embedded.author.name;
+		  break;
+            default:
+		    msg = "default notification";
+		    break;
+    }
     console.log("Notification message: ", msg);
     this.message.showNotification(res, axios, msg);
   }
