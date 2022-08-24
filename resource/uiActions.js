@@ -324,7 +324,7 @@ class UIactions {
           });
         });
         let wpCreateDlgJSON = this.util.getWpCreateJSON(req.body.trigger_id, this.intURL, typeArray, assigneeArray);
-	console.log("WpCreateDlgJSON: ", wpCreateDlgJSON);
+        console.log("WpCreateDlgJSON: ", wpCreateDlgJSON);
         axios.post(this.mmURL + 'actions/dialogs/open', wpCreateDlgJSON).then(response => {
           console.log("Response from wp create dialog: ", response.data);
           let updateMsg = JSON.stringify({
@@ -472,21 +472,21 @@ class UIactions {
     const {createdAt, updatedAt, _embedded, description, comment, fileName, identifier} = req.body[notificationType];
     let msg = "unknown notification";
     switch(notificationType) {
-	    case "project":
-                  msg = action + "-" + identifier + " at " + updatedAt;
-            	  break;
-            case "work_package":
-                  msg = action + "-" + description.raw + " for " + _embedded.project.name + " at " + updatedAt + " by " + _embedded.user.name;	
-		  break;
-            case "time_entry":
-                  msg = action + "-" + comment.raw + " for " + _embedded.project.name + " at " + updatedAt + " by " + _embedded.user.name;
-		  break;
-            case "attachment":
-                  msg = action + "-" + fileName + "-" + description.raw + " for " + " at " + createdAt + " by " + _embedded.author.name;
-		  break;
-            default:
-		    msg = "default notification";
-		    break;
+      case "project":
+        msg = action + "-" + identifier + " at " + updatedAt;
+        break;
+      case "work_package":
+        msg = action + "-" + description.raw + " for " + _embedded.project.name + " at " + updatedAt + " by " + _embedded.user.name;
+        break;
+      case "time_entry":
+        msg = action + "-" + comment.raw + " for " + _embedded.project.name + " at " + updatedAt + " by " + _embedded.user.name;
+        break;
+      case "attachment":
+        msg = action + "-" + fileName + "-" + description.raw + " for " + " at " + createdAt + " by " + _embedded.author.name;
+        break;
+      default:
+        msg = "default notification";
+        break;
     }
     console.log("Notification message: ", msg);
     this.message.showNotification(res, axios, msg);
@@ -494,8 +494,8 @@ class UIactions {
 
   showByeMsg(req, res, mode) {
     let byeMsg = {
-        "message": ":wave:",
-        "props": {}
+      "message": ":wave:",
+      "props": {}
     };
     if(mode === 'update') {
       byeMsg = {
