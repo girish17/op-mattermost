@@ -6,6 +6,7 @@
 - Delete work package
 - View time logs
 - Delete time log
+- Subscribe to OpenProject notifications in Mattermost channel
 
 ## Demo
 
@@ -67,6 +68,7 @@
 - `/op tl` - View time logs of the current user
 - `/op dwp` - Delete work package
 - `/op dtl` - Delete time log entry
+- `/op sub` - Subscribe to OpenProject notifications in Mattermost channel
 
 ## Wiki
 

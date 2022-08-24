@@ -1,5 +1,5 @@
 # op-mattermost provides an integration for Mattermost and Open Project.
-# Copyright (C) 2020  Girish M
+# Copyright (C) 2020 to present , Girish M
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
