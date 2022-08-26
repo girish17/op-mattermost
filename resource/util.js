@@ -124,7 +124,7 @@ class Util {
     };
   }
 
-  getProjectOptJSON(url, optArray, action, mode) {
+  getProjectOptJSON(url, optArray, action, mode = '') {
     let projectOptObj = {
       "response_type": "in_channel",
       "message": "*Please select a project*",
@@ -164,7 +164,7 @@ class Util {
     }
   }
 
-  getWpOptJSON(url, optArray, action, mode) {
+  getWpOptJSON(url, optArray, action, mode = '') {
     let wpOptJSON = {
       "response_type": "in_channel",
       "message": "*Please select a work package*",
@@ -203,7 +203,7 @@ class Util {
     return wpOptJSON;
   }
 
-  getTimeLogOptJSON(url, optArray, action, mode) {
+  getTimeLogOptJSON(url, optArray, action, mode = '') {
     let timeLogOptJSON = {
       "response_type": "in_channel",
       "props": {}
@@ -274,7 +274,7 @@ class Util {
     };
   }
 
-  getTimeLogJSON(timeLogArray, mode) {
+  getTimeLogJSON(timeLogArray, mode = '') {
     let tableTxt = '';
     let timeLogObj = {
         "response_type": "in_channel",

@@ -55,16 +55,16 @@ module.exports = (app, axios) => {
             uiActions.showSelProject(req, res, axios, "createWP");
             break;
           case 'tl':
-            uiActions.getTimeLog(req, res, axios, '');
+            uiActions.getTimeLog(req, res, axios);
             break;
           case 'dtl':
-            uiActions.showTimeLogSel(req, res, axios, '');
+            uiActions.showTimeLogSel(req, res, axios);
             break;
           case 'dwp':
-            uiActions.showDelWPSel(req, res, axios, '');
+            uiActions.showDelWPSel(req, res, axios);
             break;
           case 'bye':
-            uiActions.showByeMsg(req, res, '');
+            uiActions.showByeMsg(req, res);
             break;
           case 'sub':
             uiActions.notificationSubscribe(req, res, axios);

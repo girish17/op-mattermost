@@ -56,7 +56,7 @@ class UIactions {
       });
       let projectOptJSON;
       if (req.body.text) {
-        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, '');
+        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action);
       }
       else {
         projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, 'update');
@@ -76,7 +76,7 @@ class UIactions {
     });
   }
 
-  showSelWP(req, res, axios, action, mode) {
+  showSelWP(req, res, axios, action, mode = '') {
     // noinspection JSUnresolvedVariable
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
@@ -222,7 +222,7 @@ class UIactions {
     }
   }
 
-  getTimeLog(req, res, axios, mode) {
+  getTimeLog(req, res, axios, mode = '') {
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
@@ -249,7 +249,7 @@ class UIactions {
     });
   };
 
-  showTimeLogSel(req, res, axios, mode) {
+  showTimeLogSel(req, res, axios, mode = '') {
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
       method: 'get',
@@ -403,7 +403,7 @@ class UIactions {
     }
   };
 
-  showDelWPSel(req, res, axios, mode) {
+  showDelWPSel(req, res, axios, mode = '') {
     axios({
       url: '/work_packages?sortBy=[["created_at","desc"]]',
       method: 'get',
