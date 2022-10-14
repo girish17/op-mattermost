@@ -92,3 +92,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+## Sponsors
+This project is currently sponsored by [OpenProject Foundation (OPF)](https://github.com/opf). Sponsorship information is available [here]( https://github.com/sponsors/girish17)
