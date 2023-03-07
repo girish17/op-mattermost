@@ -74,6 +74,9 @@
 
 Development wiki is available [here](https://github.com/girish17/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
 
+## Sponsors
+This project is currently sponsored by [OpenProject Foundation (OPF)](https://github.com/opf) and mentioned in [OpenProject integrations](https://www.openproject.org/docs/system-admin-guide/integrations/#mattermost). Sponsorship information is available [here]( https://github.com/sponsors/girish17)
+
 ## COPYING
 
 ![GPLv3 or later](resource/gplv3-or-later.png)
@@ -92,7 +95,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-
-## Sponsors
-This project is currently sponsored by [OpenProject Foundation (OPF)](https://github.com/opf). Sponsorship information is available [here]( https://github.com/sponsors/girish17)
