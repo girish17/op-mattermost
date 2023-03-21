@@ -31,7 +31,7 @@
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
 - Create a custom Mattermost slash command `/op` as described [here](https://docs.mattermost.com/developer/slash-commands.html) and provide localhost or IP address (with port 3000) as the request URL
-- In OpenProject, create a custom field `billable hours` for all work packages in a project
+- In OpenProject, create a custom field `billable hours` under `SPENT TIME` head for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 - Make code changes to fix bugs, create new features, tests and documentation updates
 - Raise a pull request to the master branch. After review, the code changes shall be merged. 
