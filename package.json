@@ -1,6 +1,6 @@
 {
   "name": "@girish17/op-mattermost",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "OpenProject integration for Mattermost",
   "main": "index.js",
   "dependencies": {
@@ -33,9 +33,9 @@
     "type": "individual",
     "url": "https://paypal.me/GirishModiletappa"
   },
-  "homepage": "https://github.com/girish17/op-mattermost#readme",
+  "homepage": "https://github.com/girish17/op-mattermost/wiki",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
