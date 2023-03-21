@@ -59,6 +59,12 @@
 - Create a bot account with *System Admin* access as described [here](https://docs.mattermost.com/developer/bot-accounts.html#bot-account-creation) 
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
+- In case of error while invoking `/op` command:
+  - Check the Developer console for errors
+  - If the error is related `AllowedUntrustedInternalConnections` for the integration then
+    - Go to `System Console` of Mattermost
+    - Provide the integration URL in `Allow untrusted internal connections to`
+    - Save it and retry. 
 
 ## Slash Command list
 
