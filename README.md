@@ -80,6 +80,12 @@
 
 Development wiki is available [here](https://github.com/girish17/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
 
+## Mirror repositories
+
+This project is also available on following repositories (as an alternative to GitHub) on:
+- Notabug.org at https://notabug.org/girishm/op-mattermost
+- SourceHut at https://sr.ht/~girishm/op-mattermost/
+
 ## Sponsors
 This project is currently sponsored by [OpenProject Foundation (OPF)](https://github.com/opf) and mentioned in [OpenProject integrations](https://www.openproject.org/docs/system-admin-guide/integrations/#mattermost). Sponsorship information is available [here]( https://github.com/sponsors/girish17)
 
