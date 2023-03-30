@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/girish17/op-mattermost/wiki",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",

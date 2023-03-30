@@ -163,6 +163,7 @@ class UIactions {
       console.log(" billable_hours: ", billable_hours, " activity: ", activity);
       if (this.util.checkDate(this.moment, spent_on)) {
         if (this.util.checkHours(spent_hours, parseFloat(billable_hours))) {
+          let billableHours = this.getCustomFieldForBillableHours();
           /*log time log data to open project*/
           axios({
             url: 'time_entries',
@@ -185,7 +186,7 @@ class UIactions {
                 "raw": comments
               },
               "spentOn": spent_on,
-              "customField2": billable_hours
+              billableHours: billable_hours
             },
             auth: this.opAuth
           }).then((response) => {
@@ -222,6 +223,11 @@ class UIactions {
     }
   }
 
+  getCustomFieldForBillableHours() {
+    //TODO
+    return "customField2";
+  }
+
   getTimeLog(req, res, axios, mode = '') {
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
@@ -231,6 +237,7 @@ class UIactions {
     }).then((response) => {
       console.log("Time entries obtained from OP: %o", response.data);
       let timeLogArray = [];
+      let billableHorus = this.getCustomFieldForBillableHours();
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
           "spentOn": element.spentOn,
@@ -238,7 +245,7 @@ class UIactions {
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
           "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": element.customField2 + ' hours',
+          "billableHours": element[billableHorus] + ' hours',
           "comment": element.comment.raw
         });
       });
