@@ -87,7 +87,7 @@ This project is also available on following repositories (as an alternative to G
 - SourceHut at https://sr.ht/~girishm/op-mattermost/
 
 ## Sponsors
-This project is currently sponsored by [OpenProject Foundation (OPF)](https://github.com/opf) and mentioned in [OpenProject integrations](https://www.openproject.org/docs/system-admin-guide/integrations/#mattermost). Sponsorship information is available [here]( https://github.com/sponsors/girish17)
+This project was sponsored by [OpenProject Foundation (OPF)](https://github.com/opf) and mentioned in [OpenProject integrations](https://www.openproject.org/docs/system-admin-guide/integrations/#mattermost).
 
 ## COPYING
 
