@@ -227,7 +227,7 @@ class UIactions {
 
   getCustomFieldForBillableHours() {
     //TODO
-    return "customField2";
+    return "customField1";
   }
 
   getTimeLog(req, res, axios, mode = '') {
@@ -246,7 +246,7 @@ class UIactions {
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
           "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": element[this.billableHours] + ' hours',
+          "billableHours": this.moment.duration(element[this.billableHours], "h").humanize(),
           "comment": element.comment.raw
         });
       });
