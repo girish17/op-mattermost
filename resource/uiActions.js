@@ -37,6 +37,7 @@ class UIactions {
       password: process.env.OP_ACCESS_TOKEN
     }
     this.currentUser = '';
+    this.billableHours = this.getCustomFieldForBillableHours();
   }
 
   showSelProject(req, res, axios, action) {
@@ -163,31 +164,32 @@ class UIactions {
       console.log(" billable_hours: ", billable_hours, " activity: ", activity);
       if (this.util.checkDate(this.moment, spent_on)) {
         if (this.util.checkHours(spent_hours, parseFloat(billable_hours))) {
-          let billableHours = this.getCustomFieldForBillableHours();
+
+          let axiosData = {
+              "_links": {
+              "project": {
+                "href": "/api/v3/projects/" + this.projectId
+              },
+              "activity": {
+                "href": "/api/v3/time_entries/activities/" + activity.slice(this.optLen)
+              },
+              "workPackage": {
+                "href": "/api/v3/work_packages/" + this.wpId
+              }
+            },
+              "hours": this.moment.duration(spent_hours*60, "m"),
+                "comment": {
+              "raw": comments
+            },
+              "spentOn": spent_on
+          }
+          axiosData[this.billableHours] = billable_hours
           /*log time log data to open project*/
           axios({
             url: 'time_entries',
             method: 'post',
             baseURL: this.opURL,
-            data: {
-              "_links": {
-                "project": {
-                  "href": "/api/v3/projects/" + this.projectId
-                },
-                "activity": {
-                  "href": "/api/v3/time_entries/activities/" + activity.slice(this.optLen)
-                },
-                "workPackage": {
-                  "href": "/api/v3/work_packages/" + this.wpId
-                }
-              },
-              "hours": this.moment.duration(spent_hours*60, "m"),
-              "comment": {
-                "raw": comments
-              },
-              "spentOn": spent_on,
-              billableHours: billable_hours
-            },
+            data: axiosData,
             auth: this.opAuth
           }).then((response) => {
             console.log("Time logged. Save response: %o", response.data);
@@ -237,7 +239,6 @@ class UIactions {
     }).then((response) => {
       console.log("Time entries obtained from OP: %o", response.data);
       let timeLogArray = [];
-      let billableHorus = this.getCustomFieldForBillableHours();
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
           "spentOn": element.spentOn,
@@ -245,7 +246,7 @@ class UIactions {
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
           "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": element[billableHorus] + ' hours',
+          "billableHours": element[this.billableHours] + ' hours',
           "comment": element.comment.raw
         });
       });
