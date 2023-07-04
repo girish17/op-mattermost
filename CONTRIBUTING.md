@@ -18,7 +18,6 @@
     - `docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview`
   - Node js
     - [Download and install](https://nodejs.org/en/download/)
-    - Run `npm install` to install npm dependencies
 
 - Run `sh configure.sh` to create `.env` using bash command line. Alternatively, create a `.env` file using a text editor with the following entries:
     - `OP_URL=http://<your host or ip address>:8080/api/v3/   #needed for pointing to OpenProject installation`
