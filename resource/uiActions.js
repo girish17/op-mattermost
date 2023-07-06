@@ -231,7 +231,7 @@ class UIactions {
     for (let key in schema) {
       if (schema.hasOwnProperty(key)) {
         const value = schema[key];
-
+        console.log('Checking for ', targetValue, ' with ', value);
         if (typeof value === 'string' && value.toLowerCase().includes(targetValue.toLowerCase())) {
           const words = value.toLowerCase().split(' ');
           if (words.includes(targetValue.toLowerCase())) {
