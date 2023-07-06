@@ -233,6 +233,7 @@ class UIactions {
     const keys = Object.keys(schema);
     const matchingKeys = keys.filter(key => regex.test(key));
     for (const matchingKey in matchingKeys) {
+      console.log("Matched custom field: ", schema[matchingKey]);
       if(schema[matchingKey].name.toLowerCase().includes('billable')){
         return matchingKey;
       }
