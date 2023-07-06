@@ -120,7 +120,7 @@ class UIactions {
       }
     }).then((response) => {
       console.log("Activities obtained from OP: %o", response.data);
-      this.customFieldForBillableHours = this.getCustomFieldForBillableHours(response.data._embedded.schema, 'Billable Hours');
+      this.customFieldForBillableHours = this.getCustomFieldForBillableHours(response.data._embedded.schema, 'billable');
       console.log("Custom field for billable hours is: ", this.customFieldForBillableHours);
       let activityOptArray = [];
       response.data._embedded.schema.activity._embedded.allowedValues.forEach(element => {
