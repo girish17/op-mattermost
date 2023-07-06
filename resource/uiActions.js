@@ -120,7 +120,7 @@ class UIactions {
       }
     }).then((response) => {
       console.log("Activities obtained from OP: %o", response.data);
-      this.customFieldForBillableHours = this.getCFKeyForBillableHours(response.data._embedded.schema, /customField\d+/);
+      this.customFieldForBillableHours = this.getCustomFieldForBillableHours(response.data._embedded.schema, 'billable');
       console.log("Custom field for billable hours is: ", this.customFieldForBillableHours);
       let activityOptArray = [];
       response.data._embedded.schema.activity._embedded.allowedValues.forEach(element => {
@@ -227,20 +227,27 @@ class UIactions {
     }
   }
 
-  getCFKeyForBillableHours(schema, targetKeyPattern) {
-    const regex = new RegExp(targetKeyPattern, 'i');
+  getCustomFieldForBillableHours(schema, targetValue, parentKey = '') {
+    for (let key in schema) {
+      if (schema.hasOwnProperty(key)) {
+        const value = schema[key];
+        if (typeof value === 'string' && value.toLowerCase().includes(targetValue.toLowerCase())) {
+          const words = value.toLowerCase().split(' ');
+          if (words.includes(targetValue.toLowerCase())) {
+            return parentKey;
+          }
+        }
 
-    const keys = Object.keys(schema);
-    const matchingKeys = keys.filter(key => regex.test(key));
-    for (const matchingKey in matchingKeys) {
-      console.log("Matched custom field: ", schema[matchingKey]);
-      if(schema[matchingKey].name.toLowerCase().includes('billable')){
-        return matchingKey;
+        if (typeof value === 'object') {
+          const nestedKey = this.getCustomFieldForBillableHours(value, targetValue, key);
+          if (nestedKey !== null) {
+            return nestedKey;
+          }
+        }
       }
     }
     return null;
   }
-
   getTimeLog(req, res, axios, mode = '') {
     axios({
       url: 'time_entries?sortBy=[["createdAt", "desc"]]',
