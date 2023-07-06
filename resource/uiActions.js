@@ -240,7 +240,7 @@ class UIactions {
         }
 
         if (typeof value === 'object') {
-          const nestedKey = getCustomFieldForBillableHours(value, targetValue, key);
+          const nestedKey = this.getCustomFieldForBillableHours(value, targetValue, key);
           if (nestedKey !== null) {
             return nestedKey;
           }
