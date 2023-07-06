@@ -37,7 +37,7 @@ class UIactions {
       password: process.env.OP_ACCESS_TOKEN
     }
     this.currentUser = '';
-    this.billableHours = this.getCustomFieldForBillableHours();
+    this.customFieldForBillableHours = 'customField1';
   }
 
   showSelProject(req, res, axios, action) {
@@ -120,6 +120,7 @@ class UIactions {
       }
     }).then((response) => {
       console.log("Activities obtained from OP: %o", response.data);
+      this.customFieldForBillableHours = this.getCustomFieldForBillableHours(response.data._embedded.schema, 'Billable Hours');
       let activityOptArray = [];
       response.data._embedded.schema.activity._embedded.allowedValues.forEach(element => {
         activityOptArray.push({
@@ -183,7 +184,7 @@ class UIactions {
             },
               "spentOn": spent_on
           }
-          axiosData[this.billableHours] = billable_hours
+          axiosData[this.customFieldForBillableHours] = billable_hours
           /*log time log data to open project*/
           axios({
             url: 'time_entries',
@@ -225,9 +226,27 @@ class UIactions {
     }
   }
 
-  getCustomFieldForBillableHours() {
-    //TODO
-    return "customField1";
+  getCustomFieldForBillableHours(schema, targetValue, parentKey = '') {
+    for (let key in schema) {
+      if (schema.hasOwnProperty(key)) {
+        const value = schema[key];
+
+        if (typeof value === 'string' && value.toLowerCase().includes(targetValue.toLowerCase())) {
+          const words = value.toLowerCase().split(' ');
+          if (words.includes(targetValue.toLowerCase())) {
+            return parentKey;
+          }
+        }
+
+        if (typeof value === 'object') {
+          const nestedKey = getCustomFieldForBillableHours(value, targetValue, key);
+          if (nestedKey !== null) {
+            return nestedKey;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   getTimeLog(req, res, axios, mode = '') {
@@ -246,7 +265,7 @@ class UIactions {
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
           "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": this.moment.duration(element[this.billableHours], "h").humanize(),
+          "billableHours": this.moment.duration(element[this.customFieldForBillableHours], "h").humanize(),
           "comment": element.comment.raw
         });
       });
