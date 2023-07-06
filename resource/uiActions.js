@@ -120,7 +120,7 @@ class UIactions {
       }
     }).then((response) => {
       console.log("Activities obtained from OP: %o", response.data);
-      this.customFieldForBillableHours = this.getCustomFieldForBillableHours(response.data._embedded.schema, 'billable');
+      this.customFieldForBillableHours = this.getCFKeyForBillableHours(response.data._embedded.schema, /customField\d+/);
       console.log("Custom field for billable hours is: ", this.customFieldForBillableHours);
       let activityOptArray = [];
       response.data._embedded.schema.activity._embedded.allowedValues.forEach(element => {
@@ -227,24 +227,14 @@ class UIactions {
     }
   }
 
-  getCustomFieldForBillableHours(schema, targetValue, parentKey = '') {
-    for (let key in schema) {
-      if (schema.hasOwnProperty(key)) {
-        const value = schema[key];
-        console.log('Checking for ', targetValue, ' with ', value);
-        if (typeof value === 'string' && value.toLowerCase().includes(targetValue.toLowerCase())) {
-          const words = value.toLowerCase().split(' ');
-          if (words.includes(targetValue.toLowerCase())) {
-            return parentKey;
-          }
-        }
+  getCFKeyForBillableHours(schema, targetKeyPattern) {
+    const regex = new RegExp(targetKeyPattern, 'i');
 
-        if (typeof value === 'object') {
-          const nestedKey = this.getCustomFieldForBillableHours(value, targetValue, key);
-          if (nestedKey !== null) {
-            return nestedKey;
-          }
-        }
+    const keys = Object.keys(schema);
+    const matchingKeys = keys.filter(key => regex.test(key));
+    for (const matchingKey in matchingKeys) {
+      if(schema[matchingKey].name.toLowerCase().includes('billable')){
+        return matchingKey;
       }
     }
     return null;
