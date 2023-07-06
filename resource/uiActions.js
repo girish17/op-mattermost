@@ -246,7 +246,7 @@ class UIactions {
         }
       }
     }
-    return null;
+    return 'customField1';
   }
   getTimeLog(req, res, axios, mode = '') {
     axios({
