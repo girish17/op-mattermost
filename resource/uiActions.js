@@ -263,8 +263,8 @@ class UIactions {
           "project": element._links.project.title,
           "workPackage": element._links.workPackage.title,
           "activity": element._links.activity.title,
-          "loggedHours": this.moment.duration(element.hours, "h").humanize(),
-          "billableHours": this.moment.duration(element[this.customFieldForBillableHours], "h").humanize(),
+          "loggedHours": this.moment.utc(this.moment.duration(element.hours, "hours").asMilliseconds()).format("H [hours] m [minutes]"),
+          "billableHours": this.moment.utc(this.moment.duration(element[this.customFieldForBillableHours], "hours").asMilliseconds()).format("H [hours] m [minutes]"),
           "comment": element.comment.raw
         });
       });
@@ -287,7 +287,7 @@ class UIactions {
       response.data._embedded.elements.forEach(element => {
         timeLogArray.push({
           "value": "opt" + element.id,
-          "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.duration(element.hours, "h").humanize() + '-' + element._links.workPackage.title + '-' + element._links.activity.title + '-' + element._links.project.title
+          "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.utc(this.moment.duration(element.hours, "hours").asMilliseconds()).format("H [hours] m [minutes]") + '-' + element._links.workPackage.title + '-' + element._links.activity.title + '-' + element._links.project.title
         });
       });
       res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "cnfDelTimeLog", mode)).status(200);
