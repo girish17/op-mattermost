@@ -9,7 +9,7 @@
     "express": "^4.17.1",
     "express-rate-limit": "^6.5.1",
     "moment": "^2.29.4",
-    "nodemon": "^1.14.9"
+    "nodemon": "^2.0.22"
   },
   "scripts": {
     "test": "mocha",
