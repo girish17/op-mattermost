@@ -183,9 +183,9 @@ class UIactions {
                 "comment": {
               "raw": comments
             },
-              "spentOn": spent_on
+              "spentOn": spent_on,
+              [this.customFieldForBillableHours]: billable_hours
           }
-          axiosData[this.customFieldForBillableHours] = billable_hours
           /*log time log data to open project*/
           axios({
             url: 'time_entries',
