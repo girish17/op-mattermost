@@ -520,7 +520,7 @@ class UIactions {
 
   showByeMsg(req, res, mode) {
     let byeMsg = {
-      "message": ":wave:",
+      "message": "Donations accepted on paypal.me/girishmodiletappa :wave:",
       "props": {}
     };
     if(mode === 'update') {
