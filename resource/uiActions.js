@@ -520,7 +520,7 @@ class UIactions {
 
   showByeMsg(req, res, mode) {
     let byeMsg = {
-      "message": "Donate at paypal.me/girishmodiletappa :wave:",
+      "message": "Donate at https://www.paypal.me/girishmodiletappa :wave:",
       "props": {}
     };
     if(mode === 'update') {
@@ -529,7 +529,7 @@ class UIactions {
       };
     }
     else {
-      byeMsg.text = ":wave:";
+      byeMsg.text = byeMsg.message;
     }
     res.type('application/json').send(JSON.stringify(byeMsg)).status(200);
   }
