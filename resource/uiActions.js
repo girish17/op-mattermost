@@ -529,7 +529,7 @@ class UIactions {
       };
     }
     else {
-      byeMsg.text = ":wave:";
+      byeMsg.text = byeMsg.message;
     }
     res.type('application/json').send(JSON.stringify(byeMsg)).status(200);
   }
