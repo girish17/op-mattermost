@@ -21,7 +21,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -35,3 +34,4 @@ const server = app.listen(process.env.PORT || 3000, () => {
 });
 
 require('./resource/routes')(app, axios);
+module.exports = app;

@@ -1,0 +1,2 @@
+curl --request POST   --url 'http://45.79.126.134:8080/oauth/token'   --header 'content-type: application/x-www-form-urlencoded'   --data grant_type=authorization_code   --data client_id=Hljs3kzAYdyyfzSRUmz1CnexvMs26b21yr7fpI4hz3o   --data client_secret=ZjzjQsBDIMvIAKQs6_x3huQQyHkFSMao3AR9U3zxpKM   --data code=XxR5PwBLOU7Hy7WcMX38cTokYxRiVI7lqXv83ZOpFIo   --data 'redirect_uri=http://localhost:3000/getLogo'
+
