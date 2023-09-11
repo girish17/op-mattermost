@@ -106,6 +106,7 @@ class Util {
             "display_name": "Spent hours",
             "name": "spent_hours",
             "type": "text",
+            "subtype": "number",
             "placeholder": "hours like 0.5, 1, 3 ...",
             "default": "0.5",
             "help_text": "Please enter spent hours to be logged"
@@ -114,6 +115,7 @@ class Util {
             "display_name": "Billable hours",
             "name": "billable_hours",
             "type": "text",
+            "subtype": "number",
             "placeholder": "hours like 0.5, 1, 3 ...",
             "default": "0.0",
             "help_text": "Please ensure billable hours is less than or equal to spent hours"
