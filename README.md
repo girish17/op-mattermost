@@ -80,6 +80,9 @@
 
 Development wiki is available [here](https://github.com/girish17/op-mattermost/wiki). It contains the workflows, file description and miscellaneous information necessary for development.
 
+## Plugin
+A Mattermost plugin with limited features mentioned in this project is available [here](https://github.com/girish17/op-mm-plugin).
+
 ## Mirror repositories
 
 This project is also available on following repositories (as an alternative to GitHub) on:
