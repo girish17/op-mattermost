@@ -27,10 +27,25 @@ module.exports = (app, axios) => {
 
   const UIActions = require('./uiActions');
   const uiActions = new UIActions(opURL, mmURL, intURL);
+  const {AuthorizationCode } = require('simple-oauth2');
+
+  const credentials = {
+    client: {
+      id: process.env.CLIENT_ID,
+      secret: process.env.CLIENT_SECRET,
+    },
+    auth: {
+      tokenHost: process.env.PROVIDER_HOST_URL,
+      authorizePath: process.env.PROVIDER_AUTHORIZE_PATH,
+      tokenPath: process.env.PROVIDER_TOKEN_PATH,
+    },
+  };
+
+  const oauth2 = new AuthorizationCode(credentials);
 
   const RateLimit = require('express-rate-limit');
   const limiter = RateLimit({
-    windowMs: 1*60*1000,
+    windowMs: 60*1000,
     max: 100,
     standardHeaders: true,
     legacyHeaders: false
@@ -40,6 +55,33 @@ module.exports = (app, axios) => {
 
   app.get('/', (req, res) => {
     res.send("Hello there! Good to see you here :) We don't know what to show here yet!").status(200);
+  });
+
+  app.get('/auth', (req, res) => {
+    const authorizationUri = oauth2.authorizeURL({
+      redirect_uri: intURL + 'callback',
+      scope: 'api_v3',
+    });
+
+    res.redirect(authorizationUri);
+  });
+
+  app.get('/callback', async (req, res) => {
+    const { code } = req.query;
+
+    // Exchange authorization code for access token
+    const tokenConfig = {
+      code,
+      redirect_uri: mmURL
+    };
+
+    try {
+      process.env.OP_ACCESS_TOKEN = await oauth2.getToken(tokenConfig);
+      res.send('Authentication successful!');
+    } catch (error) {
+      console.error('Access Token Error:', error.message);
+      res.status(500).send('Authentication failed');
+    }
   });
 
   app.post('/', (req, res) => {

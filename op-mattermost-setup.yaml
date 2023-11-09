@@ -1,0 +1,50 @@
+---
+- name: Install OpenProject, Mattermost, Docker, and Node.js
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Create OpenProject directories
+      file:
+        path: /var/lib/openproject/{pgdata, static}
+        state: directory
+
+    - name: Install OpenProject
+      command: docker run -d -p 8080:80 --name openproject -e SECRET_KEY_BASE=secret -v /var/lib/openproject/pgdata:/var/openproject/pgdata -v /var/lib/openproject/static:/var/openproject/assets openproject/community:11
+      args:
+        creates: /var/lib/openproject/pgdata
+
+    - name: Stop and Start OpenProject container
+      command: docker stop openproject && docker start openproject
+      args:
+        creates: /var/lib/openproject/pgdata
+
+    - name: Install Mattermost
+      command: docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview
+      args:
+        creates: /var/lib/docker/volumes/mattermost-preview
+
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Create project directory
+      file:
+        path: ./Projects/op-mattermost
+        state: directory
+
+    - name: Clone the project repository
+      git:
+        repo: https://github.com/girish17/op-mattermost.git
+        dest: ./Projects/op-mattermost
+
+    - name: Install npm packages
+      command: npm install
+      args:
+        chdir: ./Projects/op-mattermost

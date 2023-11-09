@@ -17,18 +17,23 @@
 OK="n"
 
 until [ $OK = "y" ]; do
+  echo '\nPlease enter host IP or name'
+  read -rp 'HOST (default: localhost): ' HOST
+  if [ -z "$HOST" ]; then
+    HOST="localhost"
+  fi
   echo '\nPlease enter the following environment variables'
-  read -rp 'OP_URL (http://localhost:8080/api/v3): ' OP_URL
+  read -rp "OP_URL (http://$HOST:8080/api/v3): " OP_URL
   if [ -z "$OP_URL" ]; then
-    OP_URL="http://localhost:8080/api/v3"
+    OP_URL="http://$HOST:8080/api/v3"
   fi
-  read -rp 'INT_URL (http://localhost:3000): ' INT_URL
+  read -rp "INT_URL (http://$HOST:3000): " INT_URL
   if [ -z "$INT_URL" ]; then
-    INT_URL="http://localhost:3000"
+    INT_URL="http://$HOST:3000"
   fi
-  read -rp 'MM_URL (http://localhost:8065/api/v4): ' MM_URL
+  read -rp "MM_URL (http://$HOST:8065/api/v4): " MM_URL
   if [ -z "$MM_URL" ]; then
-    MM_URL="http://localhost:8065/api/v4"
+    MM_URL="http://$HOST:8065/api/v4"
   fi
 
   echo "\nPlease enter the generated access tokens for OpenProject and Mattermost"
