@@ -4,7 +4,7 @@
   "description": "OpenProject integration for Mattermost",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.21.2",
+    "axios": "^1.6.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-rate-limit": "^6.5.1",
