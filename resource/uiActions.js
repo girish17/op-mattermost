@@ -520,7 +520,7 @@ class UIactions {
 
   showByeMsg(req, res, mode) {
     let byeMsg = {
-      "message": "Crafted with :desktop_computer: and :books: by :nerd_face:.  :wave:",
+      "message": "Logged out.  :wave:",
       "props": {}
     };
     if(mode === 'update') {
