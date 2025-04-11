@@ -49,14 +49,14 @@
     - `OP_URL=http://<your host or ip address>:8080/api/v3/`   (needed for pointing to OpenProject installation)
     - `INT_URL=http://<your host or ip address>:3000/`         (needed for exposing the integration running on port 3000)
     - `MM_URL=http://<your host or ip address>:8065/api/v4/`   (needed for pointing to Mattermost installation)
-    - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>` (needed for slash command validation)
+    - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>`
+      - To obtain this token create a custom Mattermost slash command `/op` as described [here](https://developers.mattermost.com/integrate/slash-commands/custom/) and provide localhost or IP address (with port 3000) as the request URL and method as `POST`
     - `MATTERMOST_BOT_TOKEN=<use the mattermost bot access token>`  (needed for validation for posting messages as bot)
+      - To obtain this token create a bot account with *System Admin* access as described [here](https://developers.mattermost.com/integrate/reference/bot-accounts/#bot-account-creation) 
     - `OP_ACCESS_TOKEN=<openproject access token (a.k.a apikey) obtained from user account page>`
 - In the project root directory do `npm init` to generate (or update existing) `package.json` file
 - Then run `npm install` to download and install the node modules from npm
 - Run op-mattermost in the console using `npm start` (usually launches on port 3000)
-- Create a custom Mattermost slash command `/op` as described [here](https://developers.mattermost.com/integrate/slash-commands/custom/) and provide localhost or IP address (with port 3000) as the request URL and method as `POST`
-- Create a bot account with *System Admin* access as described [here](https://developers.mattermost.com/integrate/reference/bot-accounts/#bot-account-creation) 
 - In OpenProject, create a custom field `billable hours` for all work packages in a project
 - Test the integration by trying `/op` in the message bar.
 - In case of error while invoking `/op` command:
