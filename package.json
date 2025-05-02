@@ -22,7 +22,8 @@
   "keywords": [
     "OpenProject",
     "MatterMost",
-    "Connector"
+    "Connector",
+    "Integrations"
   ],
   "author": "Girish M",
   "license": "GPL-3.0-or-later",
