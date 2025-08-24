@@ -389,7 +389,7 @@ class UIactions {
           }
         }
       };
-      if (assignee !== null) {
+      if (assignee !== undefined) {
         postWpData.assignee = {
           "href": "/api/v3/users/" + assignee.slice(this.optLen)
         }
