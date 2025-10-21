@@ -86,7 +86,6 @@ A Mattermost plugin with limited features mentioned in this project is available
 ## Mirror repositories
 
 This project is also available on following repositories (as an alternative to GitHub) on:
-- Notabug.org at https://notabug.org/girishm/op-mattermost
 - SourceHut at https://sr.ht/~girishm/op-mattermost/
 
 ## Sponsors
