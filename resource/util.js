@@ -77,7 +77,7 @@ class Util {
       "dialog": {
         "callback_id": "log_time_dlg",
         "title": "Log time for work package",
-        "icon_url": url + 'getLogo',
+        "icon_url": process.env.LOGO_URL,
         "elements": [
           {
             "display_name": "Date",
@@ -332,7 +332,7 @@ class Util {
         "callback_id": "create_wp_dlg",
         "title": "Create a work package",
 	"introduction_text": "Create a work package by providing following details",
-        "icon_url": url + 'getLogo',
+        "icon_url": process.env.LOGO_URL,
         "elements": [{
           "display_name": "Subject",
           "name": "subject",
@@ -364,7 +364,8 @@ class Util {
             "help_text": "Note that this controls notifications for all users interested in changes to the work package (e.g. current user, watchers, author and assignee)"
           }],
         "submit_label": "Create Work Package",
-        "notify_on_cancel": true
+        "notify_on_cancel": true,
+        "state":"wpCreateState"
       }
     };
   }
