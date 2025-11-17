@@ -79,7 +79,7 @@
 
 ## Wiki
 
-Development wiki is available on SourceHut at https://git.sr.ht/~girishm/op-mattermost-wiki and on GitHub at https://github.com/girish17/op-mattermost/wiki. It contains the workflows, file description and miscellaneous information necessary for development.
+Development wiki is available on SourceHut at https://git.sr.ht/~girishm/op-mattermost.wiki and on GitHub at https://github.com/girish17/op-mattermost/wiki. It contains the workflows, file description and miscellaneous information necessary for development.
 
 ## Plugin
 A Mattermost plugin with limited features mentioned in this project is available [here](https://github.com/girish17/op-mm-plugin).
