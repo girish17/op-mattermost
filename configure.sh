@@ -22,15 +22,15 @@ until [ $OK = "y" ]; do
   if [ -z "$OP_URL" ]; then
     OP_URL="http://localhost:8080/api/v3"
   fi
-  read -rp 'INT_URL (http://localhost:3000): ' INT_URL
+  read -rp 'INT_URL (http://host.docker.internal:3000): ' INT_URL
   if [ -z "$INT_URL" ]; then
-    INT_URL="http://localhost:3000"
+    INT_URL="http://host.docker.internal:3000"
   fi
   read -rp 'MM_URL (http://localhost:8065/api/v4): ' MM_URL
   if [ -z "$MM_URL" ]; then
     MM_URL="http://localhost:8065/api/v4"
   fi
-  read -rp 'LOGO_URL (http://localhost:3000/getLogo): ' MM_URL
+  read -rp 'LOGO_URL (http://localhost:3000/getLogo): ' LOGO_URL
   if [ -z "$LOGO_URL" ]; then
     LOGO_URL="http://localhost:3000/getLogo"
   fi

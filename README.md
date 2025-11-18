@@ -36,7 +36,7 @@
     - `docker start openproject`
   - For up to date info on OpenProject installation refer their [official docs](https://docs.openproject.org/installation-and-operations/installation/docker).
 - Mattermost
-  - `docker run --name mattermost-preview -d --publish 8065:8065 --add-host dockerhost:127.0.0.1 mattermost/mattermost-preview`
+  - `docker run --name mattermost-preview -d --publish 8065:8065 --add-host host.docker.internal:host-gateway mattermost/mattermost-preview`
 - Node js
   - [Download and install](https://nodejs.org/en/download/)
   - Run `npm install` to install npm dependencies
@@ -49,6 +49,7 @@
     - `OP_URL=http://<your host or ip address>:8080/api/v3/`   (needed for pointing to OpenProject installation)
     - `INT_URL=http://<your host or ip address>:3000/`         (needed for exposing the integration running on port 3000)
     - `MM_URL=http://<your host or ip address>:8065/api/v4/`   (needed for pointing to Mattermost installation)
+    - `LOGO_URL=http://<your host or ip address>:8065/api/v4/` (needed for getting OpenProject logo in Mattermost)
     - `MATTERMOST_SLASH_TOKEN=<use the mattermost slash command token for logtime>`
       - To obtain this token create a custom Mattermost slash command `/op` as described [here](https://developers.mattermost.com/integrate/slash-commands/custom/) and provide localhost or IP address (with port 3000) as the request URL and method as `POST`
     - `MATTERMOST_BOT_TOKEN=<use the mattermost bot access token>`  (needed for validation for posting messages as bot)
