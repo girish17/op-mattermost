@@ -54,18 +54,9 @@ until [ $OK = "y" ]; do
     OK="n"
   fi
 done
-<<<<<<< HEAD
 echo '\nGenerating .env file...'
 ENV_CONTENTS='OP_URL='$OP_URL'/\nINT_URL='$INT_URL'/\nMM_URL='$MM_URL'/\nLOGO_URL='$LOGO_URL'/\nMATTERMOST_SLASH_TOKEN='$MATTERMOST_SLASH_TOKEN'\nMATTERMOST_BOT_TOKEN='$MATTERMOST_BOT_TOKEN'\nOP_ACCESS_TOKEN='$OP_ACCESS_TOKEN
 
 touch .env
 echo "$ENV_CONTENTS" >.env
 echo '\nDone.'
-=======
-echo -e '\nGenerating .env file...'
-ENV_CONTENTS="OP_URL=$OP_URL/\nINT_URL=$INT_URL/\nMM_URL=$MM_URL/\nMATTERMOST_SLASH_TOKEN=$MATTERMOST_SLASH_TOKEN\nMATTERMOST_BOT_TOKEN=$MATTERMOST_BOT_TOKEN\nOP_ACCESS_TOKEN=$OP_ACCESS_TOKEN"
-
-touch .env
-echo -e "$ENV_CONTENTS" >.env
-echo -e '\nDone.'
->>>>>>> feat(configure): interpret
