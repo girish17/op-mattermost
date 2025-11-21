@@ -17,7 +17,7 @@
 OK="n"
 
 until [ $OK = "y" ]; do
-  echo '\nPlease enter the following environment variables'
+  echo -e '\nPlease enter the following environment variables'
   read -rp 'OP_URL (http://localhost:8080/api/v3): ' OP_URL
   if [ -z "$OP_URL" ]; then
     OP_URL="http://localhost:8080/api/v3"
@@ -35,12 +35,12 @@ until [ $OK = "y" ]; do
     LOGO_URL="http://localhost:3000/getLogo"
   fi
 
-  echo "\nPlease enter the generated access tokens for OpenProject and Mattermost"
+  echo -e "\nPlease enter the generated access tokens for OpenProject and Mattermost"
   read -rp 'MATTERMOST_SLASH_TOKEN: ' MATTERMOST_SLASH_TOKEN
   read -rp 'MATTERMOST_BOT_TOKEN: ' MATTERMOST_BOT_TOKEN
   read -rp 'OP_ACCESS_TOKEN: ' OP_ACCESS_TOKEN
 
-  echo '\nInput environment variables:\n'
+  echo -e '\nInput environment variables:\n'
   echo OP_URL=$OP_URL
   echo INT_URL=$INT_URL
   echo MM_URL=$MM_URL
@@ -54,9 +54,18 @@ until [ $OK = "y" ]; do
     OK="n"
   fi
 done
+<<<<<<< HEAD
 echo '\nGenerating .env file...'
 ENV_CONTENTS='OP_URL='$OP_URL'/\nINT_URL='$INT_URL'/\nMM_URL='$MM_URL'/\nLOGO_URL='$LOGO_URL'/\nMATTERMOST_SLASH_TOKEN='$MATTERMOST_SLASH_TOKEN'\nMATTERMOST_BOT_TOKEN='$MATTERMOST_BOT_TOKEN'\nOP_ACCESS_TOKEN='$OP_ACCESS_TOKEN
 
 touch .env
 echo "$ENV_CONTENTS" >.env
 echo '\nDone.'
+=======
+echo -e '\nGenerating .env file...'
+ENV_CONTENTS="OP_URL=$OP_URL/\nINT_URL=$INT_URL/\nMM_URL=$MM_URL/\nMATTERMOST_SLASH_TOKEN=$MATTERMOST_SLASH_TOKEN\nMATTERMOST_BOT_TOKEN=$MATTERMOST_BOT_TOKEN\nOP_ACCESS_TOKEN=$OP_ACCESS_TOKEN"
+
+touch .env
+echo -e "$ENV_CONTENTS" >.env
+echo -e '\nDone.'
+>>>>>>> feat(configure): interpret
