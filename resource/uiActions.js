@@ -63,15 +63,15 @@ class UIactions {
         projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, 'update');
       }
       console.log("optArray for projects", projectOptJSON);
-      res.set('Content-Type', 'application/json').send(JSON.stringify(projectOptJSON)).status(200);
+      res.status(200).set('Content-Type', 'application/json').send(JSON.stringify(projectOptJSON));
     }).catch(error => {
       if(error.response.status === 401) {
         console.log("Unauthorized: ", error.response.data.message);
-        res.send("**Unauthorized. Invalid OpenProject access token**").status(401);
+        res.status(401).send("**Unauthorized. Invalid OpenProject access token**");
       }
       else {
         console.log("Error in getting projects from OP", error.response.data.message);
-        res.send("**Open Project server down!!**").status(500);
+        res.status(500).send("**Open Project server down!!**");
       }
       return false;
     });
@@ -96,7 +96,7 @@ class UIactions {
       });
       let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, action, mode);
       console.log("opt Array for WP: ", wpOptJSON);
-      res.set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON)).status(200);
+      res.status(200).set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON));
     }, (error) => {
       console.log("Request failed for /work_packages: %o", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.wpFetchErrMsg);
@@ -140,7 +140,7 @@ class UIactions {
           },
           "ephemeral_text": "Opening time log dialog..."
         });
-        res.type('application/json').send(updateMsg).status(200);
+        res.status(200).type('application/json').send(updateMsg);
       }).catch(error => {
         console.log("Error while creating projects dialog", error.response.data.message);
         this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);
@@ -268,7 +268,7 @@ class UIactions {
           "comment": element.comment.raw
         });
       });
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray, mode)).status(200);
+      res.status(200).set('Content-Type', 'application/json').send(this.util.getTimeLogJSON(timeLogArray, mode));
     }).catch((error) => {
       console.log("Error in getting time logs: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
@@ -290,7 +290,7 @@ class UIactions {
           "text":  element.comment.raw + '-' + element.spentOn + '-' + this.moment.utc(this.moment.duration(element.hours, "hours").asMilliseconds()).format("H [hours] m [minutes]") + '-' + element._links.workPackage.title + '-' + element._links.activity.title + '-' + element._links.project.title
         });
       });
-      res.set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "cnfDelTimeLog", mode)).status(200);
+      res.status(200).set('Content-Type', 'application/json').send(this.util.getTimeLogOptJSON(this.intURL, timeLogArray, "cnfDelTimeLog", mode));
     }).catch((error) => {
       console.log("Error in getting time logs: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.timeLogFetchErrMsg);
@@ -299,7 +299,7 @@ class UIactions {
 
   cnfDelTimeLog(req, res) {
     this.timeLogId = req.body.context.selected_option.slice(this.optLen);
-    res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL + "delTimeLog", this.util.cnfDelTimeLogMsg, "delSelTimeLog"))).status(200);
+    res.status(200).set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL + "delTimeLog", this.util.cnfDelTimeLogMsg, "delSelTimeLog")));
   }
 
   delTimeLog(req, res, axios) {
@@ -311,7 +311,7 @@ class UIactions {
       auth: this.opAuth
     }).then((response) => {
       console.log("Time entry deleted. Response %o", response.data);
-      res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getTimeLogDelMsgJSON(this.util.timeLogDelMsg, this.intURL))).status(200);
+      res.status(200).set('Content-Type', 'application/json').send(JSON.stringify(this.util.getTimeLogDelMsgJSON(this.util.timeLogDelMsg, this.intURL)));
     }).catch((error) => {
       console.log("Error in time entry deletion: ", error.response.data.message);
       this.message.showMsg(req, res, axios, this.util.timeLogDelErrMsg);
@@ -360,7 +360,7 @@ class UIactions {
             },
             "ephemeral_text": "Opening work package create dialog..."
           });
-          res.type('application/json').send(updateMsg).status(200);
+          res.status(200).type('application/json').send(updateMsg);
         }).catch(error => {
           console.log("Error while creating work package dialog", error);
           this.message.showMsg(req, res, axios, this.util.dlgCreateErrMsg);

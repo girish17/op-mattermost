@@ -27,8 +27,8 @@ class Message {
     }
 
     showMsg(req, res, axios, msg) {
-	this.channel_id = req.body.channel_id;
-	this.user_id = req.body.user_id;
+        this.channel_id = req.body.channel_id;
+        this.user_id = req.body.user_id;
         this.msgObj = {
             "user_id": this.user_id,
             "post": {
@@ -37,41 +37,42 @@ class Message {
             }
         };
         axios.post(this.mmURL + 'posts/ephemeral',
-        this.msgObj, this.config).then((result) => {
+            this.msgObj, this.config).then((result) => {
                 if (result.data) {
-                    res.send('Show message post succeeded!').status(200);
-
+                    res.status(200).send('Show message post succeeded!');
                 }
                 else {
                     console.log('Show message post failed!');
-                    res.send().status(400);
-
+                    res.status(400).send();
                 }
             }).catch((err) => {
                 console.log('Show message post failed: %o', err);
-                res.send().status(500);
+                res.status(500).send();
             });
     }
 
     showNotification(res, axios, msg) {
-	    console.log("Creating notification for ChannelID: ", this.channel_id);
-	    this.msgObj.post.message = msg;
-	    console.log("Notification post message: ", this.msgObj);
+        console.log("Creating notification for ChannelID: ", this.channel_id);
+        if (this.msgObj && this.msgObj.post) {
+            this.msgObj.post.message = msg;
+            console.log("Notification post message: ", this.msgObj);
             axios.post(this.mmURL + 'posts/ephemeral',
                 this.msgObj, this.config).then((result) => {
-                if (result.data) {
-                    res.send('Show notification post succeeded!').status(200);
-
-                }
-                else {
-                    console.log('Show notification post failed!');
-                    res.send().status(400);
-
-                }
-            }).catch((err) => {
-                console.log('Show notification post failed: %o', err);
-                res.send().status(500);
-            });
+                    if (result.data) {
+                        res.status(200).send('Show notification post succeeded!');
+                    }
+                    else {
+                        console.log('Show notification post failed!');
+                        res.status(400).send();
+                    }
+                }).catch((err) => {
+                    console.log('Show notification post failed! %o', err);
+                    res.status(500).send();
+                });
+        } else {
+             console.log('msgObj not initialized');
+             res.status(500).send('Internal Error');
+        }
     }
 }
 module.exports = Message;

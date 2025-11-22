@@ -39,7 +39,7 @@ module.exports = (app, axios) => {
   app.use(limiter);
 
   app.get('/', (req, res) => {
-    res.send("Hello there! Good to see you here :) We don't know what to show here yet!").status(200);
+    res.status(200).send("Hello there! Good to see you here :) We don't know what to show here yet!");
   });
 
   app.post('/', (req, res) => {
@@ -75,11 +75,11 @@ module.exports = (app, axios) => {
         }
       }
       else {
-        res.send("*I don't understand ", command, ". Let's try again...* \n `/op`").status(500);
+        res.status(500).send("*I don't understand " + command + ". Let's try again...* \n `/op`");
       }
     }
     else {
-      res.send("Invalid slash token").status(400);
+      res.status(400).send("Invalid slash token");
     }
   });
 
@@ -98,7 +98,7 @@ module.exports = (app, axios) => {
         uiActions.createWP(req, res, axios);
         break;
       default:
-        res.send("Invalid action type").status(400);
+        res.status(400).send("Invalid action type");
         break;
     }
   });
@@ -113,7 +113,7 @@ module.exports = (app, axios) => {
         uiActions.showCnfDelWP(req, res, axios);
         break;
       default:
-        res.send("Invalid action type").status(400);
+        res.status(400).send("Invalid action type");
         break;  
     }
   });
