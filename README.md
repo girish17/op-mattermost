@@ -41,6 +41,37 @@
   - [Download and install](https://nodejs.org/en/download/)
   - Run `npm install` to install npm dependencies
 
+## One-Line Install
+
+You can install and run the project using the provided `install.sh` script. This script handles configuration and starts the Docker containers.
+
+### Quick Start
+
+```bash
+./install.sh
+```
+
+This will start the services with default settings. You will need to update the `.env` file with your tokens later.
+
+### Advanced Usage
+
+You can pass configuration directly to the script:
+
+```bash
+./install.sh \
+  --mm-slash-token "YOUR_SLASH_TOKEN" \
+  --mm-bot-token "YOUR_BOT_TOKEN" \
+  --op-token "YOUR_OP_TOKEN"
+```
+
+Or use environment variables:
+
+```bash
+MATTERMOST_SLASH_TOKEN="token" ./install.sh
+```
+
+See `./install.sh --help` for all options.
+
 ## Setup
 
 - Fork and `git clone` the repo using HTTPS

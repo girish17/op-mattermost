@@ -26,7 +26,7 @@ services:
     depends_on:
       - openproject
       - mattermost
-    command: [ "./wait_for_it.sh", "openproject:8080", "--", "npm", "start" ]
+    command: [ "./wait_for_it.sh", "openproject:8080", "-t", "30", "--", "npm", "start" ]
   openproject:
     image: "openproject/community:11"
     ports:
