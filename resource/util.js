@@ -70,7 +70,7 @@ class Util {
 
   }
 
-  getLogTimeDlgObj(triggerId, url, activityOptArray) {
+  getLogTimeDlgObj(triggerId, url, activityOptArray, defaultActivity = null) {
     return {
       "trigger_id": triggerId,
       "url": url + 'logTime',
@@ -100,7 +100,7 @@ class Util {
             "type": "select",
             "placeholder": "Type to search for activity",
             "options": activityOptArray,
-            "default": activityOptArray[0].value
+            "default": defaultActivity || activityOptArray[0].value
           },
           {
             "display_name": "Spent hours",
@@ -124,7 +124,27 @@ class Util {
     };
   }
 
-  getProjectOptJSON(url, optArray, action, mode = '') {
+  getProjectOptJSON(url, optArray, action, mode = '', defaultVal = null) {
+
+    let selectAction = {
+      "name": "Type to search for a project...",
+      "integration": {
+        "url": url + "projSel",
+        "context": {
+          "action": action
+        }
+      },
+      "type": "select",
+      "options": optArray
+    };
+
+    if (defaultVal && optArray.some(opt => opt.value === defaultVal)) {
+      console.log(`[getProjectOptJSON] Setting default_option to ${defaultVal}`);
+      selectAction.default_option = defaultVal;
+    } else {
+        console.log(`[getProjectOptJSON] Default value ${defaultVal} not found in options`);
+    }
+
     let projectOptObj = {
       "response_type": "in_channel",
       "message": "*Please select a project*",
@@ -132,17 +152,7 @@ class Util {
         "attachments": [
           {
             "actions": [
-              {
-                "name": "Type to search for a project...",
-                "integration": {
-                  "url": url + "projSel",
-                  "context": {
-                    "action": action
-                  }
-                },
-                "type": "select",
-                "options": optArray
-              },
+              selectAction,
               {
                 "name": "Cancel Project search",
                 "integration": {
@@ -164,7 +174,24 @@ class Util {
     }
   }
 
-  getWpOptJSON(url, optArray, action, mode = '') {
+  getWpOptJSON(url, optArray, action, mode = '', defaultVal = null) {
+    let selectAction = {
+      "name": "Type to search for a work package...",
+      "integration": {
+        "url": url + "wpSel",
+        "context": {
+          "action": action
+        }
+      },
+      "type": "select",
+      "options": optArray
+    };
+
+    if (defaultVal && optArray.some(opt => opt.value === defaultVal)) {
+      console.log(`[getWpOptJSON] Setting default_option to ${defaultVal}`);
+      selectAction.default_option = defaultVal;
+    }
+
     let wpOptJSON = {
       "response_type": "in_channel",
       "message": "*Please select a work package*",
@@ -172,17 +199,7 @@ class Util {
         "attachments": [
           {
             "actions": [
-              {
-                "name": "Type to search for a work package...",
-                "integration": {
-                  "url": url + "wpSel",
-                  "context": {
-                    "action": action
-                  }
-                },
-                "type": "select",
-                "options": optArray
-              },
+              selectAction,
               {
                 "name": "Cancel WP search",
                 "integration": {

@@ -21,9 +21,11 @@ class UIactions {
 
   constructor(opURL, mmURL, intURL) {
     const Util = require('./util');
+    const Storage = require('./storage');
     const Message = require('./message');
     this.moment = require('moment');
     this.util = new Util();
+    this.storage = new Storage();
     this.message = new Message(mmURL);
     this.opURL = opURL;
     this.mmURL = mmURL;
@@ -56,11 +58,15 @@ class UIactions {
         });
       });
       let projectOptJSON;
+      const userId = req.body.user_id;
+      const lastProjectId = this.storage.getUserPref(userId, 'lastProjectId');
+      console.log(`[showSelProject] User: ${userId}, LastProject: ${lastProjectId}`);
+
       if (req.body.text) {
-        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action);
+        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, '', lastProjectId);
       }
       else {
-        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, 'update');
+        projectOptJSON = this.util.getProjectOptJSON(this.intURL, projectOptArray, action, 'update', lastProjectId);
       }
       console.log("optArray for projects", projectOptJSON);
       res.status(200).set('Content-Type', 'application/json').send(JSON.stringify(projectOptJSON));
@@ -78,6 +84,10 @@ class UIactions {
   }
 
   showSelWP(req, res, axios, action, mode = '') {
+    if (!req.body.context || !req.body.context.selected_option) {
+      this.message.showMsg(req, res, axios, "Please make a selection.");
+      return;
+    }
     // noinspection JSUnresolvedVariable
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
@@ -94,17 +104,23 @@ class UIactions {
           "value": "opt" + element.id
         });
       });
-      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, action, mode);
+      const userId = req.body.user_id;
+      const lastWpId = this.storage.getUserPref(userId, 'lastWpId');
+      let wpOptJSON = this.util.getWpOptJSON(this.intURL, wpOptArray, action, mode, lastWpId);
       console.log("opt Array for WP: ", wpOptJSON);
       res.status(200).set('Content-Type', 'application/json').send(JSON.stringify(wpOptJSON));
     }, (error) => {
-      console.log("Request failed for /work_packages: %o", error.response.data.message);
+      console.log("Request failed for /work_packages: %o", error && error.response && error.response.data ? error.response.data.message : error);
       this.message.showMsg(req, res, axios, this.util.wpFetchErrMsg);
       return false;
     });
   }
 
   loadTimeLogDlg(req, res, axios) {
+    if (!req.body.context || !req.body.context.selected_option) {
+      this.message.showMsg(req, res, axios, "Please make a selection.");
+      return;
+    }
     this.wpId = req.body.context.selected_option.slice(this.optLen);
     axios({
       url: 'time_entries/form',
@@ -129,7 +145,9 @@ class UIactions {
           "value": "opt" + element.id
         });
       });
-      let logTimeDlgJSON = JSON.stringify(this.util.getLogTimeDlgObj(req.body.trigger_id, this.intURL, activityOptArray));
+      const userId = req.body.user_id;
+      const lastActivityId = this.storage.getUserPref(userId, 'lastActivityId');
+      let logTimeDlgJSON = JSON.stringify(this.util.getLogTimeDlgObj(req.body.trigger_id, this.intURL, activityOptArray, lastActivityId));
       console.log("logTimeDlgJSON: " + logTimeDlgJSON);
       axios.post(this.mmURL + 'actions/dialogs/open', logTimeDlgJSON).then(response => {
         console.log("Response from projects dialog: ", response);
@@ -196,6 +214,13 @@ class UIactions {
           }).then((response) => {
             console.log("Time logged. Save response: %o", response.data);
             this.message.showMsg(req, res, axios, "Time entry ID - " + response.data.id + this.util.timeLogSuccessMsg);
+
+            // Save user preferences
+            const userId = req.body.user_id;
+            this.storage.saveUserPref(userId, 'lastProjectId', "opt" + this.projectId);
+            this.storage.saveUserPref(userId, 'lastWpId', "opt" + this.wpId);
+            this.storage.saveUserPref(userId, 'lastActivityId', activity);
+
             return true;
           }).catch((error) => {
             console.log("OP time entries create error: %o", error.response.data.message);
@@ -320,6 +345,10 @@ class UIactions {
   };
 
   createWP(req, res, axios) {
+    if (!req.body.context || !req.body.context.selected_option) {
+      this.message.showMsg(req, res, axios, "Please make a selection.");
+      return;
+    }
     this.projectId = req.body.context.selected_option.slice(this.optLen);
     axios({
       url: 'types',
@@ -454,6 +483,10 @@ class UIactions {
   }
 
   showCnfDelWP(req, res, axios) {
+    if (!req.body.context || !req.body.context.selected_option) {
+      this.message.showMsg(req, res, axios, "Please make a selection.");
+      return;
+    }
     this.wpId = req.body.context.selected_option.slice(this.optLen);
     res.set('Content-Type', 'application/json').send(JSON.stringify(this.util.getCnfDelBtnJSON(this.intURL+ "delWP", this.util.cnfDelWPMsg, "delWP"))).status(200);
   }
