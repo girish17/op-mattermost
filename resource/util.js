@@ -138,12 +138,30 @@ class Util {
       "options": optArray
     };
 
+    let actions = [selectAction];
     if (defaultVal && optArray.some(opt => opt.value === defaultVal)) {
       console.log(`[getProjectOptJSON] Setting default_option to ${defaultVal}`);
       selectAction.default_option = defaultVal;
+      actions.push({
+        "name": "Next",
+        "integration": {
+          "url": url + "projSel",
+          "context": {
+            "action": action,
+            "selected_option": defaultVal
+          }
+        }
+      });
     } else {
         console.log(`[getProjectOptJSON] Default value ${defaultVal} not found in options`);
     }
+
+    actions.push({
+      "name": "Cancel Project search",
+      "integration": {
+        "url": url + "bye"
+      }
+    });
 
     let projectOptObj = {
       "response_type": "in_channel",
@@ -151,15 +169,7 @@ class Util {
       "props": {
         "attachments": [
           {
-            "actions": [
-              selectAction,
-              {
-                "name": "Cancel Project search",
-                "integration": {
-                  "url": url + "bye"
-                }
-              }
-            ]
+            "actions": actions
           }
         ]
       }
@@ -187,10 +197,28 @@ class Util {
       "options": optArray
     };
 
+    let actions = [selectAction];
     if (defaultVal && optArray.some(opt => opt.value === defaultVal)) {
       console.log(`[getWpOptJSON] Setting default_option to ${defaultVal}`);
       selectAction.default_option = defaultVal;
+      actions.push({
+        "name": "Next",
+        "integration": {
+          "url": url + "wpSel",
+          "context": {
+            "action": action,
+            "selected_option": defaultVal
+          }
+        }
+      });
     }
+
+    actions.push({
+      "name": "Cancel WP search",
+      "integration": {
+        "url": url + "createTimeLog"
+      }
+    });
 
     let wpOptJSON = {
       "response_type": "in_channel",
@@ -198,14 +226,7 @@ class Util {
       "props": {
         "attachments": [
           {
-            "actions": [
-              selectAction,
-              {
-                "name": "Cancel WP search",
-                "integration": {
-                  "url": url + "createTimeLog"
-                }
-              }]
+            "actions": actions
           }
         ]
       }
