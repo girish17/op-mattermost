@@ -39,15 +39,15 @@ class Message {
         axios.post(this.mmURL + 'posts/ephemeral',
             this.msgObj, this.config).then((result) => {
                 if (result.data) {
-                    res.status(200).send('Show message post succeeded!');
+                    res.status(200).json({});
                 }
                 else {
                     console.log('Show message post failed!');
-                    res.status(400).send();
+                    res.status(400).json({ error: 'Show message post failed' });
                 }
             }).catch((err) => {
                 console.log('Show message post failed: %o', err);
-                res.status(500).send();
+                res.status(500).json({ error: 'Show message post failed' });
             });
     }
 
@@ -59,19 +59,19 @@ class Message {
             axios.post(this.mmURL + 'posts/ephemeral',
                 this.msgObj, this.config).then((result) => {
                     if (result.data) {
-                        res.status(200).send('Show notification post succeeded!');
+                        res.status(200).json({});
                     }
                     else {
                         console.log('Show notification post failed!');
-                        res.status(400).send();
+                        res.status(400).json({ error: 'Show notification post failed' });
                     }
                 }).catch((err) => {
                     console.log('Show notification post failed! %o', err);
-                    res.status(500).send();
+                    res.status(500).json({ error: 'Show notification post failed' });
                 });
         } else {
              console.log('msgObj not initialized');
-             res.status(500).send('Internal Error');
+             res.status(500).json({ error: 'Internal Error: msgObj not initialized' });
         }
     }
 }
